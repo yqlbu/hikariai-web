@@ -1,7 +1,7 @@
 ######################## default configuration ####################
-baseURL = "https://demo.gethugothemes.com/liva/"
+baseURL = "https://hikariai.net"
 languageCode = "en-us"
-title = "Liva | Personal blog template"
+title = "Hikari AI"
 theme = "liva-hugo"
 summaryLength = "10"
 paginate = 6
@@ -77,20 +77,21 @@ disqusShortname = ""
 
 
 #################### default parameters ################################
+
 [params]
 logo = "images/logo.png"
 home = "Home"
+
 # Meta data
 description = "This is meta description"
 author = "Themefisher"
-# Google Analitycs
-googleAnalitycsID = "Your ID"
+
 # Contact Information
-mobile = "0124857985320"
-email = "demo@email.com"
-location = "Dhaka, Bangladedsh"
+location = "China, Hongkong"
+email = "kevinyu211@yahoo.com"
+
 # copyright
-copyright = "| copyright &copy; 2021 [Themefisher](https://themefisher.com/hugo-themes/) All Rights Reserved |"
+copyright = "Copy Right ©2019 — Kevin Yu Theme by Liva Powered by Hugo"
 
   # Preloader
   [params.preloader]
@@ -101,41 +102,24 @@ copyright = "| copyright &copy; 2021 [Themefisher](https://themefisher.com/hugo-
   [params.search]
   enable = true
 
-############################ news letter ########################
-[params.newsletter]
-enable = true
-title = "Join Our Newsletter"
-content = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero"
-
-
-# cookies
-[params.cookies]
-enable = true
-expire_days = 2
-
-
 ############################# social site ########################
-[[params.social]]
-title = "facebook"
-icon = "ti-facebook" # themify icon : https://themify.me/themify-icons
-link = "#"
-
-[[params.social]]
-title = "twitter"
-icon = "ti-twitter-alt" # themify icon : https://themify.me/themify-icons
-link = "#"
-
-[[params.social]]
-title = "instagram"
-icon = "ti-instagram" # themify icon : https://themify.me/themify-icons
-link = "#"
 
 [[params.social]]
 title = "github"
 icon = "ti-github" # themify icon : https://themify.me/themify-icons
-link = "#"
+link = "https://github.com/yqlbu"
 
 [[params.social]]
 title = "linkedin"
 icon = "ti-linkedin" # themify icon : https://themify.me/themify-icons
-link = "#"
+link = "https://www.linkedin.com/in/chinglong-kevin-yu"
+
+[[params.social]]
+title = "discord"
+icon = "ti-discord" # themify icon : https://themify.me/themify-icons
+link = "https://discord.gg/se4RtrB473"
+
+[[params.social]]
+title = "telegram"
+icon = "ti-telegram" # themify icon : https://themify.me/themify-icons
+link = "https://t.me/hikariai_channel"
