@@ -23,6 +23,18 @@
 
 </p>
 
+## Introduction
+
+[hikariai.net](https://hikariai.net) is a site that covers topics ranging from `Cloud Computing`, `Robotics`, `Edge AI`, `IoT`, and more. The main purpose of the site is to document and share practical cases that I dealt with throughout my career as a DevOps Engineer and Cloud Solution Architect. I am also an AI enthusiast who love to explore the latest cutting-edge AI technology and its applications in daily usage.
+
+You may connect me via [link.hikariai.net](https://link.hikariai.net), which is a microservice that I build for sharing.
+
+## Community
+
+- [Hikariai_AI Telegram Group](https://t.me/hikariai_channel)
+- [unRAID Telegram Group](https://t.me/unraid_zh)
+- [TechProber Telegram Group](https://t.me/joinchat/7AG3aEQ5I00wY2Q5)
+
 ## Reference
 
 - [Hugo Offical Site](https://gohugo.io/)
