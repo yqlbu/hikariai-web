@@ -12,7 +12,7 @@
       <img src="https://img.shields.io/tokei/lines/github/yqlbu/hikariai-web?color=orange" alt="lines">
     </a>
     <a href="https://hub.docker.com/repository/docker/hikariai/">
-        <img src="https://img.shields.io/badge/docker-v20.10-blue" alt="Version">
+        <img src="https://img.shields.io/badge/docker-v20.10.7-blue" alt="Version">
     </a>
     <a href="https://github.com/yqlbu/hikariai-web">
         <img src="https://img.shields.io/badge/kubernetes-v1.22-navy.svg" alt="Kubernetes"/>
