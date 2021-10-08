@@ -5,18 +5,20 @@ theme = "bookworm-light"
 # post pagination
 paginate = "5"
 # post excerpt
-summaryLength = "20"
+summaryLength = "40"
 # google analytics
 googleAnalytics = "" # example : UA-123-45
 # disqus short name
 disqusShortname = "themefisher-template" # get your shortname form here : https://disqus.com
 
 ############################# Modules ##############################
+
 [module.hugoVersion]
 extended = true
 min = "0.80.0"
 
 ############################# Outputs ##############################
+
 [outputs]
 home = ["HTML", "RSS", "JSON"]
 
@@ -25,6 +27,7 @@ unsafe= true
 
 
 ############################## Plugins ##############################
+
 # CSS Plugins
 [[params.plugins.css]]
 link = "plugins/bootstrap/bootstrap.min.css"
@@ -62,19 +65,20 @@ h5 = "18px"
 h6 = "16px"
 white = "#ffffff"
 black = "#000000"
-dark = "#152035"
+dark = "#141A26"
 gray = "#747577"
 light = "#FAFAFA"
-color_primary = "#01AD9F"
+color_primary = "#787CBF"
 
 #################### default parameters ################################
+
 [params]
 logo = "images/logo.png"
 logo_height = "35px"
 favicon = "images/favicon.png"
 # Meta data
 description = "This is meta description"
-author = "Themefisher"
+author = "Kevin Yu"
 # contact form action
 contact_form_action = "#" # contact form works with https://formspree.io
 # search
@@ -82,18 +86,12 @@ search = true
 # main section
 mainSections = ["blog"]
 # copyright
-copyright = "Designed & Developed By [Gethugothemes](https://gethugothemes.com/)"
+copyright = "Copy Right ©2019 🤍Kevin Yu -- Theme by Bookworm Powered by Hugo"
 
 # Preloader
 [params.preloader]
 enable = false
 preloader = "" # use jpg, png, svg or gif format.
-
-# Instagram feed
-[params.instafeed]
-enable = false
-instagram_user = "bookworm"
-access_token = "IGQVJYeUk4YWNIY1h4OWZANeS1wRHZARdjJ5QmdueXN2RFR6NF9iYUtfcGp1NmpxZA3RTbnU1MXpDNVBHTzZAMOFlxcGlkVHBKdjhqSnUybERhNWdQSE5hVmtXT013MEhOQVJJRGJBRURn"
 
 # Subscription
 [params.subscription]
@@ -101,7 +99,7 @@ enable = true
 # mailchimp subsciption
 mailchimp_form_action = "https://gmail.us4.list-manage.com/subscribe/post?u=463ee871f45d2d93748e77cad&amp;id=a0a2c6d074" # replace this url with yours
 mailchimp_form_name = "b_463ee871f45d2d93748e77cad_a0a2c6d074" # replace this code with yours
-title = "Subscribe for our monthly newsletter."
+title = "Subscribe for newsletter."
 input_placeholder = "Enter your email"
 
 # cookies
@@ -111,77 +109,86 @@ expire_days = 2
 
 
 ############################# Main Menu ########################
+
 [[menu.main]]
 name = "Home"
 url = "/"
 weight = 1
-  
-[[menu.main]]
-name = "About"
-url = "about/"
-weight = 3
-  
-[[menu.main]]
-name = "Contact"
-url = "contact/"
-weight = 4
-  
-[[menu.main]]
-name = "Buy Premium"
-url = "https://gethugothemes.com/products/bookworm/"
-weight = 5
 
 [[menu.main]]
-weight = 6
+name = "Blog"
+url = "catagories/"
+weight = 2
+
+  [[menu.main]]
+  parent = "Blog"
+  name = "Artifical Intelligence"
+  url = "categories/artificial-intelligence/"
+  weight = 1
+
+  [[menu.main]]
+  parent = "Blog"
+  name = "Cloud Computing"
+  url = "categories/cloud-computing/"
+  weight = 2
+
+  [[menu.main]]
+  parent = "Blog"
+  name = "DevOps"
+  url = "categories/devops/"
+  weight = 3
+
+  [[menu.main]]
+  parent = "Blog"
+  name = "Linux"
+  url = "categories/linux"
+  weight = 4
+
+[[menu.main]]
+weight = 3
 url = "#"
-name = "Pages"
+name = "Page"
 hasChildren = true
 
   [[menu.main]]
-  parent = "Pages"
-  name = "Author"
-  url = "author/"
-  weight = 1
-  
-  [[menu.main]]
-  parent = "Pages"
+  parent = "Page"
   name = "Tags"
   url = "tags/"
-  weight = 2
-  
+  weight = 1
+
   [[menu.main]]
-  parent = "Pages"
+  parent = "Page"
   name = "Category"
   url = "categories/"
-  weight = 3
-  
+  weight = 2
+
   [[menu.main]]
-  parent = "Pages"
+  parent = "Page"
   name = "Elements"
-  weight = 4
+  weight = 3
   url = "elements/"
-  
+
   [[menu.main]]
-  parent = "Pages"
-  name = "Privacy"
-  url = "privacy/"
-  weight = 5
-  
-  [[menu.main]]
-  parent = "Pages"
+  parent = "Page"
   name = "Terms & Conditions"
   url = "terms-conditions/"
-  weight = 6
+  weight = 4
+
+[[menu.main]]
+name = "About"
+url = "about/"
+weight = 4
 
 ############################# Footer Menu ########################
+
 [[menu.footer]]
 name = "About"
 url = "about/"
 weight = 1
 
 [[menu.footer]]
-name = "Authors"
-url = "author/"
+name = "Terms & Conditions"
+url = "terms-conditions/"
 weight = 2
 
 [[menu.footer]]
@@ -189,24 +196,23 @@ name = "Privacy"
 url = "privacy/"
 weight = 3
 
-[[menu.footer]]
-name = "Terms & Conditions"
-url = "terms-conditions/"
-weight = 4
-
 # Social Icons
 [[params.social]]
-icon = "lab la-facebook-f" # https://icons8.com/line-awesome
-url = "https://www.facebook.com/"
+icon = "las la-link" # https://icons8.com/line-awesome
+url = "https://link.hikariai.net"
 
 [[params.social]]
-icon = "lab la-twitter" # https://icons8.com/line-awesome
-url = "https://www.twitter.com/"
+icon = "lab la-github" # https://icons8.com/line-awesome
+url = "https://github.com/yqlbu"
 
 [[params.social]]
-icon = "lab la-instagram" # https://icons8.com/line-awesome
-url = "https://www.instagram.com/"
+icon = "lab la-discord" # https://icons8.com/line-awesome
+url = "https://discord.gg/hyNwvjtBJ7"
+
+[[params.social]]
+icon = "lab la-telegram" # https://icons8.com/line-awesome
+url = "https://t.me/hikariai_channel"
 
 [[params.social]]
 icon = "lab la-linkedin-in" # https://icons8.com/line-awesome
-url = "https://www.linkedin.com/"
+url = "https://www.linkedin.com/in/chinglong-kevin-yu"
