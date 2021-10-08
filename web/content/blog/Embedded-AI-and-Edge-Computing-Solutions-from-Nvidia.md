@@ -14,11 +14,11 @@ What does Edge AI really mean? I was asked this question several times over and 
 
 ### New Era of Artificial Intelligence
 
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-01-7f545eae-1782-49f2-8178-44ed7f99f0ca.jpeg)
+<img src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-01-7f545eae-1782-49f2-8178-44ed7f99f0ca.jpeg" style="width:923px; height:431px"/>
 
 All deep learning algorithms can be considered part of machine learning and artificial intelligence, but not all AI algorithms are machine learning (or deep learning).
 
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-01-3438cbf3cc8f4e72b1e13712bce13b62.jpeg)
+<img src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-01-3438cbf3cc8f4e72b1e13712bce13b62.jpeg" style="width:923px; height:431px"/>
 
 Most IoT configurations look something like the image above. Sensors or devices are connected directly to the Internet through a router, providing raw data to a backend server. Machine learning algorithms can be run on these servers to help predict a variety of cases that might interest managers.
 
@@ -36,7 +36,7 @@ This is known as “Edge AI.” We’re running machine learning algorithms on l
 
 [Jetson AGX Xavier](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-agx-xavier/) is the first computer designed specifically for autonomous machines. It has six engines onboard for accelerated sensors data processing and running autonomous machines software, offerings the performance and power efficiency for fully autonomous machines.
 
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-01-nvidia-jetson-agx-dev-kit-2c50-d.jpeg)
+<img src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-01-nvidia-jetson-agx-dev-kit-2c50-d.jpeg" style="width:923px; height:431px"/>
 
 Jetson AGX Xavier 8GB is a lower-power lower-price Jetson AGX Xavier offering full hardware and software compatibility with the existing Jetson AGX Xavier. It consumes a maximum of 20W for the full module while delivering up to 20 TOPS of AI performance.
 
@@ -46,7 +46,7 @@ Jetson AGX Xavier 8GB is a lower-power lower-price Jetson AGX Xavier offering fu
 
 [ NVIDIA® Jetson Nano™ ](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-nano/) Developer Kit is a small, powerful computer that lets you run multiple neural networks in parallel for applications like image classification, object detection, segmentation, and speech processing. All in an easy-to-use platform that runs in as little as 5 watts.
 
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-01-Jetson_Nano.jpeg)
+<img src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-01-Jetson_Nano.jpeg" style="width:923px; height:431px"/>
 
 Jetson Nano module is a small AI computer that has the performance and power efficiency needed to run modern AI workloads, including multiple neural networks in parallel and process data from several high-resolution sensors simultaneously. This makes it the perfect entry-level option to add advanced AI to embedded products.
 
@@ -57,8 +57,6 @@ However, things get tricky when too many devices begin to clog the network traff
 ### Conclusion
 
 Interest in edge computing continues to build, as does confusion surrounding the architecture. The situation is similar when it comes to artificial intelligence. The prospect of moving AI to the edge might sound like a recipe for even more confusion.
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-01-edge-computing-benefits-683x432-1.jpeg)
 
 Still, the concept of edge AI is increasingly hard for industrial and enterprise organizations to ignore. Resource-intensive operations such as deep learning and computer vision have traditionally taken place in centralized computing environments. But the growing availability of high-performance networking and computing hardware opens up the possibility to shift that activity from a centralized cloud architecture to the edge.
 
