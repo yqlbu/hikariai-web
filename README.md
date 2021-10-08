@@ -25,7 +25,7 @@
 
 ## Introduction
 
-[hikariai.net](https://hikariai.net) is a self-hosted site that covers topics ranging from `Cloud Computing`, `Robotics`, `Edge AI`, `IoT`, and more. The main purpose of the site is to document and share practical cases that I dealt with throughout my career as a DevOps Engineer and Cloud Solution Architect. I am also an AI enthusiast who love to explore the latest cutting-edge AI technology and its applications in daily usage.
+[hikariai.net](https://hikariai.net) is a self-hosted site that covers topics ranging from `Cloud Computing`, `Robotics`, `Edge AI`, `IoT`, and more. The main purpose of the site is to document and share practical cases that I dealt with throughout my career as a DevOps Engineer and a Cloud Solution Architect. I am also an AI enthusiast who love to explore the latest cutting-edge AI technology and its applications in daily usage.
 
 You may connect me via [link.hikariai.net](https://link.hikariai.net), which is a microservice that I build for sharing.
 
@@ -42,7 +42,7 @@ The site is containerized and automated based on principals followed by `DevOps`
 
 - [Hugo Offical Site](https://gohugo.io/)
 - [Hugo Themes](https://themes.gohugo.io)
-- [Liva Theme](https://docs.gethugothemes.com/liva/)
+- [Bookworm Theme](https://docs.gethugothemes.com/bookworm/)
 
 ## License
 
