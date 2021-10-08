@@ -23,6 +23,12 @@
 
 </p>
 
+## Reference
+
+[Hugo Offical Site](https://gohugo.io/)
+[Hugo Themes](https://themes.gohugo.io)
+[Liva Theme](https://docs.gethugothemes.com/liva/)
+
 ## License
 
 [MIT (C) Kevin Yu](https://github.com/yqlbu/hikariai-web/blob/master/LICENSE)
