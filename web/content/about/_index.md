@@ -1,20 +1,18 @@
 ---
 title: "About Me"
-date: 2019-10-29T13:49:23+06:00
+date: 2021-10-8
 draft: false
 
 # image
-image: "images/author.jpg"
+image: "images/author.png"
 
 # meta description
 description: "this is meta description"
 
 # type
-type : "about"
+type: "about"
 ---
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+In the upcoming months and years, I want to help make learning Machine Learning and Cloud Technology topics easier by providing lots of articles showing of practice cases on Cloud and Edge devices.
 
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-
-nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+Furthermore, I’m planning on creating an AI and Cloud Technology community so that people can interact with each other and learn together.
