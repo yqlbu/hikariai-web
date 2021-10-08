@@ -29,6 +29,8 @@
 
 You may connect me via [link.hikariai.net](https://link.hikariai.net), which is a microservice that I build for sharing.
 
+The site is containerized and automated based on principals followed by `DevOps` and `GitOps` practices with CICD tools such as [Tekton](https://tekton.dev/), [ArgoCD](https://argoproj.github.io/argo-cd/) that fit in the modern `cloud-native` fashion. In terms of deployment, it is orchestrated with `Kubernetes` with proper service discovery routing rules handled by [Istios](https://istio.io/). You may find the `Dockerfile` in the `/ci` directory of this repository.
+
 ## Community
 
 - [Hikariai_AI Telegram Group](https://t.me/hikariai_channel)
