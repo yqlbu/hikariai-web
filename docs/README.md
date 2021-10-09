@@ -74,8 +74,6 @@ ls -l public/
 
 </br>
 
-#### Generate Syntax Highlighter CSS
-
 reference:
 
 - https://gohugo.io/content-management/syntax-highlighting/#generate-syntax-highlighter-css
