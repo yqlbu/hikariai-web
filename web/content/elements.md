@@ -202,4 +202,3 @@ raw Markdown line up prettily. You can also use inline Markdown.
 ##### Youtube video
 
 {{< youtube C0DPdy98e4c >}}
-

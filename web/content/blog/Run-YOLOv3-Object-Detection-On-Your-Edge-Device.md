@@ -1,5 +1,5 @@
 ---
-title: "Archiconda 3 — The Best Environment Manager for ARM64 Edge Computer"
+title: "Run YOLOv3 Object Detection On Your Edge Device"
 image: "images/post/post-09.jpg"
 date: 2020-04-30
 author: "Kevin Yu"
