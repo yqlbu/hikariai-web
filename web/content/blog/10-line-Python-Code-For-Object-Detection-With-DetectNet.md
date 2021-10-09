@@ -12,7 +12,7 @@ For those of you who already tried out the [ Jetson-Inference ](https://github.c
 
 If you have not tested out the jetson-inference, you may find the repo [ here ](https://github.com/dusty-nv/jetson-inference/blob/master/docs/building-repo-2.md).
 
-{{< notice "note" >}}
+{{< notice "info" >}}
 Please make sure you have compiled [ jetson-inference ](<https://github.com/dusty-nv/jetson-inference/blob/master/docs/detectnet-camera-2.md(opens%20in%20a%20new%20tab)>) properly
 {{< /notice >}}
 

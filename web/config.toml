@@ -1,15 +1,11 @@
 ######################## default configuration ####################
 baseURL = "https://demo.gethugothemes.com/bookworm-light/"
-title = "Bookworm - Personal Blog Template"
+title = "Hikari AI - Kevin Yu's Personal Blog"
 theme = "bookworm-light"
 # post pagination
 paginate = "5"
 # post excerpt
 summaryLength = "40"
-# google analytics
-googleAnalytics = "" # example : UA-123-45
-# disqus short name
-disqusShortname = "themefisher-template" # get your shortname form here : https://disqus.com
 
 ############################# Modules ##############################
 
@@ -83,7 +79,7 @@ black = "#000000"
 dark = "#141A26"
 gray = "#747577"
 light = "#FAFAFA"
-color_primary = "#787CBF"
+color_primary = "#804549"
 
 #################### default parameters ################################
 
@@ -126,12 +122,14 @@ expire_days = 2
 ############################# Main Menu ########################
 
 [[menu.main]]
+identifier = "Home"
 name = "Home"
 url = "/"
 weight = 1
 
 [[menu.main]]
 name = "Blog"
+identifier = "Blog"
 url = "catagories/"
 weight = 2
 
@@ -166,9 +164,10 @@ weight = 2
   weight = 5
 
 [[menu.main]]
+name = "Page"
+identifier = "Page"
 weight = 3
 url = "#"
-name = "Page"
 hasChildren = true
 
   [[menu.main]]
@@ -197,6 +196,7 @@ hasChildren = true
 
 [[menu.main]]
 name = "About"
+identifier = "About"
 url = "about/"
 weight = 4
 
