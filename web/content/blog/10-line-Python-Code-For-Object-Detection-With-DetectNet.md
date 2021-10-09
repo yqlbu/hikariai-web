@@ -12,9 +12,13 @@ For those of you who already tried out the [ Jetson-Inference ](https://github.c
 
 If you have not tested out the jetson-inference, you may find the repo [ here ](https://github.com/dusty-nv/jetson-inference/blob/master/docs/building-repo-2.md).
 
-**Please make sure you have compiled [ jetson-inference ](<https://github.com/dusty-nv/jetson-inference/blob/master/docs/detectnet-camera-2.md(opens%20in%20a%20new%20tab)>) properly**. Otherwise, the code below will not work. Before you run the demo, I recommend you to max out the performance on your Jetson Kit. To do so, you may type the following commands on your console:
+{{< notice "note" >}}
+Please make sure you have compiled [ jetson-inference ](<https://github.com/dusty-nv/jetson-inference/blob/master/docs/detectnet-camera-2.md(opens%20in%20a%20new%20tab)>) properly
+{{< /notice >}}
 
-```
+Otherwise, the code below will not work. Before you run the demo, I recommend you to max out the performance on your Jetson Kit. To do so, you may type the following commands on your console:
+
+```bash
 $ sudo nvpmodel -m 0
 $ sudo jetson_clocks
 ```
@@ -31,7 +35,7 @@ The Python interface is very simple to get up & running. Here’s an object dete
 
 #### Setup environment
 
-```
+```bash
 $ export PATH=/usr/local/cuda-10.0/bin${PATH:+:${PATH}}
 $ export LD_LIBRARY_PATH=/usr/local/cuda-10.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 ```
@@ -40,7 +44,7 @@ $ export LD_LIBRARY_PATH=/usr/local/cuda-10.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBR
 
 #### Create a demo script
 
-```
+```bash
 $ cd ${HOME}
 $ touch detect.sh
 $ gedit detect.sh
@@ -69,7 +73,7 @@ while display.IsOpen():
 
 #### Test it out and enjoy!
 
-```
+```bash
 $ sudo chmod +x detect.sh
 $ ./detec.sh
 ```

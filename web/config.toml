@@ -28,6 +28,21 @@ unsafe= true
 
 ############################## Plugins ##############################
 
+# Syntax Highlight
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ''
+    lineAnchors = ''
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    style = 'emacs'
+    tabWidth = 4
+
 # CSS Plugins
 [[params.plugins.css]]
 link = "plugins/bootstrap/bootstrap.min.css"
