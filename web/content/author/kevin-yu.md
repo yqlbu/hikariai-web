@@ -17,7 +17,6 @@ social:
     icon: "lab la-linkedin-in"
 ---
 
-In the upcoming months and years, I want to help make learning Machine Learning and Cloud Technology topics easier by providing lots of articles showing of practice cases on Cloud and Edge devices.
+In the upcoming months and years, I want to help make learning Machine Learning and Cloud Technology topics easier by writing lots of articles showing of practice cases on Cloud and Edge devices.
 
 Furthermore, I’m planning on creating an AI and Cloud Technology community so that people can interact with each other and learn together.
-
