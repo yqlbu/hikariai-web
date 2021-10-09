@@ -86,7 +86,7 @@ search = true
 # main section
 mainSections = ["blog"]
 # copyright
-copyright = "Copy Right ©2019 🤍Kevin Yu -- Theme by Bookworm Powered by Hugo"
+copyright = "Copy Right ©2019 🤍 Kevin Yu -- Theme by Bookworm Powered by Hugo"
 
 # Preloader
 [params.preloader]
@@ -143,6 +143,12 @@ weight = 2
   name = "Linux"
   url = "categories/linux"
   weight = 4
+
+  [[menu.main]]
+  parent = "Blog"
+  name = "IoT"
+  url = "categories/linux"
+  weight = 5
 
 [[menu.main]]
 weight = 3
