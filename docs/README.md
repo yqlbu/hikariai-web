@@ -100,6 +100,25 @@ Add the following config to `config.toml`
 
 </p></details>
 
+<details><summary>Configure TableOfContents</summary>
+
+</br>
+
+reference:
+
+- https://gohugo.io/getting-started/configuration-markup#table-of-contents
+
+Add the following config to `config.toml`
+
+```config
+[markup.tableOfContents]
+  endLevel = 3
+  ordered = false
+  startLevel = 2
+```
+
+</p></details>
+
 ### Use Hugo Http Server
 
 Use `Hugo` built in `Http Server` to serve contents
