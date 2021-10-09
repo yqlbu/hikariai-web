@@ -167,9 +167,15 @@ weight = 2
 
   [[menu.main]]
   parent = "Blog"
+  name = "Software"
+  url = "categories/software"
+  weight = 5
+
+  [[menu.main]]
+  parent = "Blog"
   name = "IoT"
   url = "categories/iot"
-  weight = 5
+  weight = 6
 
 [[menu.main]]
 name = "Page"
