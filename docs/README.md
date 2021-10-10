@@ -82,20 +82,20 @@ reference:
 Add the following config to `config.toml`
 
 ```config
+pygmentsUseClasses = true
 # Syntax Highlight
-[markup]
-  [markup.highlight]
-    anchorLineNos = false
-    codeFences = true
-    guessSyntax = false
-    hl_Lines = ''
-    lineAnchors = ''
-    lineNoStart = 1
-    lineNos = false
-    lineNumbersInTable = true
-    noClasses = true
-    style = 'emacs'
-    tabWidth = 4
+[markup.highlight]
+  anchorLineNos = false
+  codeFences = true
+  guessSyntax = true
+  hl_Lines = ''
+  lineAnchors = ''
+  lineNoStart = 1
+  lineNos = true
+  lineNumbersInTable = false
+  noClasses = true
+  style = 'emacs'
+  tabWidth = 4
 ```
 
 </p></details>
