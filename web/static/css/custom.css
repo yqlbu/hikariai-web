@@ -19,6 +19,9 @@ code {
 .nav-item {
   margin-right: 30px;
 }
+.nav-item:first-child {
+  margin-left: 50px;
+}
 
 /* Dropdown Menu */
 .dropdown-menu {
