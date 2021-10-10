@@ -14,14 +14,14 @@
   {{ "<!-- CSS Plugins -->" | safeHTML}}
   {{ partialCached "style.html" . }}
 
-<!-- css -->
-{{ range .Site.Params.customCSS -}}
+  <!-- css -->
+  {{ range .Site.Params.customCSS -}}
     <link rel="stylesheet" href="{{ . | absURL }}">
-{{- end }}
+  {{- end }}
 
-<!-- javascript -->
-{{ range .Site.Params.customJS -}}
+  <!-- javascript -->
+  {{ range .Site.Params.customJS -}}
     <script type="text/javascript" src="{{ . | absURL }}"></script>
-{{- end }}
+  {{- end }}
 
 </head>
