@@ -119,6 +119,61 @@ Add the following config to `config.toml`
 
 </p></details>
 
+<details><summary>Apply Custom CSS</summary>
+
+</br>
+
+reference: https://mcneilcode.com/post/web/hugo/hugo-adding-custom-css-js-themes/
+
+### Overview
+
+It is possible to extend any theme without modifying it directly, thanks to the order preference feature of Hugo theme loader. By staging a custom version of any file found in your third party theme, you can override it and extend it with any feature you may need.
+
+The example we will use here is for a theme that may not provide a way to load a custom CSS or Javascript from the static folder into your site natively.
+
+### Procedure
+
+1. Stage your files into the static, if not already done. They should live in the `static` folder. You should have:
+
+```bash
+static/css/custom.css
+static/js/custom.js
+```
+
+2. Add configuration parameters for custom css/js in `config.toml`:
+
+```bash
+[params]
+...
+customCSS = ["css/custom.css"]
+customJS = ["js/custom.js"]
+```
+
+3. Copy the head.html from your preferred theme, into your local project:
+
+```bash
+mkdir -p layouts/partials
+cp themes/<theme_name>/layouts/partials/head.html layouts/partials/
+```
+
+4. Extend the local version of head.html to load the custom scripts:
+
+```bash
+<!-- css -->
+{{ range .Site.Params.customCSS -}}
+    <link rel="stylesheet" href="{{ . | absURL }}">
+{{- end }}
+
+<!-- javascript -->
+{{ range .Site.Params.customJS -}}
+    <script type="text/javascript" src="{{ . | absURL }}"></script>
+{{- end }}
+```
+
+Now your site will load these custom files in addition to all the other files needed for the theme.
+
+</p></details>
+
 ### Use Hugo Http Server
 
 Use `Hugo` built in `Http Server` to serve contents
