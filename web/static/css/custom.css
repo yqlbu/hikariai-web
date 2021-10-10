@@ -1,15 +1,26 @@
-.highlight .ln {
-  width: 20px;
-  display: block;
-  float: left;
-  text-align: right;
-  user-select: none;
-  padding-right: 8px;
-  color: #ccc;
+/* Code Hightlighter */
+.language-yaml {
+  /* user-select: none; */
 }
 
-.header .logo-wrapper .logo {
-  position: relative;
-  font-size: 36px;
-  line-height: 68px;
+/* Selection Hightlight Color */
+*::selection {
+  background: #bfc6ff;
+  color: #483b59;
+}
+
+/* Backtick Highlight */
+code {
+  color: #8159d9;
+  font-weight: 500;
+}
+
+/* Nav Bar */
+.nav-item {
+  margin-right: 30px;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  margin-left: 80px;
 }
