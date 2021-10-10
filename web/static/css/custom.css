@@ -3,6 +3,13 @@
   /* user-select: none; */
 }
 
+/* LineNumbers */
+.chroma .ln {
+  margin-right: 0.4em;
+  padding: 0 0.4em 0 0.4em;
+  color: #7f7f7f;
+}
+
 /* Selection Hightlight Color */
 *::selection {
   background: #bfc6ff;

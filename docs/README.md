@@ -111,6 +111,53 @@ In the content page, add the following snippets:
 
 </p></details>
 
+<details><summary>Disable Copy for Linenumbers in Codeblock</summary>
+
+</br>
+
+reference:
+
+- https://gohugo.io/content-management/syntax-highlighting/
+- https://discourse.gohugo.io/t/pygmentsuseclasses-true-not-generating-classes/15080/3
+
+#### Enable Custom CSS
+
+Follow the instructions written in this [link](https://mcneilcode.com/post/web/hugo/hugo-adding-custom-css-js-themes/)
+
+#### Generate Syntax CSS
+
+Checkout the available highlighter options [HERE](https://xyproto.github.io/splash/docs/)
+
+Run the following commands to generate the syntax css
+
+```bash
+hugo gen chromastyles --style=<style name> > syntax.css
+```
+
+Copy the CSS file to `static/css`
+
+```bash
+mkdir -p static/css
+cp syntax.css static/css
+```
+
+#### Modify CSS Configuration
+
+In `static/css/syntax.css`, find the class `.chroma .ln`, add `user-select: none`
+
+```css
+/* LineNumbers */
+.chroma .ln {
+  margin-right: 0.4em;
+  padding: 0 0.4em 0 0.4em;
+  color: #bfbfbf;
+  user-select: none;
+  border-right: 2px solid #33f260;
+}
+```
+
+</p></details>
+
 <details><summary>Configure TableOfContents</summary>
 
 </br>
