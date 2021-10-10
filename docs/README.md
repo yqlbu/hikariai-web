@@ -1,4 +1,4 @@
-# Hugo Basic Usage
+# Hugo Usage
 
 ## Installation
 
