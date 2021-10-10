@@ -99,6 +99,16 @@ pygmentsUseClasses = true
   tabWidth = 4
 ```
 
+#### Highlight specific linenumbers
+
+In the content page, add the following snippets:
+
+````config
+```go {linenos=true,hl_lines=[1,"3-5"],linenostart=1}
+// ... code
+```
+````
+
 </p></details>
 
 <details><summary>Configure TableOfContents</summary>
