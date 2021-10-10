@@ -78,6 +78,7 @@ reference:
 
 - https://gohugo.io/content-management/syntax-highlighting/#generate-syntax-highlighter-css
 - https://xyproto.github.io/splash/docs/
+- https://gohugo.io/getting-started/configuration-markup#highlight
 
 Add the following config to `config.toml`
 
