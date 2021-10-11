@@ -23,8 +23,25 @@ build:
 		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
 		.
 
+build-prod:
+	@docker build -f $(BUILD_DIR) \
+		-t $(IMAGE_NAME):$(IMAGE_TAG) \
+		--build-arg ENV=$(ENV) \
+		--build-arg SERVER_IP=$(SERVER_IP) \
+		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
+		.
+	@docker build -f $(BUILD_DIR) \
+		-t $(IMAGE_NAME):www-$(IMAGE_TAG) \
+		--build-arg ENV=$(ENV) \
+		--build-arg SERVER_IP=$(SERVER_IP) \
+		--build-arg DOMAIN_NAME=www.$(DOMAIN_NAME) \
+		.
+	@docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest
+
+
 push:
-	@docker tag $(IMAGE_NAME):staging
+	@docker push $(IMAGE_NAME):staging
+	@docker push $(IMAGE_NAME):www-staging
 	@docker push $(IMAGE_NAME):latest
 
 local-run:
