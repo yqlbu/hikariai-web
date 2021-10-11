@@ -4,7 +4,7 @@ description: "This is privacy's meta description"
 draft: false
 ---
 
-### User Content
+### USER CONTENT
 
 `Content` means text, graphics images, music, software, audio, video, works of authorship of any kind, and information or other materials that are posted, generated, provided or otherwise made available through services from the HIKARI AI site.
 

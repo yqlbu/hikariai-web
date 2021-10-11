@@ -19,6 +19,7 @@ build:
 		-t $(IMAGE_NAME):$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
 		.
+	@docker push $(IMAGE_NAME):latest
 
 local-run:
 	@docker run -d --name hugo-web -p 80:80 $(IMAGE_NAME):test
