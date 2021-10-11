@@ -9,7 +9,7 @@ SERVER_IP := 10.10.10.50
 
 # Modify tagging mechanism
 ifeq ($(ENV), dev)
-	export IMAGE_TAG=test
+	export IMAGE_TAG=dev
 else
 	export IMAGE_TAG=latest
 endif
@@ -24,10 +24,11 @@ build:
 		.
 
 push:
+	@docker tag $(IMAGE_NAME):staging
 	@docker push $(IMAGE_NAME):latest
 
 local-run:
-	@docker run -d --name hugo-web -p 80:80 $(IMAGE_NAME):test
+	@docker run -d --name hugo-web -p 80:80 $(IMAGE_NAME):dev
 
 prod-run:
 	@docker run -d --name hugo-web -p 80:80 $(IMAGE_NAME):latest
