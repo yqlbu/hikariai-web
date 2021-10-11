@@ -15,11 +15,14 @@
 
 FROM klakegg/hugo:latest AS build
 
+ARG ENV
 ENV TZ=Asia/Shanghai
 
 WORKDIR /app
-
 COPY web/ ./
+
+RUN echo "test variable $ENV" > test.txt
+RUN cat test.txt
 
 RUN hugo
 
@@ -28,6 +31,8 @@ RUN hugo
 FROM nginx:stable-alpine
 
 COPY --from=build /app/public /usr/share/nginx/html
+
+RUN chmod -R 0777 /usr/share/nginx/html
 
 EXPOSE 80
 
