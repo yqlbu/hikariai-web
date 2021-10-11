@@ -21,4 +21,7 @@ build:
 		.
 
 local-run:
-	@docker run -d --name hugo-web -p 80:80 $(IMAGE_NAME):$(ENV)
+	@docker run -d --name hugo-web -p 80:80 $(IMAGE_NAME):test
+
+prod-run:
+	@docker run -d --name hugo-web -p 80:80 $(IMAGE_NAME):latest
