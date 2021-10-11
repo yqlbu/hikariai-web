@@ -16,8 +16,6 @@ make local-run
 
 ### Ready for Deployment
 
----
-
-### Reference
+## Reference
 
 - [Makefile Tutorial](https://makefiletutorial.com/)
