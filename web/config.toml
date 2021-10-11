@@ -194,14 +194,14 @@ hasChildren = true
 
   [[menu.main]]
   parent = "Page"
-  name = "Elements"
+  name = "Terms & Conditions"
+  url = "terms-conditions/"
   weight = 3
-  url = "elements/"
 
   [[menu.main]]
   parent = "Page"
-  name = "Terms & Conditions"
-  url = "terms-conditions/"
+  name = "Privacy"
+  url = "privacy/"
   weight = 4
 
 [[menu.main]]
