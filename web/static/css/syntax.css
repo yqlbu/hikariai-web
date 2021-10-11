@@ -62,7 +62,7 @@
 }
 /* KeywordNamespace */
 .chroma .kn {
-  color: #aa22ff;
+  color: #33f260;
   font-weight: bold;
 }
 /* KeywordPseudo */
@@ -128,8 +128,7 @@
 }
 /* NameNamespace */
 .chroma .nn {
-  color: #84c3e3;
-  font-weight: bold;
+  color: #cd4848;
 }
 /* NameOther */
 .chroma .nx {
@@ -144,7 +143,7 @@
 }
 /* NameVariable */
 .chroma .nv {
-  color: #b8860b;
+  color: #d97904;
 }
 /* NameVariableClass */
 .chroma .vc {
