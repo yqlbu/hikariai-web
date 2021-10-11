@@ -9,6 +9,7 @@ ENV := prod
 # Modify tagging mechanism
 ifeq ($(ENV), dev)
 	export IMAGE_TAG=test
+	export BASE_URL=http://10.10.10.50
 else
 	export IMAGE_TAG=latest
 endif
@@ -18,6 +19,14 @@ build:
 	@docker build -f $(BUILD_DIR) \
 		-t $(IMAGE_NAME):$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
+		--build-arg BASE_URL=$(BASE_URL) \
+		.
+
+build-prod:
+	@docker build -f $(BUILD_DIR) \
+		-t $(IMAGE_NAME):$(IMAGE_TAG) \
+		--build-arg ENV=$(ENV) \
+		--build-arg ENV=$(BASE_URL) \
 		.
 	@docker push $(IMAGE_NAME):latest
 

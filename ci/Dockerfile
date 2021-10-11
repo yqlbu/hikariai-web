@@ -16,13 +16,17 @@
 FROM klakegg/hugo:latest AS build
 
 ARG ENV
+ARG BASE_URL
 ENV TZ=Asia/Shanghai
 
 WORKDIR /app
 COPY web/ ./
 
-RUN echo "test variable $ENV" > test.txt
-RUN cat test.txt
+RUN echo "Current environment ==> $ENV" > env
+RUN echo "BaseURL ==> $BASE_URL" >> env
+RUN cat env
+
+RUN sed -i 's/baseURL: "": $BASE_URL/g' web/config.toml
 
 RUN hugo
 
