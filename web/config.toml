@@ -1,5 +1,5 @@
 ######################## default configuration ####################
-baseURL = "https://demo.gethugothemes.com/bookworm-light/"
+baseURL = "http://10.10.10.50"
 title = "Hikari AI - Cloud Computing, Robotics, Edge AI, IoT, and more"
 theme = "bookworm-light"
 # post pagination

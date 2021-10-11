@@ -1,3 +1,5 @@
+/* --- Page Configuration --- */
+
 /* Selection Hightlight Color */
 *::selection {
   background: #bfc6ff;
@@ -29,4 +31,26 @@ code {
 }
 .social-links .list-inline-item {
   padding: 0 5px;
+}
+
+/* --- Syntax Highlighter ColorScheme --- */
+
+/* KeywordNamespace */
+.chroma .kn {
+  color: #33f260;
+  font-weight: bold;
+}
+/* Keyword */
+.chroma .k {
+  color: #33f260;
+  font-weight: bold;
+}
+/* KeywordConstant */
+.chroma .kc {
+  color: #aa22ff;
+  font-weight: bold;
+}
+/* NameNamespace */
+.chroma .nn {
+  color: #96928c;
 }
