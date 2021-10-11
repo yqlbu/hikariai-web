@@ -1,6 +1,6 @@
 ---
 title: "Privacy"
-description: "This is privacy's meta description"
+description: "This is privacy's statement of the site"
 draft: false
 ---
 

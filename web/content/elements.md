@@ -1,6 +1,6 @@
 ---
 title: "Elements"
-description: "this is meta description"
+description: "Syntax reference page"
 draft: false
 ---
 

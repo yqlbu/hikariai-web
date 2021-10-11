@@ -1,6 +1,6 @@
 ---
 title: "Terms And Conditions"
-description: "This is terms and conditions's meta description"
+description: "This is terms and conditions's statements of the site"
 draft: false
 ---
 
