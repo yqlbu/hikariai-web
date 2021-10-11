@@ -16,17 +16,21 @@
 FROM klakegg/hugo:latest AS build
 
 ARG ENV
-ARG BASE_URL
+ARG SERVER_IP
+ARG DOMAIN_NAME
 ENV TZ=Asia/Shanghai
 
 WORKDIR /app
 COPY web/ ./
 
-RUN echo "Current environment ==> $ENV" > env
-RUN echo "BaseURL ==> $BASE_URL" >> env
+RUN echo "ENV=$ENV" > env
+RUN echo "SERVER_IP=$SERVER_IP" >> env
+RUN echo "DOMAIN_NAME=$DOMAIN_NAME" >> env
 RUN cat env
 
-RUN sed -i 's/baseURL: "": $BASE_URL/g' web/config.toml
+COPY ci/bootstrap.sh ./
+RUN chmod +x bootstrap.sh && \
+    sh bootstrap.sh
 
 RUN hugo
 
