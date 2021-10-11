@@ -5,16 +5,24 @@ Prepare CI workflow accessible for `Kubernetes-based` `staging` and `production`
 ### Build Image Locally (Test)
 
 ```bash
-make build
+make build ENV=dev
 ```
 
-### Run Container Locally
+### Run Container Locally (Test)
 
 ```bash
 make local-run
 ```
 
+### Run Container Locally (Prod)
+
+```bash
+make prod-run
+```
+
 ### Ready for Deployment
+
+coming soon...
 
 ## Reference
 
