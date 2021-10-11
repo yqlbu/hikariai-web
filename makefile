@@ -11,7 +11,7 @@ SERVER_IP := 10.10.10.50
 ifeq ($(ENV), dev)
 	export IMAGE_TAG=dev
 else
-	export IMAGE_TAG=latest
+	export IMAGE_TAG=staging
 endif
 
 # List of commands
