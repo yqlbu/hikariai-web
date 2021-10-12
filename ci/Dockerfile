@@ -13,7 +13,6 @@
 
 # --- Build Stage --- #
 
-#FROM klakegg/hugo:latest AS build
 FROM homebrew/brew:latest AS build
 
 ARG ENV
