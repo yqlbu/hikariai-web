@@ -52,7 +52,7 @@ ghcr-login:
 	@echo $(GHCR_TOKEN) | docker login ghcr.io -u $(GHCR_USERNAME) --password-stdin
 
 local-run:
-	@docker run -d --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
+	@docker run -it --rm --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
 
 prod-run:
 	@docker run -d --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
