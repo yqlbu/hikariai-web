@@ -13,7 +13,7 @@ SERVER_IP := 10.10.10.50
 ifeq ($(ENV), dev)
 	export IMAGE_TAG=dev
 else
-	export IMAGE_TAG=staging
+	export IMAGE_TAG=prod
 endif
 
 # List of commands
@@ -42,8 +42,8 @@ build-prod:
 
 
 push: ghcr-login
-	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
-	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):www-staging
+	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):prod
+	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):www-prod
 	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
 	@docker push ghcr.io/$(GHCR_USERNAME)/$(IMAGE_NAME):latest
 
