@@ -13,24 +13,30 @@
 
 # --- Build Stage --- #
 
-FROM klakegg/hugo:latest AS build
+#FROM klakegg/hugo:latest AS build
+FROM homebrew/brew:latest AS build
 
 ARG ENV
 ARG SERVER_IP
 ARG DOMAIN_NAME
 ENV TZ=Asia/Shanghai
 
+RUN brew install hugo
+RUN hugo version
+
+USER root
+
 WORKDIR /app
 COPY web/ ./
+COPY ci/bootstrap.sh ./
 
 RUN echo "ENV=$ENV" > env
 RUN echo "SERVER_IP=$SERVER_IP" >> env
 RUN echo "DOMAIN_NAME=$DOMAIN_NAME" >> env
 RUN cat env
 
-COPY ci/bootstrap.sh ./
 RUN chmod +x bootstrap.sh && \
-    sh bootstrap.sh
+    ./bootstrap.sh
 
 RUN hugo
 
@@ -41,6 +47,8 @@ FROM nginx:stable-alpine
 COPY --from=build /app/public /usr/share/nginx/html
 
 RUN chmod -R 0777 /usr/share/nginx/html
+
+WORKDIR /usr/share/nginx/html
 
 EXPOSE 80
 

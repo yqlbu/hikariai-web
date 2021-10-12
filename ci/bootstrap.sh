@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/bash
 
 echo "Modifying baseURL ..."
 if [[ $ENV == "prod"  ]]; then

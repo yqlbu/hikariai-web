@@ -41,7 +41,7 @@ build-prod:
 	@docker tag $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
 
 
-push:
+push: ghcr-login
 	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
 	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):www-staging
 	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
