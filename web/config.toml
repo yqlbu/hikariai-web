@@ -92,7 +92,7 @@ color_primary="#5E498C"
 
 [params]
   logo="images/logo.png"
-  images="images/logo.png"
+  images=["images/logo.png"]
   logo_height="35px"
   favicon="images/favicon.png"
   description="Cloud Computing, Robotics, Edge AI, IoT, and more"
