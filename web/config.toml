@@ -92,6 +92,7 @@ color_primary="#5E498C"
 
 [params]
   logo="images/logo.png"
+  images="images/logo.png"
   logo_height="35px"
   favicon="images/favicon.png"
   description="Cloud Computing, Robotics, Edge AI, IoT, and more"
@@ -101,7 +102,6 @@ color_primary="#5E498C"
   mainSections=["blog"]
   copyright="Copy Right ©2019  🤍 Kevin Yu -- Theme made by Bookworm powered by Hugo"
   customCSS=["css/custom.css", "css/syntax.css"]
-
 
 # Preloader
 [params.preloader]
