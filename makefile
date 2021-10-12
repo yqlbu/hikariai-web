@@ -1,7 +1,9 @@
 # Makefile
 
 BUILD_DIR := ci/Dockerfile
-IMAGE_NAME := hikariai/hikariai-web
+DOCKERHUB_USERNAME := hikariai
+GHCR_USERNAME := yqlbu
+IMAGE_NAME := hikariai-web
 IMAGE_TAG := latest
 DOMAIN_NAME := hikariai.net
 ENV := prod
@@ -17,7 +19,7 @@ endif
 # List of commands
 build:
 	@docker build -f $(BUILD_DIR) \
-		-t $(IMAGE_NAME):$(IMAGE_TAG) \
+		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
 		--build-arg SERVER_IP=$(SERVER_IP) \
 		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
@@ -25,27 +27,32 @@ build:
 
 build-prod:
 	@docker build -f $(BUILD_DIR) \
-		-t $(IMAGE_NAME):$(IMAGE_TAG) \
+		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
 		--build-arg SERVER_IP=$(SERVER_IP) \
 		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
 		.
 	@docker build -f $(BUILD_DIR) \
-		-t $(IMAGE_NAME):www-$(IMAGE_TAG) \
+		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):www-$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
 		--build-arg SERVER_IP=$(SERVER_IP) \
 		--build-arg DOMAIN_NAME=www.$(DOMAIN_NAME) \
 		.
-	@docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest
+	@docker tag $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
 
 
 push:
-	@docker push $(IMAGE_NAME):staging
-	@docker push $(IMAGE_NAME):www-staging
-	@docker push $(IMAGE_NAME):latest
+	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
+	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):www-staging
+	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
+	@docker push ghcr.io/$(GHCR_USERNAME)/$(IMAGE_NAME):latest
+
+
+ghcr-login:
+	@echo $(GHCR_TOKEN) | docker login ghcr.io -u $(GHCR_USERNAME) --password-stdin
 
 local-run:
-	@docker run -d --name hugo-web -p 80:80 $(IMAGE_NAME):dev
+	@docker run -d --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
 
 prod-run:
-	@docker run -d --name hugo-web -p 80:80 $(IMAGE_NAME):latest
+	@docker run -d --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
