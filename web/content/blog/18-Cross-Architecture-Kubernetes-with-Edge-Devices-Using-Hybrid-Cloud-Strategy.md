@@ -1,6 +1,7 @@
 ---
 title: "Cross-Architecture Kubernetes with Edge Devices Using Hybrid Cloud Strategy"
 image: "images/post/post-18.jpg"
+socialImage: "/images/post/post-18.jpg"
 date: 2020-06-12
 author: "Kevin Yu"
 tags: ["Cloud", "Cloud Computing", "Jetson", "Kubernetes", "Cluster"]

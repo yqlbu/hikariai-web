@@ -1,6 +1,7 @@
 ---
 title: "TensorRT Object Detection (DetectNet + OpenCV)"
 image: "images/post/post-15.jpg"
+socialImage: "/images/post/post-15.jpg"
 date: 2020-05-20
 author: "Kevin Yu"
 tags: ["Edge AI", "Jetson", "Jetson-Inference", "Object Detection"]

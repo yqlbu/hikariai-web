@@ -1,6 +1,7 @@
 ---
 title: "Useful Linux Commands for AI Development Series #3 (Advanced)"
 image: "images/post/post-07.jpg"
+socialImage: "/images/post/post-07.jpg"
 date: 2020-04-27
 author: "Kevin Yu"
 tags: ["Linux", "Shell"]
@@ -8,7 +9,7 @@ categories: ["Linux"]
 draft: false
 ---
 
-This article is the last post in the Command Tutorial Series. In [ Series #1 (Basic) ](https:///blog/useful-linux-commands-for-ai-development-series-01-basic), we have walked through some useful commands for topics including File System Basics, File System Permission & Ownership, SSH (Remote Control), and Monitor System Loads (CPU, GPU, Memory). In [ Series #2 (Intermediate) ](https://hikariai.net/blog/useful-linux-commands-for-ai-development-series-02-intermediate/), we have walked through some useful commands for topics including Symbolic Links, Screen, Python pip installation and management, and Git Commands.
+This article is the last post in the Command Tutorial Series. In [ Series #1 (Basic) ](https://hikariai.net/blog/05-useful-linux-commands-for-ai-development-series-01-basic), we have walked through some useful commands for topics including File System Basics, File System Permission & Ownership, SSH (Remote Control), and Monitor System Loads (CPU, GPU, Memory). In [ Series #2 (Intermediate) ](https://hikariai.net/blog/06-useful-linux-commands-for-ai-development-series-02-intermediate/), we have walked through some useful commands for topics including Symbolic Links, Screen, Python pip installation and management, and Git Commands.
 
 In this article, we will talk through more topics such as Shell Script, ONNX-TensorRT Conversion, Anaconda 3, and CUDA Setup.
 

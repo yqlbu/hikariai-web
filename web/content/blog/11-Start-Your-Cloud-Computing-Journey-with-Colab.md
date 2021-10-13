@@ -1,6 +1,7 @@
 ---
 title: "Start Your Cloud Computing Journey with Colab"
 image: "images/post/post-11.jpg"
+socialImage: "/images/post/post-11.jpg"
 date: 2020-05-02
 author: "Kevin Yu"
 tags: ["Cloud", "Cloud Computing", "Deep Learning"]

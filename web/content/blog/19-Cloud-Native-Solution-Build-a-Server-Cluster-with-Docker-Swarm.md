@@ -1,6 +1,7 @@
 ---
 title: "Cloud-Native Solution: Build a Server Cluster with Docker Swarm"
 image: "images/post/post-19.jpg"
+socialImage: "/images/post/post-19.jpg"
 date: 2020-06-18
 author: "Kevin Yu"
 tags: ["Cloud", "Cloud Computing", "Docker", "Cluster", "Jetson"]

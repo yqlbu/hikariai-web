@@ -1,6 +1,7 @@
 ---
 title: "Useful Linux Commands for AI Development Series #2 (Intermediate)"
 image: "images/post/post-06.jpg"
+socialImage: "/images/post/post-06.jpg"
 date: 2020-04-26
 author: "Kevin Yu"
 tags: ["Linux", "Shell"]
@@ -8,7 +9,7 @@ categories: ["Linux"]
 draft: false
 ---
 
-In [ Series #1 (Basic) ](https://hikariai.net/blog/useful-linux-commands-for-ai-development-series-01-basic/), we have walked through some useful commands for topics such as File System Basics, File System Permission & Ownership, SSH (Remote Control), and Monitor System Loads (CPU, GPU, Memory). Let’s walk through more in this article.
+In [ Series #1 (Basic) ](https://hikariai.net/blog/05-useful-linux-commands-for-ai-development-series-01-basic/), we have walked through some useful commands for topics such as File System Basics, File System Permission & Ownership, SSH (Remote Control), and Monitor System Loads (CPU, GPU, Memory). Let’s walk through more in this article.
 
 {{< toc >}}
 
@@ -182,6 +183,6 @@ $ git pull
 
 ---
 
-If you have already walked through all the commands above, let’s move forward to the advanced commands tutorial at [ Series #3 (Advanced) ](https://hikariai.net/blog/useful-linux-commands-for-ai-development-series-03-advanced/). Happy Coding !
+If you have already walked through all the commands above, let’s move forward to the advanced commands tutorial at [ Series #3 (Advanced) ](https://hikariai.net/blog/06-useful-linux-commands-for-ai-development-series-03-advanced/). Happy Coding !
 
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Face Recognition API on the Jetson"
 image: "images/post/post-16.jpg"
+socialImage: "/images/post/post-16.jpg"
 date: 2020-05-25
 author: "Kevin Yu"
 tags: ["Edge AI", "Jetson", "IoT", "Object Recognition", "Face Recognition"]

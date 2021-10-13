@@ -1,6 +1,7 @@
 ---
 title: "Cloud-Native Edge Computing Signals a New Era of Digital Transformation"
 image: "images/post/post-20.jpg"
+socialImage: "/images/post/post-20.jpg"
 date: 2020-06-23
 author: "Kevin Yu"
 tags: ["Cloud", "Cloud Computing", "Digital Transformation", "Cloud Native"]

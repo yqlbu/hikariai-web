@@ -1,6 +1,7 @@
 ---
 title: "Containerized Microservices Cloud CI/CD Pipeline Automation with Jenkins, Helm, Keel, and Kubernetes"
 image: "images/post/post-21.jpg"
+socialImage: "/images/post/post-21.jpg"
 date: 2020-12-30
 author: "Kevin Yu"
 tags:

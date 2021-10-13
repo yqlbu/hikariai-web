@@ -1,6 +1,7 @@
 ---
 title: "Run YOLOv3 Object Detection On Your Edge Device"
 image: "images/post/post-09.jpg"
+socialImage: "/images/post/post-09.jpg"
 date: 2020-04-30
 author: "Kevin Yu"
 tags: ["Edge AI", "YOLO"]

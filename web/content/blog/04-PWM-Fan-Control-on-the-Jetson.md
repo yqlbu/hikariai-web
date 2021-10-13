@@ -1,6 +1,7 @@
 ---
-title: "Jetson Software Setup"
+title: "PWM Fan Control on the Jetson"
 image: "images/post/post-04.jpg"
+socialImage: "/images/post/post-04.jpg"
 date: 2020-04-21
 author: "Kevin Yu"
 tags: ["Edge AI", "Jetson"]

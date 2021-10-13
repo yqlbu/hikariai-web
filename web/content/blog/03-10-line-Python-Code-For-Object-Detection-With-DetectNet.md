@@ -1,6 +1,7 @@
 ---
 title: "10-line Python Code for Object Detection with DetectNet"
 image: "images/post/post-03.jpg"
+socialImage: "/images/post/post-03.jpg"
 date: 2020-04-21
 author: "Kevin Yu"
 tags: ["Edge AI", "Jetson"]

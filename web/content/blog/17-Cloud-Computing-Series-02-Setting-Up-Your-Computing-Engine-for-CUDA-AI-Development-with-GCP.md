@@ -1,6 +1,7 @@
 ---
 title: "Cloud Computing Series #2 — Setting Up Your Computing Engine for CUDA AI Development with GCP"
 image: "images/post/post-17.jpg"
+socialImage: "/images/post/post-17.jpg"
 date: 2020-05-30
 author: "Kevin Yu"
 tags: ["Cloud", "Cloud Computing", "GCP", "Machine Learning"]

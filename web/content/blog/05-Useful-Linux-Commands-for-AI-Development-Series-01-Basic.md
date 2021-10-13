@@ -1,6 +1,7 @@
 ---
 title: "Useful Linux Commands for AI Development Series #1 (Basic)"
 image: "images/post/post-05.jpg"
+socialImage: "/images/post/post-05.jpg"
 date: 2020-04-25
 author: "Kevin Yu"
 tags: ["Linux", "Shell"]

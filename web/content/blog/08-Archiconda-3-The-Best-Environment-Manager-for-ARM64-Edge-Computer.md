@@ -1,6 +1,7 @@
 ---
 title: "Archiconda 3 — The Best Environment Manager for ARM64 Edge Computer"
 image: "images/post/post-08.jpg"
+socialImage: "/images/post/post-08.jpg"
 date: 2020-04-28
 author: "Kevin Yu"
 tags: ["Edge AI", "Software"]

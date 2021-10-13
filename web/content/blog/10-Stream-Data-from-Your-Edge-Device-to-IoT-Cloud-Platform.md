@@ -2,6 +2,7 @@
 title: "Stream Data from your Edge Device to IoT Cloud Platform
 "
 image: "images/post/post-10.jpg"
+socialImage: "/images/post/post-10.jpg"
 date: 2020-05-01
 author: "Kevin Yu"
 tags: ["IoT", "Jetson", "IoT Cloud Platform"]

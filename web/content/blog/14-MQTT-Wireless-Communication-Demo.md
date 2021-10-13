@@ -1,6 +1,7 @@
 ---
 title: "MQTT — Wireless Communication Demo"
 image: "images/post/post-14.jpg"
+socialImage: "/images/post/post-14.jpg"
 date: 2020-05-13
 author: "Kevin Yu"
 tags: ["IoT", "MQTT", "Software", "Jetson", "Raspberry Pi"]

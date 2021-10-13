@@ -1,6 +1,7 @@
 ---
 title: "Cloud Computing Series #1 — Train Yolov3 Custom Object Detection Model with Colab"
 image: "images/post/post-12.jpg"
+socialImage: "/images/post/post-12.jpg"
 date: 2020-05-10
 author: "Kevin Yu"
 tags: ["Cloud", "Cloud Computing", "Deep Learning"]

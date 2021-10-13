@@ -1,6 +1,7 @@
 ---
 title: "Wireless Communication Between Edge Devices Via MQTT Broker/Client"
 image: "images/post/post-13.jpg"
+socialImage: "/images/post/post-13.jpg"
 date: 2020-05-12
 author: "Kevin Yu"
 tags: ["IoT", "MQTT", "Software"]

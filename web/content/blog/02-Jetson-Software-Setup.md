@@ -1,6 +1,7 @@
 ---
 title: "Jetson Software Setup"
 image: "images/post/post-02.jpg"
+socialImage: "/images/post/post-02.jpg"
 date: 2020-04-20
 author: "Kevin Yu"
 tags: ["Edge AI", "Jetson"]

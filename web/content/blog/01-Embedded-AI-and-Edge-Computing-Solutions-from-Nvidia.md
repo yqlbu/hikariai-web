@@ -1,6 +1,7 @@
 ---
 title: "Embedded AI and Edge Computing Solutions from Nvidia"
 image: "images/post/post-01.jpg"
+socialImage: "/images/post/post-01.jpg"
 date: 2020-04-19
 author: "Kevin Yu"
 tags: ["Edge AI", "Jetson"]
