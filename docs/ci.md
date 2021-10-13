@@ -8,7 +8,7 @@ By default, this repo is manged by two seperate fully self-automated pipeline ma
 
 You may find the integration [HERE](https://github.com/yqlbu/vsphere-hub/tree/master/cicd/tekton-builds/projects/hikariai-web)
 
-![]
+![](https://github.com/yqlbu/hikariai-web/blob/master/screenshots/tekton-demo.png?raw=true)
 
 ## Continuous Deployment
 
@@ -16,7 +16,7 @@ The release of this repository is purely in a `container` form that follows the 
 
 You may find the integration [HERE](https://github.com/yqlbu/vsphere-hub/tree/master/cicd/hikariai-web)
 
-![]
+![](https://github.com/yqlbu/hikariai-web/blob/master/screenshots/argocd-demo.png?raw=true)
 
 ## Tagging mechanism
 
@@ -59,10 +59,6 @@ It will push the image with tags `latest`, `stating`, `www-staging` to `Docker H
 ```bash
 make push
 ```
-
-## Tekton CI Setup
-
-coming soon
 
 ## Reference
 
