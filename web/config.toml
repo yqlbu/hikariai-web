@@ -93,8 +93,7 @@ color_primary="#5E498C"
 [params]
   logo="images/logo.png"
   images=["images/logo.png"]
-  twitterUsername = "@lucaslongggg"
-  socialImage = "images/logo.png"
+  socialImage = "/images/logo.png"
   logo_height="55px"
   favicon="images/favicon.png"
   description="Cloud Computing, Robotics, Edge AI, IoT, and more"
