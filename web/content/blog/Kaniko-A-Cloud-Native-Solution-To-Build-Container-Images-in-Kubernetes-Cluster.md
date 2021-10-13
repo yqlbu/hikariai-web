@@ -2,7 +2,7 @@
 title: "Kaniko: A Cloud-Native solution to build container images in Kubernetes Cluster"
 description: "Build container images in Kubernetes Cluster"
 image: "images/post/post-22.jpg"
-socialImage: "images/post/post-22.jpg"
+socialImage: "/images/post/post-22.jpg"
 date: 2021-04-06
 author: "Kevin Yu"
 tags:
