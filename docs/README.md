@@ -234,8 +234,6 @@ Now your site will load these custom files in addition to all the other files ne
 
 <details><summary>Add Social Media Metadata</summary>
 
-</br>
-
 ### Intro
 
 By default, the sites generated from `Hugo` do not support the `social-metadata` adds-on. You will have to manually add it. Thanks to the [hugo-social-metadata](https://github.com/msfjarvis/hugo-social-metadata) repo, it gives us some guidances on how to enable the feature in an easy way.
@@ -305,7 +303,13 @@ By default, the sites generated from `Hugo` do not support the `social-metadata`
 {{ end }}
 ```
 
-2. Include the `social_metadata.html` partial in your `head.html` under `layouts/partials` like so: `{{ partial "social_metadata.html" . }}.`, this will enable the `social-metadata` feature.
+2. Include the `social_metadata.html` partial in your `head.html` under `layouts/partials` like so:
+
+```html
+{{ partial "social_metadata.html" . }}.
+```
+
+this will enable the `social-metadata` feature.
 
 ### Customize your page with metadata
 
