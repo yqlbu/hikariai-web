@@ -43,7 +43,6 @@ build-prod:
 
 push: ghcr-login
 	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
-	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):www-staging
 	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
 	@docker push ghcr.io/$(GHCR_USERNAME)/$(IMAGE_NAME):latest
 
@@ -54,5 +53,5 @@ ghcr-login:
 local-run:
 	@docker run -it --rm --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
 
-prod-run:
+staging-run:
 	@docker run -d --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
