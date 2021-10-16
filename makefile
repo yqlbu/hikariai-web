@@ -5,7 +5,7 @@ DOCKERHUB_USERNAME := hikariai
 GHCR_USERNAME := yqlbu
 IMAGE_NAME := hikariai-web
 IMAGE_TAG := latest
-DOMAIN_NAME := hikariai.net
+DOMAIN_NAME := www.hikariai.net
 ENV := prod
 SERVER_IP := 10.10.10.50
 
@@ -25,6 +25,15 @@ build:
 		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
 		.
 
+build-staging:
+	@docker build -f $(BUILD_DIR) \
+		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
+		--build-arg ENV=$(ENV) \
+		--build-arg SERVER_IP=$(SERVER_IP) \
+		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
+		.
+	@docker tag $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
+
 build-prod:
 	@docker build -f $(BUILD_DIR) \
 		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
@@ -32,23 +41,18 @@ build-prod:
 		--build-arg SERVER_IP=$(SERVER_IP) \
 		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
 		.
-	@docker build -f $(BUILD_DIR) \
-		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):www-$(IMAGE_TAG) \
-		--build-arg ENV=$(ENV) \
-		--build-arg SERVER_IP=$(SERVER_IP) \
-		--build-arg DOMAIN_NAME=www.$(DOMAIN_NAME) \
-		.
-	@docker tag $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
+	@docker tag $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):prod
 
+ghcr-login:
+	@echo $(GHCR_TOKEN) | docker login ghcr.io -u $(GHCR_USERNAME) --password-stdin
 
 push: ghcr-login
 	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
 	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
 	@docker push ghcr.io/$(GHCR_USERNAME)/$(IMAGE_NAME):latest
 
-
-ghcr-login:
-	@echo $(GHCR_TOKEN) | docker login ghcr.io -u $(GHCR_USERNAME) --password-stdin
+push-prod:
+	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):prod
 
 local-run:
 	@docker run -it --rm --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
