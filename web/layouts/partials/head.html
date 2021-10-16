@@ -32,6 +32,10 @@
   {{ partial "social_metadata.html" . }}
 
   <!-- Google Analytices -->
-  {{ template "_internal/google_analytics.html" . }}
-  {{ template "_internal/google_analytics_async.html" . }}
+  {{ if .Site.Params.GoogleAnalyticsID }}
+  {{ partial "analytics-gtag.html" . }}
+  {{ end }}
+  <!-- {{ template "_internal/google_analytics.html" . }} -->
+  <!-- {{ template "_internal/google_analytics_async.html" . }} -->
+  
 </head>
