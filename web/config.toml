@@ -1,5 +1,5 @@
 ######################## default configuration ####################
-baseURL=""
+baseURL="/"
 title="Hikari AI - Cloud Computing, Robotics, Edge AI, IoT, and more"
 theme="bookworm-light"
 # post pagination
