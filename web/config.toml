@@ -248,3 +248,7 @@ url="https://t.me/hikariai_channel"
 [[params.social]]
 icon="lab la-linkedin-in" # https://icons8.com/line-awesome
 url="https://www.linkedin.com/in/chinglong-kevin-yu"
+
+[[params.social]]
+icon="las la-rss" # https://icons8.com/line-awesome
+url="https://www.hikariai.net/index.xml"
