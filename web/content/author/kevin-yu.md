@@ -15,6 +15,8 @@ social:
     icon: "lab la-telegram"
   - link: "https://www.linkedin.com/in/chinglong-kevin-yu"
     icon: "lab la-linkedin-in"
+  - link: "https://www.hikariai.net/index.xml"
+    icon: "las la-rss"
 ---
 
 In the upcoming months and years, I want to help make learning Machine Learning and Cloud Technology topics easier by writing lots of articles showing of practice cases on Cloud and Edge devices.
