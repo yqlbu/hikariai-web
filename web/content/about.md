@@ -26,6 +26,9 @@ social:
     - link: "https://www.linkedin.com/in/chinglong-kevin-yu"
       icon: "lab la-linkedin-in"
 
+    - link: "https://www.hikariai.net/index.xml"
+      icon: "las la-rss"
+
 what_i_do:
   title: "What I Like"
   enable: true
