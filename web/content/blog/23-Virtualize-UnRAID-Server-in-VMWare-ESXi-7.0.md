@@ -183,6 +183,10 @@ Press the `Up and Down` arrow key on your keyboard to toggle the `boot option`, 
 
 ![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-boot_vm.png)
 
+Demo
+
+![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-demo.png)
+
 ---
 
 ### Install VMware Tools
