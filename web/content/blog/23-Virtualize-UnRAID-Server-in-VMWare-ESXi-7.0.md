@@ -183,10 +183,6 @@ Press the `Up and Down` arrow key on your keyboard to toggle the `boot option`, 
 
 ![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-boot_vm.png)
 
-Demo
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-demo.png)
-
 ---
 
 ### Install VMware Tools
@@ -204,6 +200,12 @@ After unRAID is up and running you should install `VMware Tools`.
 ![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-vmware_esxi_7.0_unraid_vm_opnvmtools_app_installed.png)
 
 That’s it, the `Virtualized unRAID Server` is now fully functional just as a physical machine.
+
+---
+
+### Demo
+
+![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-demo.png)
 
 ---
 
