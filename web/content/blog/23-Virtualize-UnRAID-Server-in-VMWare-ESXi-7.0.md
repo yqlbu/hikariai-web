@@ -9,9 +9,9 @@ categories: ["Virtualization"]
 draft: false
 ---
 
-After some intensive research and consideration, I found out that virtualizing unRIAD Server in [ VMWare ESXi 7.0 ](https://customerconnect.vmware.com/en/web/vmware/evalcenter?p=free-esxi7&src=vmw_so_vex_dbori_1255) seems like a possibility. Due to the fact that the licensing model Lime Technology is using this is NOT `straight-forward`. UnRAID require to be installed on a `USB-flash` drive with a `GUID`. Not very virtualisation-friendly in other words.
+After some intensive research and consideration, I found out that virtualizing unRIAD Server in [ VMWare ESXi 7.0 ](https://customerconnect.vmware.com/en/web/vmware/evalcenter?p=free-esxi7&src=vmw_so_vex_dbori_1255) seems like a possibility. Due to the fact that the licensing model Lime Technology is using this is NOT `straightforward`. UnRAID require to be installed on a `USB Flash` drive with a `GUID`. Not very virtualization-friendly in other words.
 
-Luckily in VMware ESXi 7.0 there is possible to boot VMs directly from a USB drive (It has earlier just bean possible trough third-party tools like [ Plop Boot Manager ](https://www.plop.at/en/bootmanager/full.html))
+Luckily in VMware ESXi 7.0, there is possible to boot VMs directly from a USB drive (It has earlier just been possible through third-party tools like [ Plop Boot Manager ](https://www.plop.at/en/bootmanager/full.html))
 
 **Refrence:**
 
@@ -205,6 +205,6 @@ That’s it, the `Virtualized unRAID Server` is now fully functional just as a p
 
 ### Conclusion
 
-To sum up, unRAID on ESXi 7.0 is confirmed working like a charm. If you need any further trouble shooting help, visit https://forums.unraid.net/topic/90886-unraid-on-esxi-70-confimed-working/. `unRAID` is a very `powerful community` where you may find lots of people who might meet the same problem as you do, so be sure to leverage the community forum to help you build fundamental knowledges about unRAID as you go.
+To sum up, unRAID on ESXi 7.0 is confirmed working like a charm. If you need any further troubleshooting help, visit https://forums.unraid.net/topic/90886-unraid-on-esxi-70-confimed-working/. unRAID is a very versatile community where you may find lots of people who might meet the same problem as you do, so be sure to leverage the community forum to help you build fundamental knowledge about unRAID as you go.
 
 ---
