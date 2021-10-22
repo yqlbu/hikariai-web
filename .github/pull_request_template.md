@@ -8,10 +8,10 @@ _Add more context to describe the changes_
 
 ### Details
 
-- [ ]detials#
+- [ ] some project details
 
 ### References
 
 ### Checks
 
-- [ ]Tested changes in `staging` environment
+- [ ] Already tested changes in `staging` environment
