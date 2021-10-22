@@ -336,3 +336,5 @@ hugo server -D --bind <server ip address> --baseURL http://<server ip address>
 ### Rerences
 
 - [Hugo Official Docs](https://gohugo.io/documentation/)
+
+some changes
