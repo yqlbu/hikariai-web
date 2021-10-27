@@ -9,9 +9,9 @@ categories: ["Virtualization"]
 draft: false
 ---
 
-After some intensive research and consideration, I found out that virtualizing unRIAD Server in [ VMWare ESXi 7.0 ](https://customerconnect.vmware.com/en/web/vmware/evalcenter?p=free-esxi7&src=vmw_so_vex_dbori_1255) seems like a possibility. Due to the fact that the licensing model Lime Technology uses is NOT `straightforward`. UnRAID require to be installed on a `USB Flash` drive with a `GUID`. Not very virtualization-friendly in other words.
+After some intensive research and consideration, I found out that virtualizing unRIAD Server in [ VMWare ESXi 7.0 ](https://customerconnect.vmware.com/en/web/vmware/evalcenter?p=free-esxi7&src=vmw_so_vex_dbori_1255) seems like a possibility. Due to the fact that the licensing model Lime Technology uses is NOT `straightforward`. UnRAID requires to be installed on a `USB Flash` drive with a `GUID`. Not very virtualization-friendly in other words.
 
-Luckily in VMware ESXi 7.0, there is possible to boot VMs directly from a USB drive (It has earlier just been possible through third-party tools like [ Plop Boot Manager ](https://www.plop.at/en/bootmanager/full.html))
+Luckily in VMware ESXi 7.0, it is possible to boot VMs directly from a USB drive (It has earlier just been possible through third-party tools like [ Plop Boot Manager ](https://www.plop.at/en/bootmanager/full.html))
 
 **Refrence:**
 
