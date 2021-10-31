@@ -29,7 +29,7 @@ build:
 		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
 		.
 
-build-prod: build
+build-prod:
 	@docker build -f $(BUILD_DIR) \
 		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):prod \
 		--build-arg ENV=prod \
