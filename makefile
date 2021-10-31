@@ -5,7 +5,7 @@ DOCKERHUB_USERNAME := hikariai
 GHCR_USERNAME := yqlbu
 IMAGE_NAME := hikariai-web
 IMAGE_TAG := latest
-DOMAIN_NAME := www.hikariai.net
+DOMAIN_NAME := hikariai.net
 ENV := prod
 SERVER_IP := 10.10.10.50
 
@@ -30,7 +30,7 @@ build-staging:
 		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
 		--build-arg SERVER_IP=$(SERVER_IP) \
-		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
+		--build-arg DOMAIN_NAME=staging.$(DOMAIN_NAME) \
 		.
 	@docker tag $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
 
@@ -39,7 +39,7 @@ build-prod:
 		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
 		--build-arg SERVER_IP=$(SERVER_IP) \
-		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
+		--build-arg DOMAIN_NAME=www.$(DOMAIN_NAME) \
 		.
 	@docker tag $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):prod
 
