@@ -44,7 +44,6 @@ mark {
 
   &-sm {
     padding: 90px 0;
-    padding-top: 30px;
   }
 }
 
@@ -665,29 +664,6 @@ footer {
       text-decoration: underline;
     }
   }
-}
-.web-stats {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-bottom: 60px;
-  font-size: 20px;
-  color: rgba($white, .7);
-}
-.web-stats-col {
-  display: flex;
-  flex-direction: column;
-}
-.web-stats-col > span:first-of-type {
-  margin-bottom: 10px;
-}
-.web-stats-col > span > i{
-  margin-right: 5px;
-}
-.web-stats-col:first-of-type {
-  margin-right: 100px;
 }
 .copyright-text {
   color: rgba($white, .7);
