@@ -56,6 +56,3 @@ push-prod:
 
 local-run:
 	@docker run -it --rm --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
-
-staging-run:
-	@docker run -d --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):latest
