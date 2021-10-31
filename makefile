@@ -29,13 +29,6 @@ build:
 		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
 		.
 
-build-prod:
-	@docker build -f $(BUILD_DIR) \
-		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):prod \
-		--build-arg ENV=prod \
-		--build-arg DOMAIN_NAME=www.$(DOMAIN_NAME) \
-		.
-
 ghcr-login:
 	@echo $(GHCR_TOKEN) | docker login ghcr.io -u $(GHCR_USERNAME) --password-stdin
 
