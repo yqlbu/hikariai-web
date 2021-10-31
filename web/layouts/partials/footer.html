@@ -22,17 +22,29 @@
         {{ end }}
       </div>
       <div class="col-lg-12 text-center mt-5">
-        <ul class="list-inline footer-menu mb-4">
-          {{ range site.Menus.footer }}
-          <li class="list-inline-item mx-3"><a href="{{.URL | absURL}}">{{.Name}}</a></li>
-          {{ end }}
-        </ul>
+        <div class="web-stats">
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+          <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+          <div class="web-stats-col">
+            <span><i class="fa fa-user"></i> Total Visitors</span>
+            <span id="busuanzi_value_site_uv"></span>
+          </div>
+          <div class="web-stats-col">
+            <span><i class="fa fa-eye"></i> Total Views</span>
+            <span id="busuanzi_value_site_pv"></span>
+          </div>
+        </div>
         <ul class="social-links icon-box list-unstyled list-inline font-weight-500 mb-3">
           {{range site.Params.social}}
           <li class="list-inline-item text-center"><a href="{{.url}}" aria-label="social-icon">
             <i class="lab {{.icon}}"></i>
           </a></li>
           {{end}}
+        </ul>
+        <ul class="list-inline footer-menu mb-4">
+          {{ range site.Menus.footer }}
+          <li class="list-inline-item mx-3"><a href="{{.URL | absURL}}">{{.Name}}</a></li>
+          {{ end }}
         </ul>
         {{ with site.Params.copyright }}
         <p class="mb-0 font-weight-500 copyright-text content">{{.| markdownify}}</p>
