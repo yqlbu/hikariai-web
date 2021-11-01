@@ -103,7 +103,6 @@ color_primary="#5E498C"
   mainSections=["blog"]
   copyright="Copy Right ©2019-2021  🤍 Kevin Yu - powered by Hugo, hosted on Kubernetes"
   customCSS=["css/custom.css", "css/syntax.css"]
-  page_view_counter=true
 
 # Preloader
 [params.preloader]

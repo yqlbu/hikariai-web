@@ -87,6 +87,7 @@ mark {
     padding: 0;
     @extend .rounded;
   }
+  padding-bottom: 30px;
 }
 
 
@@ -665,6 +666,7 @@ footer {
       text-decoration: underline;
     }
   }
+  padding-bottom: 20px;
 }
 .web-stats {
   display: flex;
