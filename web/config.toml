@@ -101,7 +101,7 @@ color_primary="#5E498C"
   contact_form_action="#" # contact form works with https://formspree.io
   search=true
   mainSections=["blog"]
-  copyright="Copy Right ©2019  🤍 Kevin Yu -- Theme made by Bookworm powered by Hugo"
+  copyright="Copy Right ©2019-2021  🤍 Kevin Yu - powered by Hugo, hosted on Kubernetes"
   customCSS=["css/custom.css", "css/syntax.css"]
   page_view_counter=true
 
