@@ -28,6 +28,13 @@
             <li class="list-inline-item">
               <span>{{.PublishDate.Format "02 January 2006"}}</span>
             </li>
+            {{ if .Site.Params.page_view_conter  }}
+            <li class="list-inline-item">
+              <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+              {{ partial "page_view_counter.html" .  }}
+                    阅读 </span></span>|<span class="post-date">共{{ .WordCount  }}字</span>，阅读约<span class="more-meta"> {{ .ReadingTime  }} 分钟</span>
+            </li>
+            {{ end  }}
           </ul>
         </div>
 
