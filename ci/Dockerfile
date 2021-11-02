@@ -13,14 +13,16 @@
 
 # --- Build Stage --- #
 
-FROM homebrew/brew:latest AS build
+#FROM homebrew/brew:latest AS build
+FROM alpine:latest as build
 
 ARG ENV
 ARG SERVER_IP
 ARG DOMAIN_NAME
 ENV TZ=Asia/Shanghai
 
-RUN brew install hugo
+#RUN brew install hugo
+RUN apk add hugo
 RUN hugo version
 
 USER root
@@ -34,8 +36,7 @@ RUN echo "SERVER_IP=$SERVER_IP" >> env
 RUN echo "DOMAIN_NAME=$DOMAIN_NAME" >> env
 RUN cat env
 
-RUN chmod +x bootstrap.sh && \
-    ./bootstrap.sh
+RUN chmod +x ./bootstrap.sh && sh bootstrap.sh
 
 RUN hugo
 
