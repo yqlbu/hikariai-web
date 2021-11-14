@@ -2,7 +2,7 @@
 title: "Kevin Yu"
 image: "images/author/kevin-yu.jpg"
 email: "kevinyu211@yahoo.com"
-date: 2021-01-26T10:14:19+06:00
+date: 2020-05-26T10:14:19+06:00
 draft: false
 social:
   - link: "https://link.hikariai.net/"
