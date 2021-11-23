@@ -1,19 +1,18 @@
-# _     _ _              _       _              _
-#| |__ (_) | ____ _ _ __(_) __ _(_)  _ __   ___| |_
-#| '_ \| | |/ / _` | '__| |/ _` | | | '_ \ / _ \ __|
-#| | | | |   < (_| | |  | | (_| | |_| | | |  __/ |_
-#|_| |_|_|_|\_\__,_|_|  |_|\__,_|_(_)_| |_|\___|\__|
+#  _     _ _              _       _              _
+# | |__ (_) | ____ _ _ __(_) __ _(_)  _ __   ___| |_
+# | '_ \| | |/ / _` | '__| |/ _` | | | '_ \ / _ \ __|
+# | | | | |   < (_| | |  | | (_| | |_| | | |  __/ |_
+# |_| |_|_|_|\_\__,_|_|  |_|\__,_|_(_)_| |_|\___|\__|
 
-# https://github.com/yqlbu/hikariai-web
+#  https://github.com/yqlbu/hikariai-web
 #
-# Copyright (C) 2021 yqlbu <https://hikariai.net>
+#  Copyright (C) 2021 yqlbu <https://hikariai.net>
 #
-# This is a self-hosted software, liscensed under the MIT License.
-# See /License for more information.
+#  This is a self-hosted software, liscensed under the MIT License.
+#  See /License for more information.
 
-# --- Build Stage --- #
+#  --- Build Stage --- #
 
-#FROM homebrew/brew:latest AS build
 FROM alpine:latest as build
 
 ARG ENV
@@ -21,7 +20,6 @@ ARG SERVER_IP
 ARG DOMAIN_NAME
 ENV TZ=Asia/Shanghai
 
-#RUN brew install hugo
 RUN apk add hugo
 RUN hugo version
 
