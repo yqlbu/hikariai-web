@@ -33,16 +33,16 @@ what_i_do:
   title: "What I Like"
   enable: true
   item:
-    - title: "Develop Software"
+    - title: "Kubernetes & CloudNative"
       icon: "las la-cubes"
       description: ""
 
-    - title: "Active Learning"
-      icon: "lab la-readme"
+    - title: "Learning Technology"
+      icon: "las la-book-open"
       description: ""
 
-    - title: "Build Keyboard"
-      icon: "las la-keyboard"
+    - title: "Homelab Server Racks"
+      icon: "las la-server"
       description: ""
 ---
 
