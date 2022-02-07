@@ -22,7 +22,7 @@ endif
 
 # List of commands
 build:
-	@docker build -f $(BUILD_DIR) \
+	@sudo buildah bud -f $(BUILD_DIR) \
 		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
 		--build-arg SERVER_IP=$(SERVER_IP) \
@@ -30,14 +30,14 @@ build:
 		.
 
 ghcr-login:
-	@echo $(GHCR_TOKEN) | docker login ghcr.io -u $(GHCR_USERNAME) --password-stdin
+	@echo $(GHCR_TOKEN) | sudo nerdctl login ghcr.io -u $(GHCR_USERNAME) --password-stdin
 
 push: ghcr-login
-	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
-	@docker push ghcr.io/$(GHCR_USERNAME)/$(IMAGE_NAME):latest
+	@sudo nerdctl push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
+	@sudo nerdctl push ghcr.io/$(GHCR_USERNAME)/$(IMAGE_NAME):latest
 
 push-prod:
-	@docker push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):prod
+	@sudo nerdctl push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):prod
 
 local-run:
-	@docker run -it --rm --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
+	@sudo nerdctl run -it --rm --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
