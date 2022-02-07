@@ -13,7 +13,7 @@
 
 #  --- Build Stage --- #
 
-FROM alpine:latest as build
+FROM docker.io/library/alpine:latest as build
 
 ARG ENV
 ARG SERVER_IP
@@ -40,7 +40,7 @@ RUN hugo
 
 # --- Deployment Stage --- #
 
-FROM nginx:stable-alpine
+FROM docker.io/library/nginx:stable-alpine
 
 COPY --from=build /app/public /usr/share/nginx/html
 
