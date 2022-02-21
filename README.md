@@ -15,7 +15,7 @@
         <img src="https://img.shields.io/badge/docker-v20.10.7-blue" alt="Version">
     </a>
     <a href="https://github.com/yqlbu/hikariai-web">
-        <img src="https://img.shields.io/badge/kubernetes-v1.22-navy.svg" alt="Kubernetes"/>
+        <img src="https://img.shields.io/badge/kubernetes-v1.23-navy.svg" alt="Kubernetes"/>
     </a>
     <a href="https://github.com/yqlbu/hikariai-web">
         <img src="https://img.shields.io/github/last-commit/yqlbu/hikariai-web" alt="lastcommit"/>
