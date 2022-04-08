@@ -2,6 +2,7 @@
 
 BUILD_DIR := ci/Dockerfile
 DOCKERHUB_USERNAME := hikariai
+REGISTRY := docker.io
 GHCR_USERNAME := yqlbu
 IMAGE_NAME := hikariai-web
 IMAGE_TAG := dev
@@ -22,7 +23,7 @@ endif
 
 # List of commands
 build:
-	@sudo buildah bud -f $(BUILD_DIR) \
+	@buildah bud -f $(BUILD_DIR) \
 		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
 		--build-arg SERVER_IP=$(SERVER_IP) \
@@ -33,11 +34,12 @@ ghcr-login:
 	@echo $(GHCR_TOKEN) | sudo nerdctl login ghcr.io -u $(GHCR_USERNAME) --password-stdin
 
 push: ghcr-login
-	@sudo nerdctl push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
-	@sudo nerdctl push ghcr.io/$(GHCR_USERNAME)/$(IMAGE_NAME):latest
+	@nerdctl push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
+	@nerdctl push ghcr.io/$(GHCR_USERNAME)/$(IMAGE_NAME):latest
 
 push-prod:
-	@sudo nerdctl push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):prod
+	@buildah push $(IMAGE_NAME):$(IMAGE_TAG) \
+    docker://$(REGISTRY)/$(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG)
 
 local-run:
-	@sudo nerdctl run -it --rm --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
+	@nerdctl run -it --rm --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
