@@ -254,11 +254,12 @@ a.post-title:hover,
   }
 
   a {
-    color: $gray;
+    // color: $gray;
+    color: #8159d9;
     border-bottom: 1px dotted $color-primary;
 
     &:hover {
-      color: $color-primary;
+      color: #483b59;
     }
   }
   a.collapse-head {
