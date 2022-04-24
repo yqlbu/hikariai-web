@@ -17,9 +17,17 @@ However, creating and managing these templates can become a challenge with how t
 
 ## Refrence
 
-- [Packer - Pipeline Builds](https://www.packer.io/guides/packer-on-cicd/pipelineing-builds)
+- \- [Packer - Pipeline Builds](https://www.packer.io/guides/packer-on-cicd/pipelineing-builds)
+- \- [Packer - Ansible Local Provisioner](https://www.packer.io/plugins/provisioners/ansible/ansible-local)
+- \- [Packer - Promox Builder](https://www.packer.io/plugins/builders/proxmox/iso)
 
 {{< toc >}}
+
+---
+
+## Source Code
+
+https://github.com/TechProber/cloud-estate/tree/master/packer-templates
 
 ---
 
@@ -28,7 +36,7 @@ However, creating and managing these templates can become a challenge with how t
 - \- A server already has `Proxmox VE` installed, I am currently running `Proxmox VE 7.0.12`
 - \- A cup of coffee
 
-#### Software Requirement
+### Software Requirement
 
 Install `Packer` locally in your local machine
 
@@ -104,187 +112,192 @@ $ pveum aclmod / -user packer@pve -role Packer
 
 ---
 
-### Install unRAID on USB-Flash Drive
+## Prepare your packer template
 
-#### Download unRAID USB Flash Creator
+To create the template we will use the [ proxmox builder ](https://packer.io/docs/builders/proxmox.html) which connects through the proxmox `web API` to provision and configure the VM for us and then turn it into a template. To configure our template we will use a [variables file](https://github.com/TechProber/cloud-estate/blob/packer-templates/packer-templates/example.vars.json), to import this variables file we will use the `-var-file` flag to pass in our variables to packer. These variables will be used in our template file with the following syntax within a string like so `passwd/username={{ user 'ssh_username'}}`.
 
-Download the Latest USB Flash Creator from [ UNRAID Official Website ](https://unraid.net/), and then go through the installation guide.
+The builder block below will outline the basic properties of our desired proxmox template such as its name, the allocated resources and the devices attached to the VM. To achieve this the [ boot_command ](https://packer.io/docs/builders/qemu.html#boot-configuration) option will be used to boot the OS and tell it to look for the `http/user-data` file to automate the OS installation process. Packer will start a HTTP server from the content of the `http` directory (with the `http_directory` parameter). This will allow `Subiquity` to fetch the cloud-init files remotely.
+
+**Notes:** The live installer `Subiquity` uses more memory than debian-installer. The default value from Packer (512M) is not enough and will lead to weird kernel panic. Use `1G` as a minimum.
+
+The `boot_command` tells cloud-init to start and uses the `nocloud-net` data source to be able to load the `user-data` and `meta-data` files from a remote HTTP endpoint. The additional `autoinstall` parameter will force Subiquity to perform destructive actions without asking confirmation from the user.
 
 {{<notice "info">}}
-Do _NOT_ select the `UEFI` boot method as it will not be booted from the ESXi VM.
+
+Import Notes: Since `Ubuntu 21.04`, the `boot_command` has been updated, so please be aware of that.
+
 {{</notice>}}
 
-<img src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-screenshot-02.png" width="500"/>
+```json
+// https://github.com/TechProber/cloud-estate/blob/master/packer-templates/vars/ubuntu-2204.json#L23-L43
+{
+  ...
+  "boot_command": [
+      "<esc><esc><esc><esc>e<wait>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "<del><del><del><del><del><del><del><del>",
+      "linux /casper/vmlinuz --- autoinstall ds=\"nocloud-net;seedfrom=http://{{.HTTPIP}}:{{.HTTPPort}}/\"<enter><wait>",
+      "initrd /casper/initrd<enter><wait>",
+      "boot<enter>",
+      "<enter><f10><wait>"
+    ]
+  ...
+}
+```
 
-After the installation, you should be able to find the boot content from your USB Flash Drive.
+Finally, we will use the post processors to run some commands locally. This will make an SSH connection to the PVE host and run some commands manually to set up the virtual devices necessary for [ cloud init ](https://pve.proxmox.com/wiki/Cloud-Init_Support#_preparing_cloud_init_templates). This post-processor is using the [ shell-local ](https://packer.io/docs/provisioners/shell-local.html) post processor to run the commands on the local machine running packer but you could always move this configuration to something like an ansible playbook to make the configuration more readable and portable.
 
-#### Download PlopKexec Bootloader
+```hcl
+# https://github.com/TechProber/cloud-estate/blob/master/packer-templates/proxmox-packer-template.pkr.hcl#L119-L127
+post-processor "shell-local" {
+    inline = [
+      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --boot c --bootdisk scsi0",
+      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --ciuser ${var.ssh_username}",
+      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --cipassword ${var.ssh_password}",
+      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --serial0 socket --vga serial0",
+      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --delete ide2"
+    ]
+  }
+```
 
-Download the latest `PlopKexec-bin-tar` from [Plop Official Website](https://www.plop.at/en/plopkexec/download.html)
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-screenshot-01.jpg)
-
-Extract the `tar` file and find the files named `bootx64.efi` (bootloader) and `plopkexec64` (Disc Image File)
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-screenshot-03.png)
-
-Upload the `plopkexec64` ISO file to the datastore in `ESXi`
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-screenshot-04.png)
-
-Copy the `bootx64.efi` (bootloader) to your USB Flash Drive with unRAID installed in the previous steps
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-screenshot-05.png)
+You may find the complete `packer-var` in https://github.com/TechProber/cloud-estate/tree/master/packer-templates/vars
 
 ---
 
-### Toggle PCI-Passthrough (Optional)
+## Build your Proxmox template with Packer
+
+Source Code - https://github.com/TechProber/cloud-estate/tree/master/packer-templates.
+
+### File Structure
+
+```bash
+# tree -d -L 3 ./
+./
+├── assets
+├── http
+├── playbooks
+│   ├── roles
+│   │   ├── apt.ops
+│   │   ├── containerd.ops
+│   │   ├── docker.ops
+│   │   ├── maintenance.ops
+│   │   ├── minio.ops
+│   │   ├── proxmox.base
+│   │   └── proxmox.bootstrap
+│   └── vars
+└── vars
+```
+
+- ./vars - where packer-var is defined
+- ./http - where cloud-init configuration is defined
+- ./playbooks - where all automation workloads are defined
+- ./playbooks/roles - specific ansible-roles for different needs
+- ./playbooks/vars - default ansible-playbook variables
+- ./bake - the automation script that handles all the heavy-lifting work
+
+### Bake CLI
+
+The `bake` CLI is a tool I created for speeding up the process of building multiple VM templates
+
+#### Help Menu
+
+Check out the help menu with the `-h` option for more information:
+
+```bash
+./bake -h
+```
+
+#### List VM Templates
+
+List all the available templates with `-a` option:
+
+```bash
+./bake -a
+```
+
+#### Bake a standard VM (Basic Usage)
+
+```bash
+./bake -i [vm-id] ubuntu-2204-server
+```
+
+#### Bake a custom VM (Advanced Usage)
+
+```bash
+./bake -i [vm-id] custom -n [custom-vm-template-name] -b [custom-build]
+```
 
 {{<notice "info">}}
-You may skip this step if you do NOT want to passthrough `physical drives` to the `unRAID` VM.
+
+For the `-b|--build` option, it ONLY support `minio` as custom build for now - [custom-proxmox-packer-template](https://github.com/TechProber/cloud-estate/blob/master/packer-templates/custom-proxmox-packer-template.pkr.hcl#L93-L144).
+
 {{</notice>}}
 
-`*` In the ESXi Console GUI got to `Host` > `Manage` > `PCI Devices`
+To extend its use case, feel free to [ contribute ](https://github.com/TechProber/cloud-estate/blob/master/docs/contribute.md). `PRs` are always welcome.
 
-`*` Select your PCI/PCI Express `SATA/SAS Controller` Card and select `Toggle Passthrough`
+#### Ansible Roles
 
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-vmware_esxi_7.0_pci_devices_sas2008.png)
+The entire automation is handled by `Ansible`. I assume you already have some foundational knowledge about Ansible, if not feel free to check out the [ Official Sites ](https://www.ansible.com/) for more information.
 
-A message like this will show if the passthrough is successful:
+#### Docker Support
 
-_“Successfully toggled passthrough for device Broadcom / LSI SAS2008 PCI-Express Fusion-MPT SAS-2 [Falcon].”_
+To bake/build a VM template that ships with [ Docker ](https://www.docker.com/ and [ Docker-Compose ](https://docs.docker.com/compose/), use the following command
 
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-vmware_esxi_7.0_pci_devices_sas2008_passtrough_successfull.png)
+```bash
+./bake -i [vm-id] docker-ubuntu-2204-server
+```
 
-### Create unRAID VM
+#### Containerd Support
 
-`*` Go to `Virtual Machine` in the left menu.
+To bake/build a VM template that ships with [ Containerd ](), use the following command
 
-`*` Select `Create / Register VM`
+```bash
+./bake -i [vm-id] containerd-ubuntu-2204-server
+```
 
-`*` Select `Create a new virtual machine`, and `Next`.
+## Demo
 
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-vmware_esxi_7.0_new_vm_unraid_1.png)
+To create the template execute the following command:
 
-`*` Give the VM a recognizable name and select as follows:
+```bash
 
-- `Compatibility`: ESXi 7.0(U2) virtual machine
-- `Guest OS family`: Linux
-- `Guest OS version`: Ubuntu Linux (64-bit)
 
-`*` Click `Next`
+```
 
-`*` Select a `datastore` and click `Next`
+You should see some output for each of the `builders`, `provisioners` and `post-processors`.
 
-`*` Configure `CPU`, `Memory` and `Hard disk`.
+```bash
 
-- Change the Hard disk Controller location from the default `SCSI Controller` to `SATA Controller` as unRAID can ONLY recognize SATA drives
-
----
-
-### Configure the VM
-
-#### Add PCIE Devices (Optional)
-
-`*` Click on `Add other device`, then `PCI device`
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-vmware_esxi_7.0_new_vm_unraid_4_pci_device_selected.png)
-
-#### Add PlopKexec ISO to the VM
-
-`*` Select `CD/DVD Drive 1`, and select `Datastore ISO file`. Pick the `PlopKexec` ISO file from the datastore
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-iso_selection.png)
-
-#### Add USB Flash Drive
-
-`*` Select `Add other device` and choose `USB controller`, find your USB Flash Drive with unRAID installed in it
-
-`*` Modify the `USB controller` type to fit your USB Flash Drive type. By default it is set to `2.0`
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-usb_selection.png)
-
-#### Add Extra Boot Parameters
-
-According to https://forums.unraid.net/topic/90886-unraid-on-esxi-70-confimed-working/?do=findComment&comment=849079, someone mentioned that we may need to pass a specific parameter, `monitor.allowLegacyCPU = True` to the VM to make this fully funtional.
-
-To do so, follow the steps below:
-
-`*` Edit VM Settings, under `VM Options` > `Advanced` > `Edit Configuration`
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-edit_configuration.png)
-
-`*` Press `Add parameter` and add `monitor.allowLegacyCPU` parameter and set its value to `TRUE`
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-extra_params.png)
-
-#### VM Configuration
-
-My unRAID VM Configuration
-
-```config
-CONFIG:
-Name	UnRAID
-Guest OS name	Ubuntu Linux (64-bit)
-Compatibility	ESXi 7.0U2 virtual machine
-vCPUs	12
-Memory	8 GB
-Network adapter 1 network	LAN-server
-Network adapter 1 type	VMXNET 3
-SCSI controller 0	LSI Logic Parallel
-SATA controller 0	New SATA controller
-Hard disk 1
-Capacity	200GB
-Provisioning	Thick provisioned, lazily zeroed
-Controller	SCSI controller 0 : 0
-Connected	Yes
-USB controller 1	USB 3.1
-USB device 1	Kingston DataTraveler 3.0
-...
 ```
 
 ---
 
-### Boot unRAID
-
-Double check if everything has been set up correctly, especially the `USB Controller`, which has to match your `USB Flash Drive` USB type
-
-If everything is good, then we can proceed to boot the unRAID VM
-
-{{<notice "info">}}
-Press the `Up and Down` arrow key on your keyboard to change the `boot option`, you should see the `Unraid OS` boot option in the menu
-{{</notice>}}
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-boot_vm.png)
-
----
-
-### Install VMware Tools
-
-After unRAID is up and running you should install `VMware Tools`.
-
-`*` Assuming you have already installed the [ Community Applications ](https://forums.unraid.net/topic/38582-plug-in-community-applications/) Plug-In in UnRAID, open the UnRAID GUI and go to the `Apps-tab`.
-
-`*` Search for `openVMTools_compiled` and you will find this app:
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-vmware_esxi_7.0_unraid_vm_opnvmtools_app.png)
-
-`*` Install the plugin by clicking Install
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-vmware_esxi_7.0_unraid_vm_opnvmtools_app_installed.png)
-
-That’s it, the `Virtualized unRAID Server` is now fully functional just as a physical machine.
-
----
-
-### Demo
-
-![](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrmjjlvckvsb/b/blog-content-20211009/o/post-23-demo.png)
-
----
-
-### Conclusion
+## Conclusion
 
 To sum up, unRAID on ESXi 7.0 is confirmed working like a charm. If you need any further troubleshooting help, visit https://forums.unraid.net/topic/90886-unraid-on-esxi-70-confimed-working/. unRAID has a very versatile community where you may find lots of people who might meet the same problem as you do, so be sure to leverage the community forum to help you build fundamental knowledge about unRAID as you go.
+
+---
+
+## Further reading on packer
+
+You should now have a good starting point for building Proxmox VM templates with Packer. If your looking to extend its usefulness a little further check out these useful articles.
+
+- \- [Getting started with Packer](https://packer.io/intro/getting-started/install.html)
+- \- [Automated image builds with Jenkins, Packer, and Kubernetes](https://cloud.google.com/solutions/automated-build-images-with-jenkins-kubernetes)
+- \- [Cloud images in Proxmox](https://gist.github.com/chriswayg/b6421dcc69cb3b7e41f2998f1150e1df)
+- \- [Packer - Ansible Local Provisioner](https://www.packer.io/plugins/provisioners/ansible/ansible-local)
+- \- [Packer - Pipeline Builds](https://www.packer.io/guides/packer-on-cicd/pipelineing-builds)
 
 ---
