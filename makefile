@@ -30,7 +30,7 @@ build:
 		.
 
 build-prod:
-	@sudo buildah bud -f $(BUILD_DIR) \
+	@sudo nerdctl build -f $(BUILD_DIR) \
 		-t docker.io/$(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
 		--build-arg SERVER_IP=$(SERVER_IP) \
@@ -38,8 +38,8 @@ build-prod:
 		.
 
 push-prod:
-	@sudo buildah push $(IMAGE_NAME):$(IMAGE_TAG) \
+	@sudo nerdctl push $(IMAGE_NAME):$(IMAGE_TAG) \
     docker://$(REGISTRY)/$(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG)
 
 local-run:
-	@sudo nerdctl run -it --rm --name hikariai-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
+	@sudo nerdctl run -it --rm --name hikariai-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):prod
