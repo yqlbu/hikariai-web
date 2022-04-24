@@ -1,7 +1,7 @@
 ---
 title: "Use Packer like a Pro"
-image: "images/post/post-24.png"
-socialImage: "/images/post/post-24.png"
+image: "images/post/post-24.jpg"
+socialImage: "/images/post/post-24.jpg"
 date: 2022-04-24
 author: "Kevin Yu"
 tags: ["Virtualization", "Cloud Computing", "DevOps", "Proxmox"]
