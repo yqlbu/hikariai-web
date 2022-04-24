@@ -311,6 +311,18 @@ By default, the sites generated from `Hugo` do not support the `social-metadata`
 
 this will enable the `social-metadata` feature.
 
+### Fix code block wraplines issue
+
+To add the `horizontal scrollbar`: add the following lines in `layouts/partials/custom-header.html`
+
+```html
+<style type="text/css">
+  pre code {
+    white-space: pre;
+  }
+</style>
+```
+
 ### Customize your page with metadata
 
 You can customize some of the generated metadata on a per-page basis. Setting `description`, `socialImage` or `tags` in the frontmatter will override the defaults loaded from the main `config` file.
