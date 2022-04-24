@@ -11,7 +11,7 @@ draft: false
 
 I’ve been using [ Proxmox VE ](https://www.proxmox.com/en/proxmox-ve) for a while now in my Homelab as an open-source alternative for a virtualization platform like ESXi. One useful feature in Proxmox is the templates that allow us to create `LXC` or `VM` templates that can then be cloned as a starting point for new Proxmox resources. Now with these templates, we can have a standard starting point to install our applications on top of, pre-install packages for authentication, security, logging, etc without anyone else needing to think about it as we bake these best practices right into these template resources.
 
-However, creating and managing these templates can become a challenge with how time-consuming and manual it can be. I want to show you how you can make this process more standardized and automated with the use of [ Packer codifying your Proxmox templates and orchestrating the building and packaging of these templates so they are available for use on your Proxmox hosts.
+However, creating and managing these templates can become a challenge with how time-consuming and manual it can be. I want to show you how you can make this process more standardized and automated with the use of [ Packer ](https://www.packer.io/) to modifying your Proxmox templates and orchestrating the building and packaging of these templates so they are available for use on your Proxmox hosts.
 
 ---
 
