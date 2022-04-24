@@ -43,7 +43,7 @@ pygmentsUseClasses=true
 
 # Table of Contents
 [markup.tableOfContents]
-  startLevel=3
+  startLevel=2
   endLevel=4
   ordered=false
 
