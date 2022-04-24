@@ -14,16 +14,16 @@ h2, .h2 {
    }
 }
 h3, .h3 {
-   font-size: 28px;
+   font-size: 26px;
    @include desktop {
       font-size: $h3-md;
    }
 }
 h4, .h4 {
-   font-size: 26px;
+   font-size: 24px;
 }
 h5, .h5 {
-   font-size: 24px;
+   font-size: 20px;
 }
 h6, .h6 {
    font-size: $h6;
