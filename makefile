@@ -3,12 +3,11 @@
 BUILD_DIR := ci/Dockerfile
 DOCKERHUB_USERNAME := hikariai
 REGISTRY := docker.io
-GHCR_USERNAME := yqlbu
 IMAGE_NAME := hikariai-web
 IMAGE_TAG := dev
 DOMAIN_NAME := hikariai.net
 ENV := prod
-SERVER_IP := 10.10.10.50
+SERVER_IP := 10.178.0.50
 
 # Modify tagging mechanism
 ifeq ($(ENV), dev)
@@ -23,23 +22,24 @@ endif
 
 # List of commands
 build:
-	@buildah bud -f $(BUILD_DIR) \
-		-t $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
+	@sudo nerdctl build -f $(BUILD_DIR) \
+		-t docker.io/$(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
 		--build-arg ENV=$(ENV) \
 		--build-arg SERVER_IP=$(SERVER_IP) \
 		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
 		.
 
-ghcr-login:
-	@echo $(GHCR_TOKEN) | sudo nerdctl login ghcr.io -u $(GHCR_USERNAME) --password-stdin
-
-push: ghcr-login
-	@nerdctl push $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):staging
-	@nerdctl push ghcr.io/$(GHCR_USERNAME)/$(IMAGE_NAME):latest
+build-prod:
+	@sudo buildah bud -f $(BUILD_DIR) \
+		-t docker.io/$(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG) \
+		--build-arg ENV=$(ENV) \
+		--build-arg SERVER_IP=$(SERVER_IP) \
+		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
+		.
 
 push-prod:
-	@buildah push $(IMAGE_NAME):$(IMAGE_TAG) \
+	@sudo buildah push $(IMAGE_NAME):$(IMAGE_TAG) \
     docker://$(REGISTRY)/$(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG)
 
 local-run:
-	@nerdctl run -it --rm --name hugo-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
+	@sudo nerdctl run -it --rm --name hikariai-web -p 80:80 $(DOCKERHUB_USERNAME)/$(IMAGE_NAME):dev
