@@ -213,7 +213,7 @@ The `bake` CLI is a tool I created for speeding up the process of building multi
 
 #### Help Menu
 
-Check out the help menu with the `-h` option for more information:
+Check out the help menu with the `-h|--help` option for more information:
 
 ```bash
 ./bake -h
@@ -221,7 +221,7 @@ Check out the help menu with the `-h` option for more information:
 
 #### List VM Templates
 
-List all the available templates with `-a` option:
+List all the available templates with `-a|--all` option:
 
 ```bash
 ./bake -a
@@ -253,7 +253,7 @@ The entire automation is handled by `Ansible`. I assume you already have some fo
 
 #### Docker Support
 
-To bake/build a VM template that ships with [ Docker ](https://www.docker.com/ and [ Docker-Compose ](https://docs.docker.com/compose/), use the following command
+To bake/build a VM template that ships with [ Docker ](https://www.docker.com/) and [ Docker-Compose ](https://docs.docker.com/compose/), use the following command:
 
 ```bash
 ./bake -i [vm-id] docker-ubuntu-2204-server
@@ -261,11 +261,13 @@ To bake/build a VM template that ships with [ Docker ](https://www.docker.com/ a
 
 #### Containerd Support
 
-To bake/build a VM template that ships with [ Containerd ](), use the following command
+To bake/build a VM template that ships with [ Containerd ](https://containerd.io/) and [ Nerdctl ](https://github.com/containerd/nerdctl), use the following command:
 
 ```bash
 ./bake -i [vm-id] containerd-ubuntu-2204-server
 ```
+
+### SSH Key Management
 
 ## Demo
 
