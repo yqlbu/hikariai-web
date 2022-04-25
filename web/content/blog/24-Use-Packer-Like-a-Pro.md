@@ -446,9 +446,9 @@ build {
 You should see some output for each of the `builders`, `provisioners,` and `post-processors`.
 
 ```bash
-# ./bake -i 9001 -t custom -n custom-ubuntu-2204-server -c minio
+# ./bake -i 9001 -t custom -n docker-ubuntu-2204-server-template -b minio -f ./vars/kevin-ubuntu-2204.json
 
-########## Baking prod-ubuntu-2204-server-template template with packer
+########## Baking docker-ubuntu-2204-server-template template with packer
 
 minio.proxmox.bakery-template: output will be in this color.
 
@@ -472,6 +472,28 @@ minio.proxmox.bakery-template: output will be in this color.
     minio.proxmox.bakery-template: Uploading main Playbook file...
     minio.proxmox.bakery-template: Uploading inventory file...
     minio.proxmox.bakery-template: Executing Ansible: cd /tmp/packer-provisioner-ansible-local/626557b5-6bf5-0aba-7ab2-50b0916afe37 && ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook /tmp/packer-provisioner-ansible-local/626557b5-6bf5-0aba-7ab2-50b0916afe37/minio.yml --extra-vars "packer_build_name=bakery-template packer_builder_type=proxmox packer_http_addr=10.178.0.50:8802 -o IdentitiesOnly=yes" --vault-password-file=/tmp/.vault_pass --extra-vars "ansible_user=packer" -c local -i /tmp/packer-provisioner-ansible-local/626557b5-6bf5-0aba-7ab2-50b0916afe37/packer-provisioner-ansible-local2268832455
+
+...
+
+    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Install Docker with script] ************************
+    minio.proxmox.bakery-template: changed: [127.0.0.1]
+    minio.proxmox.bakery-template:
+    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Enable docker to start at boot] ********************
+    minio.proxmox.bakery-template: ok: [127.0.0.1]
+    minio.proxmox.bakery-template:
+    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Add user to docker group] **************************
+    minio.proxmox.bakery-template: changed: [127.0.0.1]
+    minio.proxmox.bakery-template:
+    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Post installation message] *************************
+    minio.proxmox.bakery-template: ok: [127.0.0.1] => {
+    minio.proxmox.bakery-template:     "msg": "Use \"newgrp docker\" to use the group immediately"
+    minio.proxmox.bakery-template: }
+    minio.proxmox.bakery-template:
+    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Check if docker-compose is installed] **************
+    minio.proxmox.bakery-template: ok: [127.0.0.1]
+    minio.proxmox.bakery-template:
+    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Install docker-compose] ****************************
+    minio.proxmox.bakery-template: changed: [127.0.0.1]
 
 ...
 
