@@ -38,6 +38,16 @@ https://github.com/TechProber/cloud-estate/tree/master/packer-templates
 
 ### Software Requirement
 
+Install `jq` locally on your local machine
+
+```bash
+# archlinux
+$ sudo pacman -S packer
+
+# debian/ubuntu
+sudo apt-get install jq
+```
+
 Install `Packer` locally on your local machine
 
 ```bash
