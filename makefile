@@ -37,7 +37,7 @@ build-prod:
 		--build-arg DOMAIN_NAME=$(DOMAIN_NAME) \
 		.
 
-push-prod:
+push:
 	@sudo nerdctl push $(IMAGE_NAME):$(IMAGE_TAG) \
     docker://$(REGISTRY)/$(DOCKERHUB_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG)
 
