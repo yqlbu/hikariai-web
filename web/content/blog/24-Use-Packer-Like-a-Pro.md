@@ -42,7 +42,7 @@ Install `jq` locally on your local machine
 
 ```bash
 # archlinux
-$ sudo pacman -S packer
+$ sudo pacman -S jq
 
 # debian/ubuntu
 sudo apt-get install jq
