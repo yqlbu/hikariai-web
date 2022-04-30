@@ -33,7 +33,7 @@ https://github.com/TechProber/cloud-estate/tree/master/packer-templates
 
 ## Prerequisite
 
-- \- A server already has `Proxmox VE` installed, I am currently running `Proxmox VE 7.0.12`
+- \- A server already has `Proxmox VE` installed, I am currently running `Proxmox VE 7.1.12`
 - \- A cup of coffee
 
 ### Software Requirement
