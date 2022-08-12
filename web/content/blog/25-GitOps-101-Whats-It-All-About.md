@@ -150,7 +150,7 @@ Developers push their updated code to the code base repository; where the change
 
 GitOps is a supplement to the existing DevOps culture. It uses a `version control` system like Git to automatically deploy the infrastructure. The deployment process is visible, and any changes made to the system can be viewed and tracked, which improves productivity, security, and compliance. Moreover, GitOps provides more elegant observability, which can observe the deployment state in real-time and take actions to keep the actual state consistent with the expected state.
 
-Moreover, in GitOps, the whole system is described by declarative, which is naturally suitable for the cloud-native environment, because Kubernetes is also designed in such a way.
+Moreover, in GitOps, the whole system is described in a declarative way, which is naturally suitable for the cloud-native environment, because Kubernetes is also designed in such a way.
 
 ---
 
