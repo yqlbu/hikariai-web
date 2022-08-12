@@ -159,3 +159,5 @@ Moreover, in GitOps, the whole system is described by declarative, which is natu
 - [Weaveworks - Guide to GitOps](https://www.weave.works/technologies/gitops/)
 - [Weaveworks - Industry Experts Discuss GitOps and Best Practises for CICD](https://www.weave.works/blog/industry-experts-discuss-gitops-and-best-practises-for-cicd)
 - [Redhat - A developer's guide to CI/CD and GitOps with Jenkins Pipelines](https://developers.redhat.com/articles/2022/01/13/developers-guide-cicd-and-gitops-jenkins-pipelines)
+
+---
