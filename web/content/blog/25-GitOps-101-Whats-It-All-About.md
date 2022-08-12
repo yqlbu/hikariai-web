@@ -9,7 +9,7 @@ categories: ["Cloud Computing"]
 draft: false
 ---
 
-Guest post originally published on [icloudnative.io](https://icloudnative.io) blog by 米开朗基杨
+This post is originally published on [icloudnative.io](https://icloudnative.io/posts/what-is-gitops/) blog by 米开朗基杨
 
 If you think `GitOps` sounds a bit like `DevOps`, you would be right. GitOps is essentially an operational framework that uses DevOps best practices. In this scenario, we basically move all cloud operations to Git.
 
@@ -21,9 +21,11 @@ Other benefits include infrastructure automation, continuous integration/continu
 
 ## References
 
-- \- [Packer - Pipeline Builds](https://www.packer.io/guides/packer-on-cicd/pipelineing-builds)
-- \- [Packer - Ansible Local Provisioner](https://www.packer.io/plugins/provisioners/ansible/ansible-local)
-- \- [Packer - Promox Builder](https://www.packer.io/plugins/builders/proxmox/iso)
+- [Youtube TechWrold with Nana - What is GitOps, How GitOps works and Why it's so useful](https://www.youtube.com/watch?v=f5EpcWp0THw)
+- [icloudnative.io - What is GitOps?](https://icloudnative.io/posts/what-is-gitops/)
+- [Redhat - What is GitOps?](https://www.redhat.com/en/topics/devops/what-is-gitops)
+- [State of DevOps Report](https://services.google.com/fh/files/misc/state-of-devops-2021.pdf)
+- [Weaveworks - Guide To GitOps](https://www.weave.works/technologies/gitops/)
 
 {{< toc >}}
 
@@ -31,11 +33,13 @@ Other benefits include infrastructure automation, continuous integration/continu
 
 ## What is GitOps?
 
+![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-e733924b04d361270f2e24d1ebf72ce2.png)
+
 [ Weaveworks ](https://www.weave.works/blog/what-is-gitops-really) coined the term “GitOps” in 2017 to share the idea that all deployments should be as easy as enacting a code change.
 
-GitOps is a standardized workflow for configuring, deploying, monitoring, managing and updating infrastructure-as-code Kubernetes and all of its components as code. This includes all the applications that run on it.
+GitOps is a `standardized workflow` for configuring, deploying, monitoring, managing and updating infrastructure-as-code Kubernetes and all of its components as code. This includes all the applications that run on it.
 
-The core idea here is to have declarative descriptions of the infrastructure and all related elements in its currently desired state in the production environment. In this scenario, an automated process ensures that the described state in the repository and the production environment always match.
+The core idea here is to have `declarative descriptions` of the infrastructure and all related elements in its currently desired state in the production environment. In this scenario, an automated process ensures that the described state in the repository and the production environment always match.
 
 In this case, it considers everything related to software deployment:
 
@@ -56,522 +60,104 @@ At its most basic, GitOps is about merging intelligent source control with autom
 
 For example, if you have code for a new application feature, it automatically ends up in the existing application. Whenever your code declares a network policy update, it’s automatically propagated into the network infrastructure.
 
-![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-818c98773f4c71d130ea88acae057b29.png)
+![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-fbcdb163bd4ef88f2704ff3bbd0a28d6.png)
 
 ---
 
-## Prerequisite
+## Why GitOps?
 
-- \- A server already has `Proxmox VE` installed, I am currently running `Proxmox VE 7.1.12`
-- \- A cup of coffee
+GitOps takes the philosophies and approaches promised to those investing in a DevOps culture and provides a framework to start realizing the results. Organizations who practice DevOps realize significant improvements to the rate of innovation in applications and code, as well as stability, according to the annual [State of DevOps Report](https://services.google.com/fh/files/misc/state-of-devops-2021.pdf).
 
-### Software Requirement
+By using the same Git-based workflows that developers are familiar with, GitOps expands upon existing processes from application development to deployment, application life cycle management, and infrastructure configuration. Every change throughout the application life cycle is traced in the Git repository and is auditable. Making changes via Git means developers can finally do what they want: code at their own pace without waiting on resources to be assigned or approved by operations teams.
 
-Install `jq` locally on your local machine
+For ops teams, visibility to change means the ability to trace and reproduce issues quickly, improving overall security. With an up-to-date audit trail, organizations can reduce the risk of unwanted changes and correct them before they go into production.
 
-```bash
-# archlinux
-$ sudo pacman -S jq
-
-# debian/ubuntu
-sudo apt-get install jq
-```
-
-Install `Packer` locally on your local machine
-
-```bash
-# archlinux
-$ sudo pacman -S packer
-
-# debian/ubuntu
-$ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-$ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-$ sudo apt-get update && sudo apt-get install packer
-
-# homebrew
-$ brew tap hashicorp/tap
-$ brew install hashicorp/tap/packer
-
-# verify installation
-$ packer
-```
-
-For detailed instructions on how to install Packer on other platforms or Linux distributions, please head to this [ Getting Started ](https://learn.hashicorp.com/tutorials/packer/get-started-install-cli) guide.
+These changes in code from development to production make organizations more agile in responding to changes in the business and competitive landscape.
 
 ---
 
-## What is Packer
+## What are the GitOps Principles?
 
-Packer is a utility that allows you to build virtual machine images so that you can define a golden image as code. Packer can be used to create images for almost all of the big cloud providers such as AWS, GCE, Azure, and Digital Ocean, or can be used with locally installed hypervisors such as VMWare, Proxmox, and a few others.
+In a cloud-native environment with Git as a single source of truth of the system’s current desired state, you can commit all intended operations with a pull request. All changes are `observable` and `auditable`, and automatic convergence highlights all differences between the intended and observed states.
 
-To build an image with packer we need to define our image through a template file. The file uses the JSON format and comprises 3 main sections that are used to define and prepare your image.
+GitOps encompasses several guiding principles. These include the following:
 
-<details><summary>Builders</summary>
-</br>
-**Builders**: Components of Packer that can create a machine image for a single platform. A builder is invoked as part of a build to create the actual resulting images.
-</details>
+### The Entire System is in a Declarative State (X as Code)
 
-<details><summary>Provisioners</summary>
-</br>
-**Provisioners**: Install and configure software within a running machine before that machine is turned into a static image. Example provisioners include shell scripts, Chef, Puppet, etc.
-</details>
+As you may not familiar with IaC, or `Infrastructure as Code`, this concept is when the end-user defines infrastructure as code instead of manually creating it. This makes our infrastructure much easier to reproduce and replicate but note that infrastructure as code actually evolved into defining NOT ONLY infrastructure but also `Network as Code`, `Policy as Code`, `security as Code`, and `Configuration as Code` etc. These are all types of "Definitions as Code", or `X as Code`. In X as Code, it unifies infrastructure, configuration, network, policy, and so on in `code`. For instance, instead of manually creating servers, network, and all the configuration around it on AWS and creating Kubernetes cluster with certain components. The end-user defines all of these in Terraform scripts, Ansible playbooks code, and Kubernetes manifest files. All these files describes the infrastructure of use, platform of use, and configuration of use.
 
-<details><summary>Post Processors</summary>
-</br>
-**Provisioners**: Install and configure software within a running machine before that machine is turned into a static image. Example provisioners include shell scripts, Chef, Puppet, etc.
-</details>
+![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-db2bde312f1c47af45053ec41546ef18.jpeg)
 
-</br>
+GitOps demands an infrastructure that’s always `declarative`. It should also concentrate on the target configuration. In other words, it focuses on the desired state and enables the system to execute whatever it needs to realize a desired state.
 
-By using packer we can define our golden VM image as code so that we can easily build identically configured images on demand so that all your machines are running the same image and can also be easily updated to a new image when needed.
+In contrast, an imperative approach concentrates on a set of explicit commands to change the desired state. This makes reconciling a challenge as imperative infrastructure is unaware of the state. You must store the declarative state of the entire system in Git. In this case, Kubernetes is the most prolific declarative infrastructure that allows you to keep its state in Git.
 
----
+### The Canonical Desired State Versioned in Git
 
-## Create a Proxmox user for Packer
+When it comes to GitOps, the canonical state is essentially the `“Single Source of Truth”` state. For example, when the state is stored and versioned in source control, it must be viewed as a source of truth.
 
-Packer requires a user account to perform actions on the Proxmox API. The following commands will create a new user account `packer@pve` with restricted permissions.
+In this case, you can test objects on how equal they are when compared to the canonical form. Whenever there’s a deviation in the state, it can quickly recognize and reconcile it back to the canonical state in source control.
 
-```bash
-$ pveum useradd packer@pve
-$ pveum passwd packer@pve
-Enter new password: ****************
-Retype new password: ****************
-$ pveum roleadd Packer -privs "VM.Config.Disk VM.Config.CPU VM.Config.Memory Datastore.AllocateSpace Sys.Modify VM.Config.Options VM.Allocate VM.Audit VM.Console VM.Config.CDROM VM.Config.Network VM.PowerMgmt VM.Config.HWType VM.Monitor"
-$ pveum aclmod / -user packer@pve -role Packer
-```
+### Automatically Apply Approved Changes in the System
 
----
+Once you store the declared state in Git, you must allow all changes to that state to be applied automatically to your system through pull requests (PR) or merge requests (MR). You won’t need cluster credentials to make changes to the system.
 
-## Prepare your packer template
+There’s also a segregated environment in GitOps where the state definition lives outside. As a result, you can separate what you do and how you do it. What’s excellent about GitOps here is that it favors a low barrier of entry. In this case, you won’t achieve immediate deployment or reconciliation until you achieve a new canonical state.
 
-To create the template we will use the proxmox builder ](https://packer.io/docs/builders/proxmox.html) which connects through the proxmox `web API` to provision and configure the VM for us and then turn it into a template. To configure our template we will use a [variables file](https://github.com/TechProber/cloud-estate/blob/packer-templates/packer-templates/example.vars.json), to import this variables file we will use the `-var-file` flag to pass in our variables to Packer. These variables will be used in our template file with the following syntax within a string like so `passwd/username={{ user 'ssh_username'}}`.
+Once you declare the state of your system and keep it under version control, you can use software agents to alert you whenever reality and your expectations don’t match.
 
-The builder block below will outline the basic properties of our desired proxmox template such as its name, the allocated resources, and the devices attached to the VM. To achieve this the [ boot_command ](https://packer.io/docs/builders/qemu.html#boot-configuration) option will be used to boot the OS and tell it to look for the `http/user-data` file to automate the OS installation process. Packer will start an HTTP server from the content of the `http` directory (with the `http_directory` parameter). This will allow `Subiquity` to fetch the cloud-init files remotely.
+Software agents also help ensure that the whole system is self-healing to mitigate the risk of human error and more. In this scenario, software agents act like an operational control and feedback loop.
 
-**Notes:** The live installer `Subiquity` uses more memory than Debian-installer. The default value from Packer (512M) is not enough and will lead to weird kernel panic. Use `1G` as a minimum.
+![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-d66e156cb331a17fa2e3108dbec05d76.jpg)
 
-The `boot_command` tells cloud-init to start and uses the `nocloud-net` data source to be able to load the [user-data](https://github.com/TechProber/cloud-estate/blob/master/packer-templates/http/user-data) and `meta-data` files from a remote HTTP endpoint. The additional `autoinstall` parameter will force Subiquity to perform destructive actions without asking for confirmation from the user.
+### Continuous Reconciliation
 
-{{<notice "info">}}
+`Reconciliation` is actually the earliest concept in Kubernetes, which means `the process of ensuring that the actual state of the system is consistent with the expected state`. The specific way is to install an agent in the target environment. Once the actual state does not match the expected state, the agent will automatically repair it. The repair here is more advanced than Kubernetes' fault self-healing. Even if the arrangement list of the cluster is manually modified, the cluster will be restored to the state described by the list in Git warehouse.
 
-Import Notes: Since `Ubuntu 21.04`, the `boot_command` has been updated, so please be aware of that.
+In view of these design philosophies, let's take a look at the workflow of GitOps:
 
-{{</notice>}}
-
-```json
-// https://github.com/TechProber/cloud-estate/blob/master/packer-templates/vars/ubuntu-2204.json#L23-L43
-{
-  ...
-  "boot_command": [
-      "<esc><esc><esc><esc>e<wait>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "<del><del><del><del><del><del><del><del>",
-      "linux /casper/vmlinuz --- autoinstall ds=\"nocloud-net;seedfrom=http://{{.HTTPIP}}:{{.HTTPPort}}/\"<enter><wait>",
-      "initrd /casper/initrd<enter><wait>",
-      "boot<enter>",
-      "<enter><f10><wait>"
-    ]
-  ...
-}
-```
-
-Finally, we will use the post processors to run some commands locally. This will make an SSH connection to the PVE host and run some commands manually to set up the virtual devices necessary for [ cloud-init. This post-processor is using the [ shell-local ](https://packer.io/docs/provisioners/shell-local.html) post processor to run the commands on the local machine running packer but you could always move this configuration to something like an ansible playbook to make the configuration more readable and portable.
-
-```hcl
-# https://github.com/TechProber/cloud-estate/blob/master/packer-templates/proxmox-packer-template.pkr.hcl#L119-L127
-post-processor "shell-local" {
-    inline = [
-      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --boot c --bootdisk scsi0",
-      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --ciuser ${var.ssh_username}",
-      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --cipassword ${var.ssh_password}",
-      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --serial0 socket --vga serial0",
-      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --delete ide2"
-    ]
-  }
-```
-
-You may find the complete `packer-var` in https://github.com/TechProber/cloud-estate/tree/master/packer-templates/vars
+![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-068353e55afcd793c412301cdb027c15.jpg)
 
 ---
 
-## Build your Proxmox template with Packer
+## The Evolution of CI/CD
 
-### Get Started
+A `GitOps-based` workflow means all changes to application environments will be initiated by pull request to a Git repository holding the Kubernetes manifest files.
 
-Source Code - https://github.com/TechProber/cloud-estate/tree/master/packer-templates.
+Practically speaking, there is no `CI/CD` as a single concept. However, `there are CI and CD!`
 
-```bash
-$ git clone https://github.com/TechProber/cloud-estate
-$ cd packer-templates
-```
+### Traditional CI/CD (Push Pipelines)
 
-### File Structure
+Traditonal CI/CD defines both the CI and CD process within a single pipeline.
 
-```bash
-# tree -d -L 3 ./
-./
-├── assets
-├── http
-├── playbooks
-│   ├── roles
-│   │   ├── apt.ops
-│   │   ├── containerd.ops
-│   │   ├── docker.ops
-│   │   ├── maintenance.ops
-│   │   ├── minio.ops
-│   │   ├── proxmox.base
-│   │   └── proxmox.bootstrap
-│   └── vars
-└── vars
-```
+Most CI/CD tools available today use a `push-based` model. A push-based pipeline means that code starts with the CI system and may continue its path through a series of encoded scripts or uses ‘kubectl’ by hand to push any changes to the Kubernetes cluster.
 
-- ./vars - where packer-var is defined
-- ./http - where cloud-init configuration is defined
-- ./playbooks - where all automation workloads are defined
-- ./playbooks/roles - specific ansible-roles for different needs
-- ./playbooks/vars - default ansible-playbook variables
-- ./bake - the automation script that handles all the heavy-lifting work
+The reason you don’t want to use your CI system as the deployment impetus or do it manually on the command line is because of the potential to expose credentials outside of your cluster. While it is possible to secure both your CI/CD scripts and the command line, you are working outside the trust domain of your cluster. This is generally not good practice and is why CI systems can be known as attack vectors for production.
 
-### Proxmox API Authentication
+![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-73705f60f481800257b06b46fb468e66.png)
 
-After creating a dedicated Packer User followed the guide [above](#create-a-proxmox-user-for-packer), you will also need to export the `PM_PASS` as an environment variable (the password of the packer user to interact with Proxmox API authentication).
+### Modern CI and CD followed by the GitOps Priciples
 
-```bash
-$ export PM_PASS=<pm_password>
-```
+GitOps-based CICD uses a `pull strategy` that consists of two key components: a `“Deployment Automator”` that watches a git repository or a image registry, and a `“Deployment Synchronizer”` that sits in the cluster to maintain its state.
 
-You will also need to manually modify the `./config.yml` to connect to your Proxmox Server
+Developers push their updated code to the code base repository; where the change is picked up by the CI tool and ultimately builds a Docker image. The ‘Deployment Automator’ notices the image, pulls the new image from the repository, and then updates its YAML in the config repo. The Deployment Synchronizer, a component comes with the GitOps tooling of choice(ArgoCD or FluxCD) in the Kubernetes cluster, then detects that the cluster is out of date, and it pulls the changed manifests from the config repo and deploys the new image to the cluster.
 
-```yaml
-{
-  "proxmox_host": "10.178.0.10",
-  "proxmox_node_name": "pve-01",
-  "proxmox_api_user": "packer@pve",
-  "http_bind_address": "10.178.0.50",
-}
-```
-
-{{<notice "note">}}
-
-`http_bind_address` is the IP address of the host machine that has Packer installed.
-
-{{</notice>}}
-
-The `./bake` script will take the `PM_PASS` environment variable and all the attributes defined in the `./config.yml` to interact with Packer and Proxmox.
-
-### SSH Key Management
-
-For safety concerns, the VM template created by Packer can ONLY be connected via `ssh-key-pair`. You will need to prepare your ssh-public key before baking the VM. If you do not have an `ssh-key-pair` yet, you may use the following commands to generate one.
-
-```bash
-$ ssh-keygen -m PEM -t rsa -b 4096 -C “user@example.com”
-```
-
-Then, you will need to replace the default `./id_rsa.pub` with your newly created public key in the project root directory
-
-```bash
-# ./packer-templates
-$ cat ~/.ssh/id_rsa.pub > ./id_rsa.pub
-```
-
-### Ansible Local Provisioner
-
-During the VM baking/building period, the entire automation is handled by `Ansible`. I assume you already have some foundational knowledge about Ansible, if not feel free to check out the [ Official Sites ](https://www.ansible.com/) for more information.
-
-The `ansible-local` Packer provisioner will execute ansible in Ansible's `local` mode on the remote/guest VM using Playbook and Role files that exist on the guest VM. This means Ansible must be installed on the remote/guest VM. Playbooks and Roles can be uploaded from your build machine (the one running Packer) to the VM. Ansible is then run on the guest machine in local mode via the `ansible-playbook` command. For more information, please check out https://www.packer.io/plugins/provisioners/ansible/ansible-local
-
-To see all the available roles, head over to https://github.com/TechProber/cloud-estate/tree/master/packer-templates/playbooks/roles. You are also welcome to raise PR/issue for feature requests. More roles are coming up soon.
-
-Each VM template relies on a combination of `ansible-roles` to achieve different features. For instance, there is a specific role for `Docker` and `Docker-Compose`. Reference to the sample [docker-ubuntu-2204-server VM template](https://github.com/TechProber/cloud-estate/blob/master/packer-templates/playbooks/docker-ubuntu-2204-server.yml)
-
-#### Customization
-
-If you like to create a custom VM template that is not defined in the `./bakery-config.json`, you may take the [custom VM template](https://github.com/TechProber/cloud-estate/blob/master/packer-templates/playbooks/custom.yml) as a reference and adjust the roles you would like to be included in the VM template.
-
-### Ansible Vault (Optional)
-
-If you plan to use [ansible-vault](https://docs.ansible.com/ansible/latest/cli/ansible-vault.html) to encrypt ansible variables, you may also need to create the `.vault-pass` file with a vault password under `./playbooks/.vault-pass` (already added to `.gitignore`). It will be used to encrypt and decrypt sensitive variables.
-
-You will also need to add an extra `provisioner` in the packer template file as this is for the advanced use case. The `.vault-pass` file will be passed to `/tmp/.vault-pass` during the baking period and will be deleted afterward (seen in [detailed implementation](https://github.com/TechProber/cloud-estate/blob/master/packer-templates/playbooks/roles/proxmox.bootstrap/tasks/post-actions.yml#L25-L29)). Feel free to check out an existing example - https://github.com/TechProber/cloud-estate/blob/master/packer-templates/custom-proxmox-packer-template.pkr.hcl#L108-L112
-
-{{<notice "info">}}
-
-Import Notes: By default, the custom vm template uses `minio` which relies on `.vault-pass`. If you do not wish to install Mini Client, then you will need to manually remove the `minio-role` in [./playbooks/custom.yml]()
-
-{{</notice>}}
-
-### Bake CLI
-
-The `bake` CLI is a tool I created for speeding up the process of building multiple VM templates
-
-#### Help Menu
-
-Check out the help menu with the `-h|--help` option for more information:
-
-```bash
-./bake -h
-```
-
-#### List VM Templates
-
-List all the available templates with `-a|--all` option:
-
-```bash
-./bake -a
-```
-
-#### Bake a standard VM (Basic Usage)
-
-```bash
-./bake -i [vm-id] ubuntu-2204-server
-```
-
-#### Bake a custom VM (Advanced Usage)
-
-```bash
-./bake -i [vm-id] custom -n [custom-vm-template-name] -b [custom-build]
-```
-
-{{<notice "info">}}
-
-For the `-b|--build` option, it ONLY supports `minio` as custom build for now - [custom-proxmox-packer-template](https://github.com/TechProber/cloud-estate/blob/master/packer-templates/custom-proxmox-packer-template.pkr.hcl#L93-L144).
-
-{{</notice>}}
-
-To extend its use case, feel free to [ contribute ](https://github.com/TechProber/cloud-estate/blob/master/docs/contribute.md). `PRs` are always welcome.
-
-#### Docker Support
-
-To bake/build a VM template that ships with [ Docker ](https://www.docker.com/) and [ Docker-Compose ](https://docs.docker.com/compose/), use the following command:
-
-```bash
-./bake -i [vm-id] docker-ubuntu-2204-server
-```
-
-#### Containerd Support
-
-To bake/build a VM template that ships with [ Containerd ](https://containerd.io/) and [ Nerdctl ](https://github.com/containerd/nerdctl), use the following command:
-
-```bash
-./bake -i [vm-id] containerd-ubuntu-2204-server
-```
-
-#### Changing APT Source
-
-There is a role to change the default `APT` source - https://github.com/TechProber/cloud-estate/tree/master/packer-templates/playbooks/roles/apt.ops/set-sources.ops, and it is set to the `CN(USTC)` source by default. You may overwrite the configurations defined in [./playbooks/var/apt.yml](https://github.com/TechProber/cloud-estate/blob/master/packer-templates/playbooks/vars/apt.yml)
-
-## Demo
-
-Create a custom ubuntu-2204-server with `Docker` and `Minio Client` installed and configured
-
-```bash
-$ ./bake -i 9001 -t custom -n custom-ubuntu-2204-server -c minio
-```
-
-./playbooks/custom.yml
-
-```yaml
----
-# Bake custom-server
-
-- name: "Bake proxmox custom vm template"
-  hosts: localhost
-  become: yes
-
-  vars_files:
-    - ./vars/apt.yml
-    - ./vars/maintenance.yml
-
-  vars:
-    - vault_enable: true
-
-  roles:
-    - role: ./roles/apt.ops/set-sources.ops/
-      vars:
-        release: "jammy"
-    - role: ./roles/apt.ops/install-packages.ops/
-      vars:
-        extra_packages:
-          - neofetch
-
-    - role: ./roles/maintenance.ops/key.ops/
-
-    - role: ./roles/docker.ops/
-
-    - role: ./roles/proxmox.bootstrap/
-```
-
-./custom-proxmox-packer-template.pkr.hcl
-
-```hcl
-...
-
-build {
-
-  name = "minio"
-
-  sources = ["source.proxmox.bakery-template"]
-
-  # Provisioner Configurations
-
-  # SSH public key
-  provisioner "file" {
-    source      = "./id_rsa.pub"
-    destination = "/tmp/id_rsa.pub"
-  }
-
-  # Minio plabyook
-  provisioner "file" {
-    pause_before = "5s"
-    source       = "./playbooks/.vault_pass"
-    destination  = "/tmp/.vault_pass"
-  }
-  provisioner "ansible-local" {
-    playbook_dir            = "./playbooks"
-    playbook_file           = "./playbooks/minio.yml"
-    clean_staging_directory = true
-    extra_arguments = [
-      "--vault-password-file=/tmp/.vault_pass",
-      "--extra-vars \"ansible_user=packer\""
-    ]
-  }
-
-  # Main playbook depends of vm_type
-  provisioner "ansible-local" {
-    pause_before            = "5s"
-    playbook_dir            = "./playbooks"
-    playbook_file           = var.playbook_file
-    clean_staging_directory = true
-    extra_arguments = [
-      "--extra-vars \"ansible_user=packer\""
-    ]
-  }
-
-  # Convert to proxmox vm template
-  post-processor "shell-local" {
-    inline = [
-      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --boot c --bootdisk scsi0",
-      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --ciuser ${var.ssh_username}",
-      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --cipassword ${var.ssh_password}",
-      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --serial0 socket --vga serial0",
-      "ssh root@${var.proxmox_host} qm set ${var.vm_id} --delete ide2"
-    ]
-  }
-}
-```
-
-You should see some output for each of the `builders`, `provisioners,` and `post-processors`.
-
-```bash
-# ./bake -i 9001 -t custom -n docker-ubuntu-2204-server-template -b minio -f ./vars/kevin-ubuntu-2204.json
-
-########## Baking docker-ubuntu-2204-server-template template with packer
-
-minio.proxmox.bakery-template: output will be in this color.
-
-==> minio.proxmox.bakery-template: Creating VM
-==> minio.proxmox.bakery-template: Starting VM
-==> minio.proxmox.bakery-template: Starting HTTP server on port 8802
-==> minio.proxmox.bakery-template: Waiting 5s for boot
-==> minio.proxmox.bakery-template: Typing the boot command
-==> minio.proxmox.bakery-template: Waiting for SSH to become available...
-
-...
-
-==> minio.proxmox.bakery-template: Uploading ./id_rsa.pub => /tmp/id_rsa.pub
-    minio.proxmox.bakery-template: id_rsa.pub 743 B / 743 B [=================================================================] 100.00% 0s
-==> minio.proxmox.bakery-template: Pausing 5s before the next provisioner...
-==> minio.proxmox.bakery-template: Uploading ./playbooks/.vault_pass => /tmp/.vault_pass
-    minio.proxmox.bakery-template: .vault_pass 21 B / 21 B [==================================================================] 100.00% 0s
-==> minio.proxmox.bakery-template: Provisioning with Ansible...
-    minio.proxmox.bakery-template: Uploading Playbook directory to Ansible staging directory...
-    minio.proxmox.bakery-template: Creating directory: /tmp/packer-provisioner-ansible-local/626557b5-6bf5-0aba-7ab2-50b0916afe37
-    minio.proxmox.bakery-template: Uploading main Playbook file...
-    minio.proxmox.bakery-template: Uploading inventory file...
-    minio.proxmox.bakery-template: Executing Ansible: cd /tmp/packer-provisioner-ansible-local/626557b5-6bf5-0aba-7ab2-50b0916afe37 && ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook /tmp/packer-provisioner-ansible-local/626557b5-6bf5-0aba-7ab2-50b0916afe37/minio.yml --extra-vars "packer_build_name=bakery-template packer_builder_type=proxmox packer_http_addr=10.178.0.50:8802 -o IdentitiesOnly=yes" --vault-password-file=/tmp/.vault_pass --extra-vars "ansible_user=packer" -c local -i /tmp/packer-provisioner-ansible-local/626557b5-6bf5-0aba-7ab2-50b0916afe37/packer-provisioner-ansible-local2268832455
-
-...
-
-    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Install Docker with script] ************************
-    minio.proxmox.bakery-template: changed: [127.0.0.1]
-    minio.proxmox.bakery-template:
-    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Enable docker to start at boot] ********************
-    minio.proxmox.bakery-template: ok: [127.0.0.1]
-    minio.proxmox.bakery-template:
-    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Add user to docker group] **************************
-    minio.proxmox.bakery-template: changed: [127.0.0.1]
-    minio.proxmox.bakery-template:
-    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Post installation message] *************************
-    minio.proxmox.bakery-template: ok: [127.0.0.1] => {
-    minio.proxmox.bakery-template:     "msg": "Use \"newgrp docker\" to use the group immediately"
-    minio.proxmox.bakery-template: }
-    minio.proxmox.bakery-template:
-    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Check if docker-compose is installed] **************
-    minio.proxmox.bakery-template: ok: [127.0.0.1]
-    minio.proxmox.bakery-template:
-    minio.proxmox.bakery-template: TASK [./roles/docker.ops/ : Install docker-compose] ****************************
-    minio.proxmox.bakery-template: changed: [127.0.0.1]
-
-...
-
-    minio.proxmox.bakery-template: PLAY RECAP *********************************************************************
-    minio.proxmox.bakery-template: 127.0.0.1                  : ok=34   changed=21   unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
-    minio.proxmox.bakery-template:
-    minio.proxmox.bakery-template: Removing staging directory...
-    minio.proxmox.bakery-template: Removing directory: /tmp/packer-provisioner-ansible-local/626557c0-c15c-4738-aebb-53538294728e
-==> minio.proxmox.bakery-template: Stopping VM
-==> minio.proxmox.bakery-template: Converting VM to template
-==> minio.proxmox.bakery-template: Adding a cloud-init cdrom in storage pool sata-pool
-==> minio.proxmox.bakery-template: Running post-processor:  (type shell-local)
-==> minio.proxmox.bakery-template (shell-local): Running local shell script: /tmp/packer-shell1584895912
-    minio.proxmox.bakery-template (shell-local): update VM 9001: -boot c -bootdisk scsi0
-    minio.proxmox.bakery-template (shell-local): update VM 9001: -ciuser packer
-    minio.proxmox.bakery-template (shell-local): update VM 9001: -cipassword <hidden>
-    minio.proxmox.bakery-template (shell-local): update VM 9001: -serial0 socket -vga serial0
-    minio.proxmox.bakery-template (shell-local): update VM 9001: -delete ide2
-Build 'minio.proxmox.bakery-template' finished after 5 minutes 58 seconds.
-
-==> Wait completed after 5 minutes 58 seconds
-
-==> Builds finished. The artifacts of successful builds are:
---> minio.proxmox.bakery-template: A template was created: 9001
---> minio.proxmox.bakery-template: A template was created: 9001
-The last command took 359.68 seconds.
-
-```
+![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-5532a7d799157ba76aed6ea2931e2f08.png)
 
 ---
-
-Up to this point, the custom VM template with `Docker`, `Docker-Compose`, and `Minio Client` pre-installed has been successfully uploaded to the Proxmox server.
-
-![](https://github.com/TechProber/cloud-estate/blob/master/packer-templates/assets/screenshot.png?raw=true)
 
 ## Conclusion
 
-To sum up, with such an approach, we can deploy a new VM in minutes and drastically speed up the DevOps process. Ansible is a very powerful tool as it opens up many opportunities to basically automate any shell-based tasks. Next, I plan to write another post to further extend the automation with [Terraform](https://www.terraform.io/) and [Terragrunt](https://terragrunt.gruntwork.io/) to deploy a VM in Proxmox with the VM template created by Packer.
+GitOps is a supplement to the existing DevOps culture. It uses a `version control` system like Git to automatically deploy the infrastructure. The deployment process is clearly visible, and any changes made to the system can be viewed and tracked, which improves productivity, security and compliance. Moreover, GitOps provides more elegant observability, which can observe the deployment state in real time and take actions to keep the actual state consistent with the expected state.
+
+Moreover, in GitOps, the whole system is described by declarative, which is naturally suitable for cloud native environment, because Kubernetes is also designed in such a way.
 
 ---
 
-## Further reading on packer
+## Further Readings
 
-You should now have a good starting point for building Proxmox VM templates with Packer. If your looking to extend its usefulness a little further check out these useful articles.
-
-- \- [Getting started with Packer](https://packer.io/intro/getting-started/install.html)
-- \- [Automated image builds with Jenkins, Packer, and Kubernetes](https://cloud.google.com/solutions/automated-build-images-with-jenkins-kubernetes)
-- \- [Cloud images in Proxmox](https://gist.github.com/chriswayg/b6421dcc69cb3b7e41f2998f1150e1df)
-- \- [Packer - Ansible Local Provisioner](https://www.packer.io/plugins/provisioners/ansible/ansible-local)
-- \- [Packer - Pipeline Builds](https://www.packer.io/guides/packer-on-cicd/pipelineing-builds)
+- [Weaveworks - Guide to GitOps](https://www.weave.works/technologies/gitops/)
+- [Weaveworks - Industry Experts Discuss GitOps and Best Practises for CICD](https://www.weave.works/blog/industry-experts-discuss-gitops-and-best-practises-for-cicd)
+- [Redhat - A developer's guide to CI/CD and GitOps with Jenkins Pipelines](https://developers.redhat.com/articles/2022/01/13/developers-guide-cicd-and-gitops-jenkins-pipelines)
 
 ---
