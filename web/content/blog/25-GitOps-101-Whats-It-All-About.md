@@ -11,7 +11,7 @@ draft: false
 
 This post is originally published on [icloudnative.io](https://icloudnative.io/posts/what-is-gitops/) blog by 米开朗基杨
 
-If you think `GitOps` sounds a bit like `DevOps`, you would be right. GitOps is essentially an operational framework that uses DevOps best practices. In this scenario, we basically move all cloud operations to Git.
+If you think `GitOps` sounds a bit like `DevOps`, you would be right. GitOps is essentially an operational framework that uses DevOps best practices. In this scenario, we move all cloud operations to Git.
 
 `Git` is essentially a source code management (SCM) tool developed in 2005 to support software development projects. As Git is already a core part of application development, leveraging Git enforces DevOps best practices and provides access to a robust version control system.
 
@@ -21,7 +21,7 @@ Other benefits include infrastructure automation, continuous integration/continu
 
 ## References
 
-- [Youtube TechWrold with Nana - What is GitOps, How GitOps works and Why it's so useful](https://www.youtube.com/watch?v=f5EpcWp0THw)
+- [Youtube TechWrold with Nana - What is GitOps, How GitOps works, and Why it's so useful](https://www.youtube.com/watch?v=f5EpcWp0THw)
 - [icloudnative.io - What is GitOps?](https://icloudnative.io/posts/what-is-gitops/)
 - [Redhat - What is GitOps?](https://www.redhat.com/en/topics/devops/what-is-gitops)
 - [State of DevOps Report](https://services.google.com/fh/files/misc/state-of-devops-2021.pdf)
@@ -35,11 +35,11 @@ Other benefits include infrastructure automation, continuous integration/continu
 
 ![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-e733924b04d361270f2e24d1ebf72ce2.png)
 
-[ Weaveworks ](https://www.weave.works/blog/what-is-gitops-really) coined the term “GitOps” in 2017 to share the idea that all deployments should be as easy as enacting a code change.
+[Weaveworks](https://www.weave.works/) coined the term “GitOps” in 2017 to share the idea that all deployments should be as easy as enacting a code change.
 
 GitOps is a `standardized workflow` for configuring, deploying, monitoring, managing and updating infrastructure-as-code Kubernetes and all of its components as code. This includes all the applications that run on it.
 
-The core idea here is to have `declarative descriptions` of the infrastructure and all related elements in its currently desired state in the production environment. In this scenario, an automated process ensures that the described state in the repository and the production environment always match.
+The core idea here is to have `declarative descriptions` of the infrastructure and all related elements in their currently desired state in the production environment. In this scenario, an automated process ensures that the described state in the repository and the production environment always match.
 
 In this case, it considers everything related to software deployment:
 
@@ -48,7 +48,7 @@ Build.
 Packaging.
 Application validation.
 Infrastructure changes.
-Because of everything that was required, Kubernetes was the ecosystem of choice for GitOps projects. The Kuberentes platform is the perfect solution because of improved developer productivity, higher reliability, increased flexibility, enhanced operational flexibility, improved auditability, compliance, and security.
+Because of everything that was required, Kubernetes was the ecosystem of choice for GitOps projects. The Kubernetes platform is the perfect solution because of improved developer productivity, higher reliability, increased flexibility, enhanced operational flexibility, improved audibility, compliance, and security.
 
 As GitOps evolved, the definition of “microservices” also changed to accommodate more movement.
 
@@ -84,7 +84,7 @@ GitOps encompasses several guiding principles. These include the following:
 
 ### The Entire System is in a Declarative State (X as Code)
 
-As you may not familiar with IaC, or `Infrastructure as Code`, this concept is when the end-user defines infrastructure as code instead of manually creating it. This makes our infrastructure much easier to reproduce and replicate but note that infrastructure as code actually evolved into defining NOT ONLY infrastructure but also `Network as Code`, `Policy as Code`, `security as Code`, and `Configuration as Code` etc. These are all types of "Definitions as Code", or `X as Code`. In X as Code, it unifies infrastructure, configuration, network, policy, and so on in `code`. For instance, instead of manually creating servers, network, and all the configuration around it on AWS and creating Kubernetes cluster with certain components. The end-user defines all of these in Terraform scripts, Ansible playbooks code, and Kubernetes manifest files. All these files describes the infrastructure of use, platform of use, and configuration of use.
+As you may not be familiar with IaC, or `Infrastructure as Code`, this concept is when the end-user defines infrastructure as code instead of manually creating it. This makes our infrastructure much easier to reproduce and replicate but note that infrastructure as code evolved into defining NOT ONLY infrastructure but also `Network as Code`, `Policy as Code`, `security as Code`, Configuration as Code, etc. `These are all types of "Definitions as Code", or X as Code`. In X as Code, it unifies infrastructure, configuration, network, policy, and so on in `code`. For instance, instead of manually creating servers, networks, and all the configuration around it on AWS and creating a Kubernetes cluster with certain components. The end-user defines all of these in Terraform scripts, Ansible playbooks code, and Kubernetes manifest files. All these files describe the infrastructure of use, the platform of use, and the configuration of use.
 
 ![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-db2bde312f1c47af45053ec41546ef18.jpeg)
 
@@ -112,9 +112,9 @@ Software agents also help ensure that the whole system is self-healing to mitiga
 
 ### Continuous Reconciliation
 
-`Reconciliation` is actually the earliest concept in Kubernetes, which means `the process of ensuring that the actual state of the system is consistent with the expected state`. The specific way is to install an agent in the target environment. Once the actual state does not match the expected state, the agent will automatically repair it. The repair here is more advanced than Kubernetes' fault self-healing. Even if the arrangement list of the cluster is manually modified, the cluster will be restored to the state described by the list in Git warehouse.
+`Reconciliation` is the earliest concept in Kubernetes, which means `the process of ensuring that the actual state of the system is consistent with the expected state`. The specific way is to install an agent in the target environment. Once the actual state does not match the expected state, the agent will automatically repair it. The repair here is more advanced than Kubernetes' fault self-healing. Even if the arrangement list of the cluster is manually modified, the cluster will be restored to the state described by the list in the Git warehouse.
 
-In view of these design philosophies, let's take a look at the workflow of GitOps:
+Given these design philosophies, let's take a look at the workflow of GitOps:
 
 ![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-068353e55afcd793c412301cdb027c15.jpg)
 
@@ -122,13 +122,13 @@ In view of these design philosophies, let's take a look at the workflow of GitOp
 
 ## The Evolution of CI/CD
 
-A `GitOps-based` workflow means all changes to application environments will be initiated by pull request to a Git repository holding the Kubernetes manifest files.
+A `GitOps-based` workflow means all changes to application environments will be initiated by a pull request to a Git repository holding the Kubernetes manifest files.
 
 Practically speaking, there is no `CI/CD` as a single concept. However, `there are CI and CD!`
 
 ### Traditional CI/CD (Push Pipelines)
 
-Traditonal CI/CD defines both the CI and CD process within a single pipeline.
+Traditional CI/CD defines both the CI and CD process within a single pipeline.
 
 Most CI/CD tools available today use a `push-based` model. A push-based pipeline means that code starts with the CI system and may continue its path through a series of encoded scripts or uses ‘kubectl’ by hand to push any changes to the Kubernetes cluster.
 
@@ -136,11 +136,11 @@ The reason you don’t want to use your CI system as the deployment impetus or d
 
 ![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-73705f60f481800257b06b46fb468e66.png)
 
-### Modern CI and CD followed by the GitOps Priciples
+### Modern CI and CD followed by the GitOps Principles
 
-GitOps-based CICD uses a `pull strategy` that consists of two key components: a `“Deployment Automator”` that watches a git repository or a image registry, and a `“Deployment Synchronizer”` that sits in the cluster to maintain its state.
+GitOps-based CICD uses a `pull strategy` that consists of two key components: a `“Deployment Automator”` that watches a git repository or an image registry, and a `“Deployment Synchronizer”` that sits in the cluster to maintain its state.
 
-Developers push their updated code to the code base repository; where the change is picked up by the CI tool and ultimately builds a Docker image. The ‘Deployment Automator’ notices the image, pulls the new image from the repository, and then updates its YAML in the config repo. The Deployment Synchronizer, a component comes with the GitOps tooling of choice(ArgoCD or FluxCD) in the Kubernetes cluster, then detects that the cluster is out of date, and it pulls the changed manifests from the config repo and deploys the new image to the cluster.
+Developers push their updated code to the code base repository; where the change is picked up by the CI tool and ultimately builds a Docker image. The ‘Deployment Automator’ notices the image, pulls the new image from the repository and then updates its YAML in the config repo. The Deployment Synchronizer, a component that comes with the GitOps tooling of choice(ArgoCD or FluxCD) in the Kubernetes cluster, then detects that the cluster is out of date, and it pulls the changed manifests from the config repo and deploys the new image to the cluster.
 
 ![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-12-5532a7d799157ba76aed6ea2931e2f08.png)
 
@@ -148,9 +148,9 @@ Developers push their updated code to the code base repository; where the change
 
 ## Conclusion
 
-GitOps is a supplement to the existing DevOps culture. It uses a `version control` system like Git to automatically deploy the infrastructure. The deployment process is clearly visible, and any changes made to the system can be viewed and tracked, which improves productivity, security and compliance. Moreover, GitOps provides more elegant observability, which can observe the deployment state in real time and take actions to keep the actual state consistent with the expected state.
+GitOps is a supplement to the existing DevOps culture. It uses a `version control` system like Git to automatically deploy the infrastructure. The deployment process is visible, and any changes made to the system can be viewed and tracked, which improves productivity, security, and compliance. Moreover, GitOps provides more elegant observability, which can observe the deployment state in real-time and take actions to keep the actual state consistent with the expected state.
 
-Moreover, in GitOps, the whole system is described by declarative, which is naturally suitable for cloud native environment, because Kubernetes is also designed in such a way.
+Moreover, in GitOps, the whole system is described by declarative, which is naturally suitable for the cloud-native environment, because Kubernetes is also designed in such a way.
 
 ---
 
@@ -158,6 +158,4 @@ Moreover, in GitOps, the whole system is described by declarative, which is natu
 
 - [Weaveworks - Guide to GitOps](https://www.weave.works/technologies/gitops/)
 - [Weaveworks - Industry Experts Discuss GitOps and Best Practises for CICD](https://www.weave.works/blog/industry-experts-discuss-gitops-and-best-practises-for-cicd)
-- [Redhat - A developer's guide to CI/CD and GitOps with Jenkins Pipelines](https://developers.redhat.com/articles/2022/01/13/developers-guide-cicd-and-gitops-jenkins-pipelines)
-
----
+- [Redhat - A developer's guide to CI/CD and GitOps with Jenkins Pipelines
