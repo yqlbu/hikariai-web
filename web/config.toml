@@ -182,7 +182,7 @@ weight =2
 
   [[menu.main]]
   parent="Blog"
-  name="Virtualization"
+  name="Networking"
   url="categories/networking"
   weight=8
 
