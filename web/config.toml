@@ -180,6 +180,12 @@ weight =2
   url="categories/virtualization"
   weight=7
 
+  [[menu.main]]
+  parent="Blog"
+  name="Virtualization"
+  url="categories/networking"
+  weight=8
+
 [[menu.main]]
 name="Page"
 identifier="Page"
