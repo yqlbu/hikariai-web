@@ -84,44 +84,418 @@ To understand more, please check out this [blog post](https://heimdalsecurity.co
 
 ## Demystify Mosdns
 
+- [Plugins](#plugins)
 - [IP-based DNS Solution](#ip-based-dns-solution)
 - [Region-based DNS Solution](#region-based-dns-solution)
 - [Ads-free DNS Solution](#ads-free-dns-solution)
 - [Cache Solution](#cache-solution)
 
+> Mosdns is a plugin-based DNS forwarder. Users can splice plugins as needed and customize their own DNS processing logics.
+
+### Plugins
+
+<details><summary> -- QueryMatchers -- </summary>
+
+- `query_matcher`: Matching query characteristics. e.g Domain name, type, and source IP, etc.
+- `response_matcher`: Matching query characteristics. e.g. response IP, CNAME, etc.
+
+</details>
+
+</br>
+
+<details><summary> -- Common -- </summary>
+
+- `forward`: Forward the request to the upstream DNS.
+- `cache`: Store response in cache. Support using `redis` as external cache storage
+- `_prefer_ipv4/6`: Automatically determine whether the domain name is a dual-stack domain name and then shiled the IPv4/6 request which will not affect the pure IPv6/4 domain name.
+- `ecs`: Attach ECS to request
+- `hosts`: Set specific IP to target domain
+- `blackhole`: Drop request, form an empty response, or generate a response with specific IPs. Commonly used in shileding responses.
+- `ttl`: Overwrite default TTL
+- `redirect`: Replace (redirect) the requested domain name. Request domain name A, but return the record of domain name B.
+- `padding`: Fill encrypted DNS messages to a fixed length to prevent traffic analysis.
+- `bufsize`: UDP fragmentation prevention
+- `arbitrary`: For advanced users. You may manually build an answer that contains any records.
+- `reverse_lookup`: API usage. The domain name processed by mosdns can be traced by IP.
+
+</details>
+
+</br>
+
+<details><summary> -- Dynamic Routing -- </summary>
+
+- `ipset`: Write response IP to ipset.
+- `nfset`: Write response IP to nftables.
+
+</details>
+
 ### IP-based DNS Solution
+
+Mosnds is compatable with [v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat), which we can use easily achieve `IP-based DNS` by including the `geoip.dat` in the mosdns configuration. The `query_matcher` is capable of filtering out `IPs` which are based on a particular region so that we can reference the `tag` when executing query search.
+
+Example:
+
+```yaml
+# config.yml
+
+# data source config
+data_providers:
+  - tag: geoip
+    file: "/etc/mosdns/geoip.dat"
+    auto_reload: false
+
+plugins:
+  # --- query matcher ---
+  # query - CN IP
+  - tag: response_cnip
+    type: response_matcher
+    args:
+      ip:
+        - "provider:geoip:cn"
+```
 
 ### Region-based DNS Solution
 
+Same as `geoip.dat`, `geosite.dat` can be downloaded from [v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat). The `query_matcher` is capable of filtering out `domains` which are based on a particular region so that we can reference the `tag` when executing query search.
+
+```yaml
+# config.yml
+
+# data source config
+data_providers:
+  - tag: geoip
+    file: "/etc/mosdns/geosite.dat"
+    auto_reload: false
+
+plugins:
+  # --- query matcher ---
+  # query - CN domains
+  - tag: query_cn
+    type: query_matcher
+    args:
+      domain:
+        - "provider:geosite:cn"
+
+  # query - non-CN domains
+  - tag: query_notcn
+    type: query_matcher
+    args:
+      domain:
+        - "provider:geosite:geolocation-!cn"
+```
+
 ### Ads-free DNS Solution
 
+For queries that are categorized as `ads`, they can be picked up by the `query_matcher` as the following:
+
+```yaml
+# config.yml
+
+# data source config
+data_providers:
+  - tag: geoip
+    file: "/etc/mosdns/geosite.dat"
+    auto_reload: false
+
+plugins:
+  # --- query matcher ---
+  # query - ad
+  - tag: query_ad
+    type: query_matcher
+    args:
+      domain:
+        - "provider:geosite:category-ads-all"
+```
+
 ### Cache Solution
+
+Mosdns offers two ways of handling `cache`: `in_memory` cache and `external cache`
+
+#### In-memory Cache
+
+As its name suggests, the plugin is able to save query response to local memory.
+
+```yaml
+# config.yml
+
+plugins:
+  # --- Excutable Plugins --- #
+  cache
+  - tag: "mem_cache"
+    type: "cache"
+    args:
+      size: 1024 # query max number
+      lazy_cache_ttl: 86400 # lazy cache ttl
+      lazy_cache_reply_ttl: 30 # timeout ttl
+      cache_everything: true
+```
+
+#### External Cache
+
+Another way to leverage the caching capability is to set up an external cache. Mosdns supports using [Redis](https://redis.io/) as the external storage. Query response can be saved to the target table defined in `config.yml`
+
+```yaml
+# config.yml
+
+plugins:
+  # --- Excutable Plugins --- #
+  - tag: "redis_cache"
+    type: "cache"
+    args:
+      size: 1024 # query max number
+      lazy_cache_ttl: 86400 # lazy cache ttl
+      lazy_cache_reply_ttl: 30 # timeout ttl
+      cache_everything: true
+      # redis config
+      redis: "redis://<REDIS_SERVER_IP>:<REDIS_PORT>/<TABLE_ID>" # e.g. redis://10.189.17.4:6379/1
+      redis_timeout: 50
+```
 
 ---
 
 ## Workflow
 
----
+The flowchart below demonstrates the Mosdns workflow in a conmon use case.
 
-## Configuration
+![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-25-dc5a235b53ae33d3131083bae573b6be.png)
 
 ---
 
 ## How to deploy
 
-- [Prerequisites](#prerequisites)
+- [Deploy Prerequisites](#deploy-prerequisites-optional)
+- [Releases](#releases)
+- [Reset Port 53](#reset-port-53)
 - [CLI](#cli)
 
-### Prerequisites
+### Deploy Prerequisites (Optional)
+
+- [Proxmox LXC](#proxmox-lxc)
+
+#### Proxmox LXC
+
+I found out the earist way to get `mosdns` deployed is to deploy it as a `Proxmox LXC Container`. There is an automation script which you can leverage to spin up a LXC Container on Proxmox in munutes.
+
+GitHub Repository - [tteck/Proxmox](https://github.com/tteck/Proxmox)
+
+```bash
+# provision Ubuntu LXC
+bash -c "$(wget -qLO - https://github.com/tteck/Proxmox/raw/main/ct/ubuntu-v4.sh)"
+```
+
+If you also need external cache storage, I would recommend you use the above script to provision two LXC containers, one for `mosdns`, and the other one for `redis`.
+
+![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-25-af0e1dec6ad266f3cde3e847ab03843c.png)
+
+### Releases
+
+As suggested by the mosdns maintainers, mosdns is ONLY made up of a single `executable binary` file. Therefore, we can just simply head over to the [release page](https://github.com/IrineSistiana/mosdns/releases), download the executable binary that is compatable with the platform of choice.
+
+{{< notice "note" >}}
+
+For those who host a dedicated `Proxmox` server, and followed the above step to provision LXC containers, you may download the `mosdns-linux-amd64.zip` from the [release page](https://github.com/IrineSistiana/mosdns/releases)
+
+{{< /notice >}}
+
+### Reset Port 53
+
+By default, `mosdns` runs on port `5533`. If you want to set bind it to port `53`, the default port for DNS, do the following:
+
+Deactivate `DNSStubListener` and update DNS server address. Create a new file: /etc/systemd/resolved.conf.d/mosdns.conf (create a /etc/systemd/resolved.conf.d directory if necessary) with the following contents:
+
+```bash
+mkdir -p /etc/systemd/resolved.conf.d
+
+# /etc/systemd/resolved.conf.d/mosdns.conf
+[Resolve]
+DNS=127.0.0.1
+DNSStubListener=no
+```
+
+Specifying `127.0.0.1` as DNS server address is necessary because otherwise the nameserver will be `127.0.0.53` which doesn't work without DNSStubListener.
+
+Activate another resolv.conf file:
+
+```bash
+sudo mv /etc/resolv.conf /etc/resolv.conf.backup
+sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+```
+
+Restart DNSStubListener:
+
+```bash
+systemctl reload-or-restart systemd-resolved
+```
+
+Verify port open status:
+
+```bash
+ss -tupln
+```
 
 ### CLI
+
+- [Spin up mosdns](#spin-up-mosdns)
+- [Helper](#helper)
+- [Install as a daemon service](#install-as-a-daemon-service)
+
+#### Spin up mosdns
+
+```bash
+# acquired root access
+sudo -i
+
+# install vim and unzip
+sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt-get install vim unzip -y
+
+# create default mosdns directory
+mkdir -p /etc/mosdns
+
+# unzip the release binary
+cd /etc/mosdns
+unzip mosdns-linux-amd64.zip
+
+# start mosdns
+mosdns start -c /etc/mosdns/config.yml -d /etc/mosdns
+```
+
+#### Helper
+
+```bash
+mosdns -h
+```
+
+#### Install as a daemon service
+
+> `Mosdns service` is a simple system service management tool. Mosdns can be installed as a `system service` to realize self-starting. Administrator or root privileges are required. Theoretically, it can be used on Windows XP+,Linux/(systemd | upstart | sysv), and OSX/Launchd platforms. Windows, Ubuntu, Debian are available.
+
+```bash
+# install mosdns as a daemon service
+# mosdns service install -d <mosdns_work_dir> -c <mosdns_config_absolute_path>
+mosdns service install -d /etc/mosdns -c /etc/mosdns/config.yaml
+# start the service (service will not be automatically start at the first time)
+systemctl enable mosdns --now
+mosdns service start
+
+# check service status
+systemctl status mosdns
+
+# uninstall
+mosdns service stop
+mosdns service uninstall
+```
+
+{{< notice "note" >}}
+
+If you make any changes in the `config.yml` file, please restart the daemon service accordingly.
+
+{{< /notice >}}
+
+---
+
+## Configuration
+
+- [Configuration Prerequisites](#configuration-prerequisites)
+- [Rules and Standards](#rules-and-standards)
+- [Sample Configuration](#sample-configuration)
+
+> Mosdns uses standard `YAML` file for advanced configuration. Once the configuration is updated, then you will need to manually restart the mosdns daemon service so that the new configuration can take effects accordingly.
+
+### Configuration Prerequisites
+
+- [DAT Files](#dat-files)
+
+#### DAT Files
+
+Prior to deploying mosdns, head over to [Loyalsoldier/v2ray-rules-dat/releases](https://github.com/Loyalsoldier/v2ray-rules-dat/releases) to download the `geoip.dat` and `geosite.dat` files.
+
+### Rules and Standards
+
+- [Log](#log)
+- [Data Providers](#data-providers)
+- [API](#api)
+- [Servers](#servers)
+- [Plugins](#plugins)
+
+The `config.yaml` file is made up of 4 parts, _log_, _data_providers_, _api_, _servers_, and _plugins_.
+
+#### Log
+
+```yaml
+# log config
+log:
+  level: info # ["debug", "info", "warn", and "error"], default is set to "info"
+  file: "/var/log/mosdns.log"
+```
+
+#### Data Providers
+
+The `data_providers` block defines the data sources in which you would like to reference in the other blocks.
+
+```yaml
+# data source config
+data_providers:
+  - tag: geoip
+    file: "/etc/mosdns/geoip.dat"
+    auto_reload: false
+  - tag: geosite
+    file: "/etc/mosdns/geosite.dat"
+    auto_reload: false
+```
+
+#### API
+
+The `api` block defines the API entry. Yet, it is still under developed at the time of writing.
+
+```yaml
+# api config
+api:
+  http: ":8080"
+```
+
+#### Servers
+
+The `server` block defines the general server settings.
+
+```yaml
+# server config
+servers:
+  # main query sequence
+  - exec: sequence_exec # <- this is the plugin tag that the program will load in the first place
+    timeout: 5
+    listeners:
+      # --- local port binding --- #
+      # local ipv6
+      - protocol: udp
+        addr: "[::1]:53"
+      - protocol: tcp
+        addr: "[::1]:53"
+      # local ipv4
+      - protocol: udp
+        addr: "127.0.0.1:53"
+      - protocol: tcp
+        addr: "127.0.0.1:53"
+
+      # --- interface binding --- #
+      # lan group <- default interface
+      - protocol: udp
+        addr: "192.168.1.x:53" # <- change the ip to fit your need
+      - protocol: tcp
+        addr: "10.178.0.3:53" # <- same as above
+      # vlan 17 <- this block is ONLY needed if you have more than one interface
+      - protocol: udp
+        addr: "10.189.17.3:53"
+      - protocol: tcp
+        addr: "10.189.17.3:53"
+```
+
+#### Plugins
+
+### Sample Configuration
 
 ---
 
 ## Conclusion
-
----
-
-## Further Readings
 
 ---
