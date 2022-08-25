@@ -267,6 +267,7 @@ The flowchart below demonstrates the Mosdns workflow in a common use case.
 - [Releases](#releases)
 - [Reset Port 53](#reset-port-53)
 - [CLI](#cli)
+- [Redis](#redis)
 
 ### Deploy Prerequisites (Optional)
 
@@ -391,6 +392,70 @@ mosdns service uninstall
 If you make any changes in the `config.yml` file, please restart the daemon service accordingly.
 
 {{< /notice >}}
+
+### Redis (Recommended)
+
+Redis can be deployed using [Docker-Compose](https://docs.docker.com/compose/)
+
+```yaml
+# docker-compose.yml
+---
+version: "3.4"
+services:
+  redis:
+    container_name: redis
+    image: "redis:alpine"
+    command: redis-server
+    ports:
+      - "6379:6379"
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.4
+    restart: unless-stopped
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["--cleanup", "--interval", "3600", "--debug"]
+
+# networking for the Redis container
+networks:
+  node_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+```
+
+Spin up the redis server
+
+```bash
+# spin up the container instance
+docker-compose up -d
+# get into the redis instance
+docker exec -it redis sh
+# intereact with redis
+redis-cli
+```
+
+Some useful Redis commands
+
+```bash
+# intereact with redis
+redis-cli
+# select target table
+127.0.0.1:6379> select <table_number>
+# fetch all keys
+127.0.0.1:6379> keys *
+```
 
 ---
 
