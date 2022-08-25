@@ -247,7 +247,7 @@ plugins:
       lazy_cache_reply_ttl: 30 # timeout ttl
       cache_everything: true
       # redis config
-      redis: "redis://<REDIS_SERVER_IP>:<REDIS_PORT>/<TABLE_ID>" # e.g. redis://10.189.17.4:6379/1
+      redis: "redis://<REDIS_SERVER_IP>:<REDIS_PORT>/<DB_ID>" # e.g. redis://10.189.17.4:6379/1
       redis_timeout: 50
 ```
 
@@ -455,8 +455,8 @@ Some useful Redis commands
 ```bash
 # intereact with redis
 redis-cli
-# select target table
-127.0.0.1:6379> select <table_number>
+# select target db
+127.0.0.1:6379> select <db_number>
 # fetch all keys
 127.0.0.1:6379> keys *
 ```
@@ -588,7 +588,7 @@ plugins:
       lazy_cache_reply_ttl: 30 # timeout ttl
       cache_everything: true
       # redis config
-      redis: "redis://10.189.17.4:6379/1"
+      redis: "redis://10.189.17.4:6379/1" # <- redis://<host>:<port>/<db_number>
       redis_timeout: 50
 
   # ... other plugins goes here
