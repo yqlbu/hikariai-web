@@ -227,6 +227,13 @@ a.post-title:hover,
   }
 }
 
+// br style
+br {
+  content: "";
+  margin: 8px;
+  display: block;
+}
+
 // content style
 .content {
 
