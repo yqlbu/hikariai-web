@@ -213,11 +213,11 @@ a.post-title:hover,
   }
 
   blockquote {
-    padding: 20px 30px;
+    padding: 10px 20px;
     border-left: 6px solid $color-primary;
     color: $dark;
     font-weight: 700;
-    font-size: 22px;
+    font-size: 18;
     margin: 30px 0;
     border-radius: 5px;
 
@@ -225,6 +225,13 @@ a.post-title:hover,
       margin-bottom: 0;
     }
   }
+}
+
+// br style
+br {
+  content: "";
+  margin: 8px;
+  display: block;
 }
 
 // content style
@@ -349,12 +356,12 @@ a.post-title:hover,
   }
 
   .notices.note p {
-    border-top: 30px solid #6ab0de;
+    border-top: 30px solid #5e498c;
     background: $light;
   }
 
   .notices.note p::after {
-    content: 'Note';
+    content: 'Notes';
     position: absolute;
     top: 2px;
     color: $white;
