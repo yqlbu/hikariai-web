@@ -9,7 +9,7 @@ categories: ["Networking"]
 draft: false
 ---
 
-Recently, I found a very interesting open-source project called mosdns, which is regarded as the _next generation DNS resolver_ from the user's perspective. [Mosdns](https://github.com/IrineSistiana/mosdns) is written in [Golang](https://go.dev/), leveraging its native concurrecny capability, in which it can massively reduce the overheads when it comes to resolve domains in the context of latency and efficiency. In this post, we will unvein the mysterey of DNS Resolver, explore what this project can offer, and make our self-hosted DNS resolver much stronger and more secure.
+Recently, I found a very interesting open-source project called mosdns, which is regarded as the _next-generation DNS resolver_ from the user's perspective. [Mosdns](https://github.com/IrineSistiana/mosdns) is written in [Golang](https://go.dev/), leveraging its native concurrency capability, in which it can massively reduce the overheads when it comes to resolving domains in the context of latency and efficiency. In this post, we will unveil the mystery of DNS Resolver, explore what this project can offer, and make our self-hosted DNS resolver much stronger and more secure.
 
 For more details, please check out their [GitHub Repository](https://github.com/IrineSistiana/mosdns)
 
@@ -48,7 +48,7 @@ Yet, at the time of writing, unfortunately, the wiki is ONLY written in Chinese.
 
 A DNS resolver, also known as a resolver, is a server on the Internet that converts domain names into IP addresses.
 
-When you use the Internet, every time you connect to a website using its domain name (such as "computerhope.com"), your computer needs to know that website's IP address (a unique series of numbers). So your computer contacts a DNS resolver, and gets the current IP address of computerhope.com.
+When you use the Internet, every time you connect to a website using its domain name (such as "computerhope.com"), your computer needs to know that website's IP address (a unique series of numbers). So your computer contacts a DNS resolver and gets the current IP address of computerhope.com.
 
 Usually, the resolver is one part of a larger decentralized DNS (domain name system). When you send your request to the DNS resolver, the resolver accesses other servers in the DNS to obtain the address, then sends you the response.
 
@@ -62,11 +62,11 @@ The following diagram from Amazon’s Route 53 documentation gives an overview o
 
 ![](https://sookocheff.com/post/networking/how-does-dns-work/assets/dns-resolution.png)
 
-To understand more about the DNS workflow, check out the this [blog post](https://sookocheff.com/post/networking/how-does-dns-work/).
+To understand more about the DNS workflow, check out this [blog post](https://sookocheff.com/post/networking/how-does-dns-work/).
 
 ### What are DoH and DoT?
 
-The following diagram demonstrates the differences between `http` and `https` when it comes it exchanging data in between client and server
+The following diagram demonstrates the differences between `http` and `https` when it comes it exchanging data between client and server
 
 ![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-24-d58879e667a37bb3368ecd443860c6a6.png)
 
@@ -74,7 +74,7 @@ The following diagram demonstrates the differences between `http` and `https` wh
 
 As most organizations are already aware, a DNS traffic filtering solution is crucial for their cybersecurity environment. But while most organizations are already using a DNS traffic filter, the dilemma brought on by DoH is that compatibility issues may arise once browsers start using DoH by default.
 
-Here is what can be problematic. DNS traffic filtering solutions are using the settings built-in Operating Systems to perform DNS queries. However, if the browser is no longer in-use the standard DNS port (53) for queries and instead switch to the DoH one (443), the traffic filtering solution will lose sight of those queries.
+Here is what can be problematic. DNS traffic filtering solutions are using the settings of built-in Operating Systems to perform DNS queries. However, if the browser is no longer in use of the standard DNS port (53) for queries and instead switches to the DoH one (443), the traffic filtering solution will lose sight of those queries.
 
 While DoH indeed brings more privacy by default, it should not be confused with compliance or security.
 
@@ -90,13 +90,13 @@ To understand more, please check out this [blog post](https://heimdalsecurity.co
 - [Ads-free DNS Solution](#ads-free-dns-solution)
 - [Cache Solution](#cache-solution)
 
-> Mosdns is a plugin-based DNS forwarder. Users can splice plugins as needed and customize their own DNS processing logics.
+> Mosdns is a plugin-based DNS forwarder. Users can splice plugins as needed and customize their DNS processing logic.
 
 ### Plugins
 
 <details><summary> -- QueryMatchers -- </summary>
 
-- `query_matcher`: Matching query characteristics. e.g Domain name, type, and source IP, etc.
+- `query_matcher`: Matching query characteristics. e.g Domain name, type, source IP, etc.
 - `response_matcher`: Matching query characteristics. e.g. response IP, CNAME, etc.
 
 </details>
@@ -106,13 +106,13 @@ To understand more, please check out this [blog post](https://heimdalsecurity.co
 <details><summary> -- Common -- </summary>
 
 - `forward`: Forward the request to the upstream DNS.
-- `cache`: Store response in cache. Support using `redis` as external cache storage
-- `_prefer_ipv4/6`: Automatically determine whether the domain name is a dual-stack domain name and then shiled the IPv4/6 request which will not affect the pure IPv6/4 domain name.
+- `cache`: Store response in the cache. Support using `redis` as external cache storage
+- `_prefer_ipv4/6`: Automatically determine whether the domain name is a dual-stack domain name and then shield the IPv4/6 request which will not affect the pure IPv6/4 domain name.
 - `ecs`: Attach ECS to request
-- `hosts`: Set specific IP to target domain
-- `blackhole`: Drop request, form an empty response, or generate a response with specific IPs. Commonly used in shileding responses.
+- `hosts`: Set specific IP to the target domain
+- `blackhole`: Drop the request, form an empty response, or generate a response with specific IPs. Commonly used in shielding responses.
 - `ttl`: Overwrite default TTL
-- `redirect`: Replace (redirect) the requested domain name. Request domain name A, but return the record of domain name B.
+- `redirect`: Replace (redirect) the requested domain name. Request domain names A, but return the record of domain name B.
 - `padding`: Fill encrypted DNS messages to a fixed length to prevent traffic analysis.
 - `bufsize`: UDP fragmentation prevention
 - `arbitrary`: For advanced users. You may manually build an answer that contains any records.
@@ -131,7 +131,7 @@ To understand more, please check out this [blog post](https://heimdalsecurity.co
 
 ### IP-based DNS Solution
 
-Mosnds is compatable with [v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat), which we can use easily achieve `IP-based DNS` by including the `geoip.dat` in the mosdns configuration. The `query_matcher` is capable of filtering out `IPs` which are based on a particular region so that we can reference the `tag` when executing query search.
+Mosnds is compatible with [v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat), which we can use easily to achieve `IP-based DNS` by including the `geoip.dat` in the mosdns configuration. The `query_matcher` is capable of filtering out `IPs` which are based on a particular region so that we can reference the `tag` when executing a query search.
 
 Example:
 
@@ -156,7 +156,7 @@ plugins:
 
 ### Region-based DNS Solution
 
-Same as `geoip.dat`, `geosite.dat` can be downloaded from [v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat). The `query_matcher` is capable of filtering out `domains` which are based on a particular region so that we can reference the `tag` when executing query search.
+Same as `geoip.dat`, `geosite.dat` can be downloaded from [v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat). The `query_matcher` is capable of filtering out `domains` which are based on a particular region so that we can reference the `tag` when executing a query search.
 
 ```yaml
 # config.yml
@@ -213,7 +213,7 @@ Mosdns offers two ways of handling `cache`: `in_memory` cache and `external cach
 
 #### In-memory Cache
 
-As its name suggests, the plugin is able to save query response to local memory.
+As its name suggests, the plugin can save query responses to local memory.
 
 ```yaml
 # config.yml
@@ -255,7 +255,7 @@ plugins:
 
 ## Workflow
 
-The flowchart below demonstrates the Mosdns workflow in a conmon use case.
+The flowchart below demonstrates the Mosdns workflow in a common use case.
 
 ![](https://nrmjjlvckvsb.compat.objectstorage.ap-tokyo-1.oraclecloud.com/picgo/2022/08-25-dc5a235b53ae33d3131083bae573b6be.png)
 
@@ -274,7 +274,7 @@ The flowchart below demonstrates the Mosdns workflow in a conmon use case.
 
 #### Proxmox LXC
 
-I found out the earist way to get `mosdns` deployed is to deploy it as a `Proxmox LXC Container`. There is an automation script which you can leverage to spin up a LXC Container on Proxmox in munutes.
+I found out the earist way to get `mosdns` deployed is to deploy it as a `Proxmox LXC Container`. There is an automation script that you can leverage to spin up an LXC Container on Proxmox in minutes.
 
 GitHub Repository - [tteck/Proxmox](https://github.com/tteck/Proxmox)
 
@@ -400,7 +400,7 @@ If you make any changes in the `config.yml` file, please restart the daemon serv
 - [Rules and Standards](#rules-and-standards)
 - [Sample Configuration](#sample-configuration)
 
-> Mosdns uses standard `YAML` file for advanced configuration. Once the configuration is updated, then you will need to manually restart the mosdns daemon service so that the new configuration can take effects accordingly.
+> Mosdns uses standard `YAML` file for advanced configuration. Once the configuration is updated, then you will need to manually restart the mosdns daemon service so that the new configuration can take effect accordingly.
 
 ### Configuration Prerequisites
 
@@ -424,7 +424,7 @@ Prior to deploying mosdns, head over to [Loyalsoldier/v2ray-rules-dat/releases](
 
 #### Log
 
-The `log` block defines the logs setting. It is recommended to save logs in `/var/log/mosdns.log`
+The `log` block defines the log settings. It is recommended to save logs in `/var/log/mosdns.log`
 
 ```yaml
 # log config
@@ -456,7 +456,7 @@ data_providers:
 
 #### API
 
-The `api` block defines the API entry. Yet, it is still under developed at the time of writing.
+The `api` block defines the API entry. Yet, it is still underdeveloped at the time of writing.
 
 ```yaml
 # api config
@@ -584,6 +584,6 @@ Sample [config.yml](https://github.com/TechProber/mosdns-lxc-deploy/blob/master/
 
 ## Conclusion
 
-To sum up, Mosdns is a `plugin-based` DNS forwarder. Users can splice plugins as needed and customize their own DNS processing logic. With mosdns, we may get better DNS processing experience and without worrying too much about DNS contamination from the local ISP.
+To sum up, Mosdns is a `plugin-based` DNS forwarder. Users can splice plugins as needed and customize their DNS processing logic. With mosdns, we may get a better DNS processing experience without worrying too much about DNS contamination from the local ISP.
 
 ---
