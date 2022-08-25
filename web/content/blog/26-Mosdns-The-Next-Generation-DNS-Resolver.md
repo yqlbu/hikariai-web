@@ -1,5 +1,5 @@
 ---
-title: "Mosdns - The next generation DNS kesolver"
+title: "Mosdns - The next generation DNS Resolver"
 image: "images/post/post-26.jpg"
 socialImage: "/images/post/post-26.jpg"
 date: 2022-08-24
