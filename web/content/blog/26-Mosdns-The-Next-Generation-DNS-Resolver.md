@@ -357,6 +357,10 @@ mkdir -p /etc/mosdns
 cd /etc/mosdns
 unzip mosdns-linux-amd64.zip
 
+# mv the executable binary to /usr/bin
+chmod +x mosdns
+mv mosdns /usr/bin/
+
 # start mosdns
 mosdns start -c /etc/mosdns/config.yml -d /etc/mosdns
 ```
