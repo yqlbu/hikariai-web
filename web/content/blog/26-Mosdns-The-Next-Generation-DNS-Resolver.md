@@ -647,7 +647,7 @@ plugins:
 
 ### Sample Configuration
 
-Sample [config.yml](https://github.com/TechProber/mosdns-lxc-deploy/blob/master/config.yml) is available in [TechProber/mosdns-lxc-deploy](https://github.com/TechProber/mosdns-lxc-deploy/).
+Sample [config.yml](https://github.com/TechProber/mosdns-lxc-deploy/blob/master/mosdns/config.yml) is available in [TechProber/mosdns-lxc-deploy](https://github.com/TechProber/mosdns-lxc-deploy/).
 
 ---
 
