@@ -362,7 +362,7 @@ chmod +x mosdns
 mv mosdns /usr/bin/
 
 # start mosdns
-mosdns start -c /etc/mosdns/config.yml -d /etc/mosdns
+mosdns start -c /etc/mosdns/config.yaml -d /etc/mosdns
 ```
 
 #### Helper
