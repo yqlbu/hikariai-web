@@ -4,7 +4,7 @@ image: "images/post/post-26.jpg"
 socialImage: "/images/post/post-26.jpg"
 date: 2022-08-24
 author: "Kevin Yu"
-tags: ["Networking"]
+tags: ["Networking", "DNS", "OSS"]
 categories: ["Networking"]
 draft: false
 ---
@@ -406,6 +406,8 @@ If you make any changes in the `config.yml` file, please restart the daemon serv
 
 - [DAT Files](#dat-files)
 
+> There is a sample config.yml file available in the [sample Configuration](#sample-configuration) section below
+
 #### DAT Files
 
 Prior to deploying mosdns, head over to [Loyalsoldier/v2ray-rules-dat/releases](https://github.com/Loyalsoldier/v2ray-rules-dat/releases) to download the `geoip.dat` and `geosite.dat` files.
@@ -418,15 +420,23 @@ Prior to deploying mosdns, head over to [Loyalsoldier/v2ray-rules-dat/releases](
 - [Servers](#servers)
 - [Plugins](#plugins)
 
-The `config.yaml` file is made up of 4 parts, _log_, _data_providers_, _api_, _servers_, and _plugins_.
+> The `config.yaml` file is made up of 4 parts, _log_, _data_providers_, _api_, _servers_, and _plugins_.
 
 #### Log
+
+The `log` block defines the logs setting. It is recommended to save logs in `/var/log/mosdns.log`
 
 ```yaml
 # log config
 log:
   level: info # ["debug", "info", "warn", and "error"], default is set to "info"
   file: "/var/log/mosdns.log"
+```
+
+You may constantly check the logs with the following command:
+
+```bash
+tail -f /var/log/mosdns.log
 ```
 
 #### Data Providers
@@ -492,10 +502,88 @@ servers:
 
 #### Plugins
 
+The `plugins` block defines the plugins with dedicated tags, and tags can NOT have the same name.
+
+To learn about the list of available plugins and usage, please check out the [official wiki page](https://irine-sistiana.gitbook.io/mosdns-wiki/mosdns/cha-jian-ji-qi-can-shu)
+
+After receiving the request from the client, the server packages the request data and some client information, constructs a "request context", and passes it to the plugins for further processing. Plugins will be executed in the desired order as defined in the configuration file. After plugins finish their execution cycle, the server returns the response in the "request context" to the client.
+
+```yaml
+# plugin config
+plugins:
+  - tag: "redis_cache"
+    type: "cache"
+    args:
+      size: 2048 # query max number
+      lazy_cache_ttl: 86400 # lazy cache ttl
+      lazy_cache_reply_ttl: 30 # timeout ttl
+      cache_everything: true
+      # redis config
+      redis: "redis://10.189.17.4:6379/1"
+      redis_timeout: 50
+
+  # ... other plugins goes here
+
+  # main_sequence
+  - tag: main_sequence
+    type: sequence
+    args:
+      exec:
+        # CN domains
+        - if: "query_cn"
+          exec:
+            - _prefer_ipv4 # ipv4 as priority
+            - _pad_query
+            - local # local ip as result
+            - if: "response_cnip" # cnip as result
+              exec:
+                - _return # end
+
+        # non-CN domains
+        - if: query_notcn
+          exec:
+            - _prefer_ipv4 # ipv4 as priority
+            - _pad_query
+            - remote # uncontaminated ip
+            - if: "!response_cnip" # non-CN ip as result
+              exec:
+                - _return # end
+
+        # other condition
+        - primary:
+            - _prefer_ipv4
+            - _pad_query
+            - remote
+          secondary:
+            - _prefer_ipv4
+            - _pad_query
+            - local
+          fast_fallback: 400
+          always_standby: true
+
+  # --- sequence execution --- #
+  - tag: sequence_exec
+    type: sequence
+    args:
+      exec:
+        - _prefer_ipv4
+        - if: query_ad # ad
+          exec:
+            - _new_nxdomain_response # empty response
+            - _return
+        - redis_cache # cache
+        - main_sequence # run main query sequence
+        - modify_ttl
+```
+
 ### Sample Configuration
+
+Sample [config.yml](https://github.com/TechProber/mosdns-lxc-deploy/blob/master/config.yml) is available in [TechProber/mosdns-lxc-deploy](https://github.com/TechProber/mosdns-lxc-deploy/).
 
 ---
 
 ## Conclusion
+
+To sum up, Mosdns is a `plugin-based` DNS forwarder. Users can splice plugins as needed and customize their own DNS processing logic. With mosdns, we may get better DNS processing experience and without worrying too much about DNS contamination from the local ISP.
 
 ---
