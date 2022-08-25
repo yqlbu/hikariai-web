@@ -356,12 +356,12 @@ br {
   }
 
   .notices.note p {
-    border-top: 30px solid #6ab0de;
+    border-top: 30px solid #5e498c;
     background: $light;
   }
 
   .notices.note p::after {
-    content: 'Note';
+    content: 'Notes';
     position: absolute;
     top: 2px;
     color: $white;
