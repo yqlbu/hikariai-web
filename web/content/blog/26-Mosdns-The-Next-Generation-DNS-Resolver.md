@@ -489,7 +489,7 @@ Prior to deploying mosdns, head over to [Loyalsoldier/v2ray-rules-dat/releases](
 - [Servers](#servers)
 - [Plugins](#plugins)
 
-> The `config.yaml` file is made up of 4 parts, _log_, _data_providers_, _api_, _servers_, and _plugins_.
+> The `config.yaml` file is made up of 5 parts, _log_, _data_providers_, _api_, _servers_, and _plugins_.
 
 #### Log
 
