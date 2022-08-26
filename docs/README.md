@@ -337,6 +337,17 @@ tags = ["this", "blog", "rocks!"]
 
 </p></details>
 
+<details><summary>RSS Config</summary>
+
+### RSS Config
+
+references:
+
+- [TIL: How to Create Full Text RSS Feed for Hugo](https://www.rockyourcode.com/til-how-to-create-full-text-rss-feed-for-hugo/)
+- [Hugo Site - RSS Template](https://gohugo.io/templates/rss/)
+
+</details>
+
 ### Use Hugo Http Server
 
 Use `Hugo` built in `Http Server` to serve contents
