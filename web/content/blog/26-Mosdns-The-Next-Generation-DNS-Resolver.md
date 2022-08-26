@@ -265,6 +265,7 @@ The flowchart below demonstrates the Mosdns workflow in a common use case.
 
 - [Deploy Prerequisites](#deploy-prerequisites-optional)
 - [Releases](#releases)
+- [Environment Preparation](#environment-preparation)
 - [Reset Port 53](#reset-port-53)
 - [CLI](#cli)
 - [Redis](#redis)
