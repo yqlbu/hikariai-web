@@ -8,6 +8,9 @@ paginate="5"
 summaryLength="40"
 autoHeadingID="true"
 googleAnalytics="UA-210343715-1"
+languageCode = "en-us"
+# rss limit
+rssLimit = 20
 
 ############################# Modules ##############################
 
