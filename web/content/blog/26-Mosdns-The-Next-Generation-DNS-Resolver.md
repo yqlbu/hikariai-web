@@ -413,8 +413,8 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - $PWD/redis-data:/var/lib/redis
-      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+      - /etc/redis:/redis-data:/var/lib/redis
+      - /etc/redis:/redis.conf:/usr/local/etc/redis/redis.conf
     environment:
       - REDIS_REPLICATION_MODE=master
     networks:
