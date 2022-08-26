@@ -298,6 +298,30 @@ For those who host a dedicated `Proxmox` server, and followed the above step to 
 
 {{< /notice >}}
 
+### Environment Preparation
+
+Get the following steps done so that `mosdns` can be called as `/usr/bin/mosdns`.
+
+```bash
+# acquired root access
+sudo -i
+
+# install vim and unzip
+sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt-get install vim unzip -y
+
+# create default mosdns directory
+mkdir -p /etc/mosdns
+
+# unzip the release binary
+cd /etc/mosdns
+unzip mosdns-linux-amd64.zip
+
+# mv the executable binary to /usr/bin
+chmod +x mosdns
+mv mosdns /usr/bin/
+```
+
 ### Reset Port 53
 
 By default, `mosdns` runs on port `5533`. If you want to set bind it to port `53`, the default port for DNS, do the following:
@@ -334,6 +358,12 @@ Verify port open status:
 ss -tupln
 ```
 
+{{< notice "note" >}}
+
+if everything goes well, you will not see port `:53` from the console outputs.
+
+{{< /notice >}}
+
 ### CLI
 
 - [Spin up mosdns](#spin-up-mosdns)
@@ -343,24 +373,6 @@ ss -tupln
 #### Spin up mosdns
 
 ```bash
-# acquired root access
-sudo -i
-
-# install vim and unzip
-sudo apt-get update -y && sudo apt-get upgrade -y
-sudo apt-get install vim unzip -y
-
-# create default mosdns directory
-mkdir -p /etc/mosdns
-
-# unzip the release binary
-cd /etc/mosdns
-unzip mosdns-linux-amd64.zip
-
-# mv the executable binary to /usr/bin
-chmod +x mosdns
-mv mosdns /usr/bin/
-
 # start mosdns
 mosdns start -c /etc/mosdns/config.yaml -d /etc/mosdns
 ```
