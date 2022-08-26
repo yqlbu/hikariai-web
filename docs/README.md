@@ -345,6 +345,13 @@ Use `Hugo` built in `Http Server` to serve contents
 hugo server -D --bind <server ip address> --baseURL http://<server ip address>
 ```
 
+### RSS Config
+
+references:
+
+- [TIL: How to Create Full Text RSS Feed for Hugo](https://www.rockyourcode.com/til-how-to-create-full-text-rss-feed-for-hugo/)
+- [Hugo Site - RSS Template](https://gohugo.io/templates/rss/)
+
 ### Rerences
 
 - [Hugo Official Docs](https://gohugo.io/documentation/)
