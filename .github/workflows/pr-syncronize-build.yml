@@ -35,6 +35,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      # Get current run_id
+      - name: Get github run_id
+        id: export_run_id
+        run: echo "::set-output name=run_id::$(echo $GITHUB_RUN_ID)"
+
       # Get current tag version and pass it as environment variable
       - name: Set environment variables
         run: |
@@ -90,16 +95,21 @@ jobs:
       git_repository: ${{ env.REPOSITORY }}
       git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
       git_commit_message: ${{ github.event.commits[0].message }}
-      run_id: $GITHUB_RUN_ID
+      run_id: ${{ steps.export_run_id.outputs.run_id }}
 
   # pre-deploy-
-  pre-deploy-flow:
+g pre-deploy-flow:
     # Depends on previous workflow
     needs: multi-arch-build-flow
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Get current run_id
+      - name: Get github run_id
+        id: export_run_id
+        run: echo "::set-output name=run_id::$(echo $GITHUB_RUN_ID)"
+
       - name: Set environment variables
         run: |
           # repository related
@@ -143,7 +153,7 @@ jobs:
 
     # Workflow outputs
     outputs:
-      run_id: $GITHUB_RUN_ID
+      run_id: ${{ steps.export_run_id.outputs.run_id }}
 
   # post-actions
   post-action-flow:
@@ -154,6 +164,12 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Get current run_id
+      - name: Get github run_id
+        id: export_run_id
+        run: echo "::set-output name=run_id::$(echo $GITHUB_RUN_ID)"
+
+      # Notify build result on Telegram
       - name: Send telegram message to notify build result
         uses: appleboy/telegram-action@master
         with:
