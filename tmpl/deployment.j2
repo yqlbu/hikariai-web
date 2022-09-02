@@ -2,10 +2,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${{ image_name }}
+  name: {{ image_name }}
 spec:
   replicas: 2
   template:
     metadata:
       labels:
-        version: ${{ image_deploy_tag }}
+        version: {{ image_deploy_tag }}
