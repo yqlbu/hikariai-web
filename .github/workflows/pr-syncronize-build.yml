@@ -91,7 +91,7 @@ jobs:
       - name: Clone k8s deployment private repository
         uses: GuillaumeFalourd/clone-github-repo-action@v2
         with:
-          owner: ${{ github.event.client_payload.repo.owner.login }}
+          owner: ${{ github.repository_owner }}
           repository: ${{ env.DEPLOYMENT_REPOSITORY }}
           access-token: ${{ secrets.ACCESS_TOKEN }}
 
