@@ -26,11 +26,10 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "multi-arch build"
-  multi-arch-build:
+  # PR-based CI flow
+  multi-arch-build-flow:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -46,8 +45,6 @@ jobs:
           # project related params
           echo "ENV=staging" >> $GITHUB_ENV
           echo "DOMAIN=staging.hikariai.net" >> $GITHUB_ENV
-          # repository related
-          echo "DEPLOYMENT_REPOSITORY=vsphere-hub" >> $GITHUB_ENV
 
       # The docker/setup-qemu action installs QEMU static binaries, which are used to run builders for architectures other than the host.
       - name: Set up QEMU
@@ -87,7 +84,26 @@ jobs:
           build-args: |
             ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
 
-      # Clone deployment repository
+    # Workflow outputs
+    outputs:
+      repository: ${{ env.REPOSITORY }}
+      git_pr_sha_short: ${{ steps.identify.outputs.git_pr_sha_short }}
+
+  # pre-deploy-
+  pre-deploy-flow:
+    # Depends on previous workflow
+    needs: multi-arch-build-flow
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Set environment variable
+        run: |
+          # repository related
+          echo "ENV=staging" >> $GITHUB_ENV
+          echo "REPOSITORY={{ needs.multi-arch-build-flow.outputs.repository }}" >> $GITHUB_ENV
+          echo "DEPLOYMENT_REPOSITORY=vsphere-hub" >> $GITHUB_ENV
+
       - name: Clone k8s deployment private repository
         uses: GuillaumeFalourd/clone-github-repo-action@v2
         with:
@@ -103,8 +119,7 @@ jobs:
           strict: true
           variables: |
             image_name=${{ env.REPOSITORY }}
-            image_deploy_tag=${{ env.ENV }}-${{ steps.export_sha.outputs.sha_short }}
-
+            image_deploy_tag=${{ env.ENV }}-${{ needs.multi-arch-build-flow.outputs.git_pr_sha_short }}
 
       - name: Commit deploy manifest on remote deployment repo
         run: |
@@ -115,12 +130,11 @@ jobs:
           git add .
           git commit -s -m "ci: generate deployment overlay manifests" 
 
-
-      - name: Push changes to remote deployment repo
-        uses: GuillaumeFalourd/git-commit-push@v1.3
-        with:
-          target_branch: master
-          files: .
-          remote_repository: https://github.com/${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
-          access_token: ${{ secrets.ACCESS_TOKEN }}
-          force: true
+      # - name: Push changes to remote deployment repo
+      #   uses: GuillaumeFalourd/git-commit-push@v1.3
+      #   with:
+      #     target_branch: master
+      #     files: .
+      #     remote_repository: https://github.com/${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
+      #     access_token: ${{ secrets.ACCESS_TOKEN }}
+      #     force: true
