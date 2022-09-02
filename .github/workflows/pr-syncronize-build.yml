@@ -46,6 +46,8 @@ jobs:
           # project related params
           echo "ENV=staging" >> $GITHUB_ENV
           echo "DOMAIN=staging.hikariai.net" >> $GITHUB_ENV
+          # repository related
+          echo "DEPLOYMENT_REPOSITORY=yqlbu/vsphere-hub" >> $GITHUB_ENV
 
       # The docker/setup-qemu action installs QEMU static binaries, which are used to run builders for architectures other than the host.
       - name: Set up QEMU
@@ -84,3 +86,16 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ steps.vars.outputs.sha_short }}
           build-args: |
             ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
+
+      # Clone deployment repository
+      - name: Clone k8s deployment private repository
+        uses: GuillaumeFalourd/clone-github-repo-action@v2
+        with:
+          owner: ${{ github.actor }}
+          repository: ${{ env.DEPLOYMENT_REPOSITORY }}
+          access-token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name:
+        run: |
+          ls vsphere-hub
+    
