@@ -146,8 +146,9 @@ jobs:
 
   # post-actions
   post-action-flow:
-    # Depends on previous workflow
-    if: ${{ (job.multi-arch-build-flow.result == 'success' ) || (job.pre-deploy-flow.result == 'success') }}
+    # Depends on previous workflows
+    needs: [multi-arch-build-flow, pre-deploy-flow]
+    if: ${{ (needs.multi-arch-build-flow.result == 'success' ) || (needs.pre-deploy-flow.result == 'success') }}
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
