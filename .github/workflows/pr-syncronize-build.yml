@@ -138,3 +138,27 @@ jobs:
           push-branch: master
           github-token: ${{ secrets.ACCESS_TOKEN }}
           commit-message: "ci: generate deployment overlay manifests"
+
+  # post-actions
+  post-action-flow:
+    # Depends on previous workflow
+    needs: multi-arch-build-flow
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Send telegram message to notify build result
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          tken: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
+
+            Commit message: ${{ github.event.commits[0].message }}
+
+            Repository: ${{ github.repository }}
+
+            See changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+
+            Build details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
