@@ -99,7 +99,7 @@ jobs:
         uses: cuchi/jinja2-action@v1.1.0
         with: 
           template: tmpl/deployment.j2
-          output_file: vsphere-hub/cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+          output_file: deployment.yaml
           strict: true
           variables: |
             image_deploy_tag=${{ env.ENV }}-${{ steps.export_sha.outputs.sha_short }}
