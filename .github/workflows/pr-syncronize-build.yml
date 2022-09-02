@@ -80,7 +80,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ steps.vars.outputs.sha_short }}
+            ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ steps.export_sha.outputs.sha_short }}
           build-args: |
             ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
 
@@ -88,7 +88,7 @@ jobs:
     outputs:
       env: ${{ env.ENV }}
       repository: ${{ env.REPOSITORY }}
-      git_pr_sha_short: ${{ steps.identify.outputs.git_pr_sha_short }}
+      git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
 
   # pre-deploy-
   pre-deploy-flow:
