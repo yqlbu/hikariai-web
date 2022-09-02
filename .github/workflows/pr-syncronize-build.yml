@@ -108,7 +108,7 @@ jobs:
       - name: Checkout k8s deployment private repository
         uses: actions/checkout@v3
         with:
-          repository: ${{ github.repository_owner }}/${{ DEPLOYMENT_REPOSITORY }}
+          repository: ${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Generate deploy manifest from Jinja template
