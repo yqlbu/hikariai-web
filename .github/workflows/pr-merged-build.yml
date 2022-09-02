@@ -16,12 +16,11 @@ name: PR Build
 # Controls when the action will run.
 on:
   # Trigger when PR is merged
-  on:
-    pull_request:
-      branches: 
-        - master
-      types:
-        - closed
+  pull_request:
+    branches: 
+      - master
+    types:
+      - closed
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
