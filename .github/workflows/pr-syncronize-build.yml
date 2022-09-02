@@ -121,9 +121,12 @@ jobs:
             image_name=${{ env.REPOSITORY }}
             image_deploy_tag=${{ env.ENV }}-${{ needs.multi-arch-build-flow.outputs.git_pr_sha_short }}
 
-      - name: Commit deploy manifest on remote deployment repo
+      - name: Inspect deployment manifest
         run: |
           cat cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+
+      - name: Commit deploy manifest on remote deployment repo
+        run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
