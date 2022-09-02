@@ -33,7 +33,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # Get current tag version and pass it as environment variable
       - name: Set environment variables
@@ -105,12 +105,11 @@ jobs:
           echo "REPOSITORY=${{ needs.multi-arch-build-flow.outputs.repository }}" >> $GITHUB_ENV
           echo "DEPLOYMENT_REPOSITORY=vsphere-hub" >> $GITHUB_ENV
 
-      - name: Clone k8s deployment private repository
-        uses: GuillaumeFalourd/clone-github-repo-action@v2
+      - name: Checkout k8s deployment private repository
+        uses: actions/checkout@v3
         with:
-          owner: ${{ github.repository_owner }}
-          repository: ${{ env.DEPLOYMENT_REPOSITORY }}
-          access-token: ${{ secrets.ACCESS_TOKEN }}
+          repository: ${{ github.repository_owner }}/${{ DEPLOYMENT_REPOSITORY }}
+          token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Generate deploy manifest from Jinja template
         uses: cuchi/jinja2-action@v1.1.0
@@ -124,7 +123,6 @@ jobs:
 
       - name: Commit deploy manifest on remote deployment repo
         run: |
-          cd ${{ env.DEPLOYMENT_REPOSITORY }}
           cat cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
