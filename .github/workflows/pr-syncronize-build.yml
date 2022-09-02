@@ -62,6 +62,10 @@ jobs:
         id: export_sha
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
+      - name: Get git commit message
+        id: export_commit_message
+        run: echo "::set-output name=commit_message::$(git log -1 --pretty=format:"%s")"
+
       # Login to GitHub Container Registry
       - name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -89,6 +93,7 @@ jobs:
       env: ${{ env.ENV }}
       repository: ${{ env.REPOSITORY }}
       git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
+      git_commit_message: ${{ steps.export_commit_message.outputs.commit_message }}
 
   # pre-deploy-
   pre-deploy-flow:
@@ -102,7 +107,7 @@ jobs:
         run: |
           # repository related
           echo "ENV=${{ needs.multi-arch-build-flow.outputs.env }}" >> $GITHUB_ENV
-          echo "REPOSITORY=${{ needs.multi-arch-build-flow.outputs.repository }}" >> $GITHUB_ENV
+          echo "REPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
           echo "DEPLOYMENT_REPOSITORY=vsphere-hub" >> $GITHUB_ENV
 
       - name: Checkout k8s deployment private repository
@@ -118,7 +123,7 @@ jobs:
           output_file: cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
           strict: true
           variables: |
-            image_name=${{ env.REPOSITORY }}
+            image_name=${{ github.repository }}
             image_deploy_tag=${{ env.ENV }}-${{ needs.multi-arch-build-flow.outputs.git_pr_sha_short }}
 
       - name: Inspect deployment manifest
@@ -139,6 +144,10 @@ jobs:
           github-token: ${{ secrets.ACCESS_TOKEN }}
           commit-message: "ci: generate deployment overlay manifests"
 
+    outputs:
+      env: ${{ env.ENV }}
+      git_commit_message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
+
   # post-actions
   post-action-flow:
     # Depends on previous workflow
@@ -155,9 +164,9 @@ jobs:
           message: |
             🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
 
-            Commit message: ${{ github.event.commits[0].message }}
+            Commit message: ${{ needs.pre-deploy-flow.outputs.git_commit_message }}
 
-            Deployment Stage: ${{ needs.multi-arch-build-flow.outputs.env }}
+            Deployment Stage: ${{ needs.pre-deploy-flow.outputs.env }}
 
             Repository: ${{ github.repository }}
 
@@ -165,5 +174,5 @@ jobs:
 
             Build details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-            Build status: ${{ steps.multi-arch-build-flow.outputs.status }}
+            Build status: ${{ steps.pre-deploy-flow.outputs.status }}
 
