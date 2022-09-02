@@ -91,11 +91,11 @@ jobs:
       - name: Clone k8s deployment private repository
         uses: GuillaumeFalourd/clone-github-repo-action@v2
         with:
-          owner: ${{ github.actor }}
+          owner: ${{ github.event.client_payload.repo.owner.login }}
           repository: ${{ env.DEPLOYMENT_REPOSITORY }}
           access-token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name:
+      - name: Access cloned repository content
         run: |
-          ls vsphere-hub
-    
+          cd ${{ env.DEPLOYMENT_REPOSITORY }}
+          ls -la 
