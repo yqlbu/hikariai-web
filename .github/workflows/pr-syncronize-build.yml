@@ -157,7 +157,7 @@ jobs:
 
             Commit message: ${{ github.event.commits[0].message }}
 
-            Deployment Stage: ${{ env.ENV }}
+            Deployment Stage: ${{ needs.multi-arch-build-flow.outputs.env }}
 
             Repository: ${{ github.repository }}
 
