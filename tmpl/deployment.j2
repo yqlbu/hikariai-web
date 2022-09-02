@@ -8,4 +8,4 @@ spec:
   template:
     metadata:
       labels:
-        version: ${{ env.ENV }}-${{ steps.export_sha.outputs.sha_short }}
+        version: ${{ image_deploy_tag }}
