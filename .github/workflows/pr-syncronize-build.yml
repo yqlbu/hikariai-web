@@ -106,8 +106,8 @@ jobs:
       - name: Set environment variables
         run: |
           # repository related
-          echo "ENV=${{ job.multi-arch-build-flow.outputs.env }}" >> $GITHUB_ENV
-          echo "REPOSITORY=${{ job.multi-arch-build-flow.outputs.git_repository }}" >> $GITHUB_ENV
+          echo "ENV=${{ jobs.multi-arch-build-flow.outputs.env }}" >> $GITHUB_ENV
+          echo "REPOSITORY=${{ jobs.multi-arch-build-flow.outputs.git_repository }}" >> $GITHUB_ENV
           echo "DEPLOYMENT_REPOSITORY=vsphere-hub" >> $GITHUB_ENV
 
       - name: Checkout k8s deployment private repository
@@ -161,9 +161,9 @@ jobs:
           message: |
             🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
 
-            Commit message: ${{ job.multi-arch-build-flow.outputs.git_commit_message }}
+            Commit message: ${{ jobs.multi-arch-build-flow.outputs.git_commit_message }}
 
-            Deployment Stage: ${{ job.multi-arch-build-flow.outputs.env }}
+            Deployment Stage: ${{ jobs.multi-arch-build-flow.outputs.env }}
 
             Repository: ${{ github.repository }}
 
