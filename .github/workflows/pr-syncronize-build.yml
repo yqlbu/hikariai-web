@@ -105,8 +105,22 @@ jobs:
             image_name=${{ env.REPOSITORY }}
             image_deploy_tag=${{ env.ENV }}-${{ steps.export_sha.outputs.sha_short }}
 
-      - name: Access cloned repository content
+
+      - name: Commit deploy manifest on remote deployment repo
         run: |
           cd ${{ env.DEPLOYMENT_REPOSITORY }}
-          ls -la 
           cat cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -s -m "ci: generate deployment overlay manifests" 
+
+
+      - name: Push changes to remote deployment repo
+        uses: GuillaumeFalourd/git-commit-push@v1.3
+        with:
+          target_branch: master
+          files: .
+          remote_repository: https://github.com/${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
+          access_token: ${{ secrets.ACCESS_TOKEN }}
+          force: true
