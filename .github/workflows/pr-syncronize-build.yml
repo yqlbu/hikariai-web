@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v2
 
       # Get current tag version and pass it as environment variable
-      - name: Set environment variable
+      - name: Set environment variables
         run: |
           echo "REGISTRY_USERNAME=hikariai" >> $GITHUB_ENV
           echo "REGISTRY=docker.io" >> $GITHUB_ENV
@@ -86,6 +86,7 @@ jobs:
 
     # Workflow outputs
     outputs:
+      env: ${{ env.ENV }}
       repository: ${{ env.REPOSITORY }}
       git_pr_sha_short: ${{ steps.identify.outputs.git_pr_sha_short }}
 
@@ -97,11 +98,11 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Set environment variable
+      - name: Set environment variables
         run: |
           # repository related
-          echo "ENV=staging" >> $GITHUB_ENV
-          echo "REPOSITORY={{ needs.multi-arch-build-flow.outputs.repository }}" >> $GITHUB_ENV
+          echo "ENV=${{ needs.multi-arch-build-flow.outputs.env }}" >> $GITHUB_ENV
+          echo "REPOSITORY=${{ needs.multi-arch-build-flow.outputs.repository }}" >> $GITHUB_ENV
           echo "DEPLOYMENT_REPOSITORY=vsphere-hub" >> $GITHUB_ENV
 
       - name: Clone k8s deployment private repository
@@ -114,8 +115,8 @@ jobs:
       - name: Generate deploy manifest from Jinja template
         uses: cuchi/jinja2-action@v1.1.0
         with: 
-          template: tmpl/deployment.j2
-          output_file: vsphere-hub/cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+          template: cicd/${{ env.REPOSITORY }}/kustomize/tmpl/deployment.yaml.j2
+          output_file: cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
           strict: true
           variables: |
             image_name=${{ env.REPOSITORY }}
