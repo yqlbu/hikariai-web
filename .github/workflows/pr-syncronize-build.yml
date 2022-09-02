@@ -132,11 +132,9 @@ jobs:
           git add .
           git commit -s -m "ci: generate deployment overlay manifests" 
 
-      # - name: Push changes to remote deployment repo
-      #   uses: GuillaumeFalourd/git-commit-push@v1.3
-      #   with:
-      #     target_branch: master
-      #     files: .
-      #     remote_repository: https://github.com/${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
-      #     access_token: ${{ secrets.ACCESS_TOKEN }}
-      #     force: true
+      - name: Push local changes to remote deployment repository
+        uses: github-actions-x/commit@v2.9
+        with:
+          push-branch: master
+          github-token: ${{ secrets.ACCESS_TOKEN }}
+          commit-message: "ci: generate deployment overlay manifests"
