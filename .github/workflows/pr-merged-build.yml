@@ -42,9 +42,9 @@ jobs:
       # Get current tag version and pass it as environment variable
       - name: Set environment variable
         run: |
-          echo "USERNAME=hikariai" >> $GITHUB_ENV
+          echo "REGISTRY_USERNAME=hikariai" >> $GITHUB_ENV
           echo "REGISTRY=docker.io" >> $GITHUB_ENV
-          echo "REPOSITORY=hikariai/hikariai-web" >> $GITHUB_ENV
+          echo "REPOSITORY=hikariai-web" >> $GITHUB_ENV
           echo "IMAGE_TAG=prod" >> $GITHUB_ENV
           # project related params
           echo "ENV=prod" >> $GITHUB_ENV
@@ -68,7 +68,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.USERNAME }}
-          password: ${{ secrets.TOKEN }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
       # Build and Push the images
       - name: Build and Push Latest Image
@@ -80,6 +80,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
+            ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
           build-args: |
             ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
