@@ -142,7 +142,7 @@ jobs:
   # post-actions
   post-action-flow:
     # Depends on previous workflow
-    needs: multi-arch-build-flow
+    needs: pre-deploy-flow
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -151,7 +151,7 @@ jobs:
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
-          tken: ${{ secrets.TELEGRAM_TOKEN }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
 
@@ -162,3 +162,6 @@ jobs:
             See changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
 
             Build details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Build status: ${{ steps.multi-arch-build-flow.outputs.status }}
+
