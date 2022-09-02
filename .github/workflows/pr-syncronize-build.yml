@@ -157,6 +157,8 @@ jobs:
 
             Commit message: ${{ github.event.commits[0].message }}
 
+            Deployment Stage: ${{ env.ENV }}
+
             Repository: ${{ github.repository }}
 
             See changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
