@@ -46,6 +46,7 @@ jobs:
           # project related params
           echo "ENV=staging" >> $GITHUB_ENV
           echo "DOMAIN=staging.hikariai.net" >> $GITHUB_ENV
+
       # The docker/setup-qemu action installs QEMU static binaries, which are used to run builders for architectures other than the host.
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1

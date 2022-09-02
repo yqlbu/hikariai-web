@@ -28,7 +28,9 @@ on:
 jobs:
   # This workflow contains a single job called "multi-arch build"
   multi-arch-build:
+    # trigger ONLY when pr is merged
     if: ${{ github.event.pull_request.merged }}
+
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
