@@ -90,7 +90,7 @@ jobs:
       git_repository: ${{ env.REPOSITORY }}
       git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
       git_commit_message: ${{ github.event.commits[0].message }}
-      run_id: ${{ github.event.inputs.id }}
+      run_id: {{ env.GITHUB_RUN_ID }}
 
   # pre-deploy-
   pre-deploy-flow:
@@ -143,7 +143,7 @@ jobs:
 
     # Workflow outputs
     outputs:
-      run_id: ${{ github.event.inputs.id }}
+      run_id: {{ env.GITHUB_RUN_ID }}
 
   # post-actions
   post-action-flow:
@@ -178,5 +178,5 @@ jobs:
 
               - pre-deploy-flow: ${{ needs.pre-deploy-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.pre-deploy-flow.outputs.run_id }}?check_suite_focus=true
 
-              - post-action-flow: ${{ needs.post-actions-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.event.inputs.id }}?check_suite_focus=true
+              - post-action-flow: ${{ needs.post-actions-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/{{ env.GITHUB_RUN_ID }}?check_suite_focus=true
 
