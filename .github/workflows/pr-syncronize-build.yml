@@ -38,7 +38,7 @@ jobs:
       # Get current run_id
       - name: Get github run_id
         id: export_run_id
-        run: echo "::set-output name=run_id::$(echo $GITHUB_RUN_ID)"
+        run: echo "::set-output name=run_id::$(GITHUB_RUN_ID)"
 
       # Get current tag version and pass it as environment variable
       - name: Set environment variables
@@ -98,7 +98,7 @@ jobs:
       run_id: ${{ steps.export_run_id.outputs.run_id }}
 
   # pre-deploy-
-g pre-deploy-flow:
+  pre-deploy-flow:
     # Depends on previous workflow
     needs: multi-arch-build-flow
     # The type of runner that the job will run on
@@ -108,7 +108,7 @@ g pre-deploy-flow:
       # Get current run_id
       - name: Get github run_id
         id: export_run_id
-        run: echo "::set-output name=run_id::$(echo $GITHUB_RUN_ID)"
+        run: echo "::set-output name=run_id::$(GITHUB_RUN_ID)"
 
       - name: Set environment variables
         run: |
@@ -167,7 +167,7 @@ g pre-deploy-flow:
       # Get current run_id
       - name: Get github run_id
         id: export_run_id
-        run: echo "::set-output name=run_id::$(echo $GITHUB_RUN_ID)"
+        run: echo "::set-output name=run_id::$(GITHUB_RUN_ID)"
 
       # Notify build result on Telegram
       - name: Send telegram message to notify build result
@@ -194,5 +194,5 @@ g pre-deploy-flow:
 
               - pre-deploy-flow: ${{ needs.pre-deploy-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.pre-deploy-flow.outputs.run_id }}?check_suite_focus=true
 
-              - post-action-flow: ${{ needs.post-actions-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/$GITHUB_RUN_ID?check_suite_focus=true
+              - post-action-flow: ${{ needs.post-actions-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ steps.export_run_id.outputs.run_id }}?check_suite_focus=true
 
