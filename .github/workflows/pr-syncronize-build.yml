@@ -90,6 +90,7 @@ jobs:
       git_repository: ${{ env.REPOSITORY }}
       git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
       git_commit_message: ${{ github.event.commits[0].message }}
+      run_id: ${{ github.run_id }}
 
   # pre-deploy-
   pre-deploy-flow:
@@ -140,6 +141,10 @@ jobs:
           github-token: ${{ secrets.ACCESS_TOKEN }}
           commit-message: "ci: generate deployment overlay manifests"
 
+    # Workflow outputs
+    outputs:
+      run_id: ${{ github.run_id }}
+
   # post-actions
   post-action-flow:
     # Depends on previous workflows
@@ -167,5 +172,11 @@ jobs:
 
             Build details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-            Build status: success
+            Build status:
+
+              - multi-arch-build-flow: ${{ needs.multi-arch-build-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.multi-arch-build-flow.outputs.run_id }}?check_suite_focus=true
+
+              - pre-deploy-flow: ${{ needs.pre-deploy-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.pre-deploy-flow.outputs.run_id }}?check_suite_focus=true
+
+              - post-action-flow: ${{ needs.pre-deploy-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
 
