@@ -62,7 +62,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Get git sha short
-        id: vars
+        id: export_sha
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       # Login to GitHub Container Registry
@@ -95,7 +95,17 @@ jobs:
           repository: ${{ env.DEPLOYMENT_REPOSITORY }}
           access-token: ${{ secrets.ACCESS_TOKEN }}
 
+      - name: Generate deploy manifest from Jinja template
+        uses: cuchi/jinja2-action@v1.1.0
+        with: 
+          template: tmpl/deployment.j2
+          output_file: vsphere-hub/cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+          strict: true
+          variables: |
+            image_deploy_tag=sha-${{ steps.export_sha.outputs.sha_short }}
+
       - name: Access cloned repository content
         run: |
           cd ${{ env.DEPLOYMENT_REPOSITORY }}
           ls -la 
+          cat cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml

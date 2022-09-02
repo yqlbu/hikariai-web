@@ -1,0 +1,11 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${{ env.REPOSITORY }}
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        version: ${{ env.ENV }}-${{ steps.export_sha.outputs.sha_short }}
