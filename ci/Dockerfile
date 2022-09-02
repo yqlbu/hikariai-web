@@ -30,9 +30,7 @@ COPY web/ ./
 COPY ci/bootstrap.sh ./
 
 RUN echo "ENV=$ENV" > env
-RUN echo "SERVER_IP=$SERVER_IP" >> env
 RUN echo "DOMAIN_NAME=$DOMAIN_NAME" >> env
-RUN cat env
 
 RUN chmod +x ./bootstrap.sh && sh bootstrap.sh
 
