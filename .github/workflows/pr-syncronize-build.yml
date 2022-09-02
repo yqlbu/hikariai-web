@@ -99,9 +99,10 @@ jobs:
         uses: cuchi/jinja2-action@v1.1.0
         with: 
           template: tmpl/deployment.j2
-          output_file: deployment.yaml
+          output_file: vsphere-hub/cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
           strict: true
           variables: |
+            image_name=${{ env.REPOSITORY }}
             image_deploy_tag=${{ env.ENV }}-${{ steps.export_sha.outputs.sha_short }}
 
       - name: Access cloned repository content
