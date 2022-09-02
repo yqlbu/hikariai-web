@@ -90,7 +90,7 @@ jobs:
       git_repository: ${{ env.REPOSITORY }}
       git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
       git_commit_message: ${{ github.event.commits[0].message }}
-      run_id: ${{ github.run_id }}
+      run_id: ${{ github.event.inputs.id }}
 
   # pre-deploy-
   pre-deploy-flow:
@@ -121,7 +121,7 @@ jobs:
           strict: true
           variables: |
             image_name=${{ env.REPOSITORY }}
-            image_deploy_tag=${{ env.ENV }}-${{ job.multi-arch-build-flow.outputs.git_pr_sha_short }}
+            image_deploy_tag=${{ env.ENV }}-${{ needs.multi-arch-build-flow.outputs.git_pr_sha_short }}
 
       - name: Inspect deployment manifest
         run: |
@@ -143,7 +143,7 @@ jobs:
 
     # Workflow outputs
     outputs:
-      run_id: ${{ github.run_id }}
+      run_id: ${{ github.event.inputs.id }}
 
   # post-actions
   post-action-flow:
@@ -162,21 +162,21 @@ jobs:
           message: |
             🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
 
-            Commit message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
+            Commit Message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
 
             Deployment Stage: ${{ needs.multi-arch-build-flow.outputs.env }}
 
             Repository: ${{ github.repository }}
 
-            See changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+            Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
 
-            Build details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-            Build status:
+            Build Summary:
 
               - multi-arch-build-flow: ${{ needs.multi-arch-build-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.multi-arch-build-flow.outputs.run_id }}?check_suite_focus=true
 
               - pre-deploy-flow: ${{ needs.pre-deploy-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.pre-deploy-flow.outputs.run_id }}?check_suite_focus=true
 
-              - post-action-flow: ${{ needs.pre-deploy-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
+              - post-action-flow: ${{ needs.post-actions-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.event.inputs.id }}?check_suite_focus=true
 
