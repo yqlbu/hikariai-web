@@ -38,7 +38,7 @@ jobs:
       # Get current run_id
       - name: Get github run_id
         id: export_run_id
-        run: echo "::set-output name=run_id::$(GITHUB_RUN_ID)"
+        run: echo "::set-output name=run_id::$GITHUB_RUN_ID"
 
       # Get current tag version and pass it as environment variable
       - name: Set environment variables
@@ -108,7 +108,7 @@ jobs:
       # Get current run_id
       - name: Get github run_id
         id: export_run_id
-        run: echo "::set-output name=run_id::$(GITHUB_RUN_ID)"
+        run: echo "::set-output name=run_id::$GITHUB_RUN_ID"
 
       - name: Set environment variables
         run: |
@@ -167,7 +167,7 @@ jobs:
       # Get current run_id
       - name: Get github run_id
         id: export_run_id
-        run: echo "::set-output name=run_id::$(GITHUB_RUN_ID)"
+        run: echo "::set-output name=run_id::$GITHUB_RUN_ID"
 
       # Notify build result on Telegram
       - name: Send telegram message to notify build result
