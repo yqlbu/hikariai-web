@@ -59,7 +59,7 @@ jobs:
           route: GET /repos/{owner}/{repo}/commits/{sha}
           owner: ${{ github.repository_owner }}
           repo: ${{ env.REPOSITORY }}
-          sha: ${{ steps.export_sha_long.outputs.sha_long }}
+          sha: ${{ steps.export_commit_sha.outputs.sha_long }}
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
