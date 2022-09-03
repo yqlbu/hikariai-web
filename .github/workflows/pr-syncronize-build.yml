@@ -35,11 +35,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Get current run_id
-      - name: Get github run_id
-        id: export_run_id
-        run: echo "::set-output name=run_id::$GITHUB_RUN_ID"
-
       # Get current tag version and pass it as environment variable
       - name: Set environment variables
         run: |
@@ -95,7 +90,6 @@ jobs:
       git_repository: ${{ env.REPOSITORY }}
       git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
       git_commit_message: ${{ github.event.commits[0].message }}
-      run_id: ${{ steps.export_run_id.outputs.run_id }}
 
   # pre-deploy-
   pre-deploy-flow:
@@ -105,11 +99,6 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Get current run_id
-      - name: Get github run_id
-        id: export_run_id
-        run: echo "::set-output name=run_id::$GITHUB_RUN_ID"
-
       - name: Set environment variables
         run: |
           # repository related
@@ -151,10 +140,6 @@ jobs:
           github-token: ${{ secrets.ACCESS_TOKEN }}
           commit-message: "ci: generate deployment overlay manifests"
 
-    # Workflow outputs
-    outputs:
-      run_id: ${{ steps.export_run_id.outputs.run_id }}
-
   # post-actions
   post-action-flow:
     # Depends on previous workflows
@@ -164,35 +149,42 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Get current run_id
-      - name: Get github run_id
-        id: export_run_id
-        run: echo "::set-output name=run_id::$GITHUB_RUN_ID"
+      - name: List jobs the workflow run
+        uses: octokit/request-action@v2.x
+        id: get_job_ids
+        with:
+          route: GET /repos/{owner}/{repo}/actions/runs/${{ github.run_id }}/jobs
+          owner: yqlbu
+          repo: ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - run: "echo jobs: ${{ steps.get_job_ids.outputs.data }}"
 
       # Notify build result on Telegram
-      - name: Send telegram message to notify build result
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
+      # - name: Send telegram message to notify build result
+      #   uses: appleboy/telegram-action@master
+      #   with:
+      #     to: ${{ secrets.TELEGRAM_TO }}
+      #     token: ${{ secrets.TELEGRAM_TOKEN }}
+      #     message: |
+      #       🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
 
-            Commit Message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
+      #       Commit Message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
 
-            Deployment Stage: ${{ needs.multi-arch-build-flow.outputs.env }}
+      #       Deployment Stage: ${{ needs.multi-arch-build-flow.outputs.env }}
 
-            Repository: ${{ github.repository }}
+      #       Repository: ${{ github.repository }}
 
-            Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+      #       Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
 
-            Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      #       Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-            Build Summary:
+      #       Build Summary:
 
-              - multi-arch-build-flow: ${{ needs.multi-arch-build-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.multi-arch-build-flow.outputs.run_id }}?check_suite_focus=true
+      #         - multi-arch-build-flow: ${{ needs.multi-arch-build-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.multi-arch-build-flow.outputs.run_id }}?check_suite_focus=true
 
-              - pre-deploy-flow: ${{ needs.pre-deploy-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.pre-deploy-flow.outputs.run_id }}?check_suite_focus=true
+      #         - pre-deploy-flow: ${{ needs.pre-deploy-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.pre-deploy-flow.outputs.run_id }}?check_suite_focus=true
 
-              - post-action-flow: ${{ needs.post-actions-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ steps.export_run_id.outputs.run_id }}?check_suite_focus=true
+      #         - post-action-flow: ${{ needs.post-actions-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ steps.export_run_id.outputs.run_id }}?check_suite_focus=true
 
