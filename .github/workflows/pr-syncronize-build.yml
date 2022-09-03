@@ -34,182 +34,208 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # PR-based CI flow
-  multi-arch-build-flow:
+  # pre-actions
+  pre-action-flow:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # Define job related environment variables
-    env:
-      DOMAIN: staging.hikariai.net
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      # - name: Get github event context
+      #   id: export_event_context
+      #   run: echo "::set-output name=event_context::$(git log -1 --pretty=format:"%H")"
 
-      # The docker/setup-qemu action installs QEMU static binaries, which are used to run builders for architectures other than the host.
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-        with:
-          image: tonistiigi/binfmt:latest
-          platforms: all
+      - name: Get PR number
+        id: export_pr_number
+        run: echo "::set-output name=pr_number::${{ github.event.pull_request.number }}"
 
-      # The docker/setup-buildx action configures buildx, which is a Docker CLI plugin that provides enhanced build capabilities.
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
+      - name: Get PR url
+        id: export_pr_url
+        run: echo "::set-output name=pr_url::${{ github.event.pull_request.url }}"
 
       - name: Get git sha long
         id: export_sha_long
-        run: echo "::set-output name=sha_long::$(git log -1 --pretty=format:"%H")"
+        run: echo "::set-output name=sha_long::${{ github.event.pull_request.head.sha }}"
 
       - name: Get git sha short
         id: export_sha_short
-        run: echo "::set-output name=sha_short::$(git rev-parse --short ${{ steps.export_sha_long.outputs.sha_long }})"
+        run: echo "::set-output name=sha_short::$(git rev-parse --short ${{ github.event.pull_request.head.sha }})"
 
-      - name: Get last git commit
-        uses: octokit/request-action@v2.x
-        id: export_commit
-        with:
-          route: GET /repos/{owner}/{repo}/commits/{sha}
-          owner: ${{ github.repository_owner }}
-          repo: $GITHUB_SHA
-          sha: ${{ steps.export_sha_long.outputs.sha_long }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  # PR-based CI flow
+  #multi-arch-build-flow:
+  #  # The type of runner that the job will run on
+  #  runs-on: ubuntu-latest
+  #  # Define job related environment variables
+  #  env:
+  #    DOMAIN: staging.hikariai.net
+  #  # Steps represent a sequence of tasks that will be executed as part of the job
+  #  steps:
+  #    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #    - uses: actions/checkout@v3
 
-      - name: Verify outputs
-        run: |
-          echo ${{ fromJson(steps.export_commit.outputs.data).message }}
+  #    # The docker/setup-qemu action installs QEMU static binaries, which are used to run builders for architectures other than the host.
+  #    - name: Set up QEMU
+  #      uses: docker/setup-qemu-action@v1
+  #      with:
+  #        image: tonistiigi/binfmt:latest
+  #        platforms: all
 
-      # Login to GitHub Container Registry
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ env.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+  #    # The docker/setup-buildx action configures buildx, which is a Docker CLI plugin that provides enhanced build capabilities.
+  #    - name: Set up Docker Buildx
+  #      id: buildx
+  #      uses: docker/setup-buildx-action@v1
 
-      # Build and Push the images
-      - name: Build and Push Latest Image
-        uses: docker/build-push-action@v2
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
-          context: .
-          file: ./ci/Dockerfile
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ steps.export_sha_short.outputs.sha_short }}
-          build-args: |
-            ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
+  #    - name: Get git sha long
+  #      id: export_sha_long
+  #      run: echo "::set-output name=sha_long::$(git log -1 --pretty=format:"%H")"
 
-    # Workflow outputs
-    outputs:
-      git_pr_sha_short: ${{ steps.export_sha_short.outputs.sha_short }}
-      git_commit_message: ${{ fromJson(steps.export_commit.outputs.data).message }}
+  #    - name: Get git sha short
+  #      id: export_sha_short
+  #      run: echo "::set-output name=sha_short::$(git rev-parse --short ${{ steps.export_sha_long.outputs.sha_long }})"
 
-  # pre-deploy-
-  pre-deploy-flow:
-    # Depends on previous workflow
-    needs: multi-arch-build-flow
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    # Define job related environment variables
-    env:
-      DEPLOYMENT_REPOSITORY: vsphere-hub
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - name: Checkout k8s deployment private repository
-        uses: actions/checkout@v3
-        with:
-          repository: ${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
-          token: ${{ secrets.ACCESS_TOKEN }}
+  #    - name: Get last git commit
+  #      uses: octokit/request-action@v2.x
+  #      id: export_commit
+  #      with:
+  #        route: GET /repos/{owner}/{repo}/commits/{sha}
+  #        owner: ${{ github.repository_owner }}
+  #        repo: ${{ env.REPOSITORY }}
+  #        sha: ${{ steps.export_sha_long.outputs.sha_long }}
+  #      env:
+  #        GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Generate deploy manifest from Jinja template
-        uses: cuchi/jinja2-action@v1.1.0
-        with: 
-          template: cicd/${{ env.REPOSITORY }}/kustomize/tmpl/deployment.yaml.j2
-          output_file: cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
-          strict: true
-          variables: |
-            image_name=${{ env.REPOSITORY }}
-            image_deploy_tag=${{ env.ENV }}-${{ needs.multi-arch-build-flow.outputs.git_pr_sha_short }}
+  #    - name: Verify outputs
+  #      run: |
+  #        echo ${{ fromJson(steps.export_commit.outputs.data).message }}
 
-      - name: Inspect deployment manifest
-        run: |
-          cat cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+  #    # Login to GitHub Container Registry
+  #    - name: Login to Docker Hub
+  #      uses: docker/login-action@v1
+  #      with:
+  #        registry: ${{ env.REGISTRY }}
+  #        username: ${{ env.REGISTRY_USERNAME }}
+  #        password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Commit deploy manifest on remote deployment repo
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -s -m "ci: generate deployment overlay manifests" 
+  #    # Build and Push the images
+  #    - name: Build and Push Latest Image
+  #      uses: docker/build-push-action@v2
+  #      with:
+  #        builder: ${{ steps.buildx.outputs.name }}
+  #        context: .
+  #        file: ./ci/Dockerfile
+  #        platforms: linux/amd64,linux/arm64
+  #        push: true
+  #        tags: |
+  #          ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ steps.export_sha_short.outputs.sha_short }}
+  #        build-args: |
+  #          ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
 
-      - name: Push local changes to remote deployment repository
-        uses: github-actions-x/commit@v2.9
-        with:
-          push-branch: master
-          github-token: ${{ secrets.ACCESS_TOKEN }}
-          commit-message: "ci: generate deployment overlay manifests"
+  #  # Workflow outputs
+  #  outputs:
+  #    git_pr_sha_short: ${{ steps.export_sha_short.outputs.sha_short }}
+  #    git_commit_message: ${{ fromJson(steps.export_commit.outputs.data).message }}
 
-  # post-actions
-  post-action-flow:
-    # Depends on previous workflows
-    needs: [multi-arch-build-flow, pre-deploy-flow]
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - name: Get PR number
-        run: echo "::set-output name=pr_number::$(echo $GITHUB_REF | awk -F / '{print $3}')"
-        id: get_pr_number
+  ## pre-deploy-
+  #pre-deploy-flow:
+  #  # Depends on previous workflow
+  #  needs: multi-arch-build-flow
+  #  # The type of runner that the job will run on
+  #  runs-on: ubuntu-latest
+  #  # Define job related environment variables
+  #  env:
+  #    DEPLOYMENT_REPOSITORY: vsphere-hub
+  #  # Steps represent a sequence of tasks that will be executed as part of the job
+  #  steps:
+  #    - name: Checkout k8s deployment private repository
+  #      uses: actions/checkout@v3
+  #      with:
+  #        repository: ${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
+  #        token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Get jobs id from the workflow run
-        uses: octokit/request-action@v2.x
-        id: get_jobs_id
-        with:
-          route: GET /repos/{owner}/{repo}/actions/runs/{id}/jobs
-          owner: ${{ github.repository_owner }}
-          repo: ${{ env.REPOSITORY }}
-          id: ${{ github.run_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  #    - name: Generate deploy manifest from Jinja template
+  #      uses: cuchi/jinja2-action@v1.1.0
+  #      with: 
+  #        template: cicd/${{ env.REPOSITORY }}/kustomize/tmpl/deployment.yaml.j2
+  #        output_file: cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+  #        strict: true
+  #        variables: |
+  #          image_name=${{ env.REPOSITORY }}
+  #          image_deploy_tag=${{ env.ENV }}-${{ needs.multi-arch-build-flow.outputs.git_pr_sha_short }}
 
-      - name: Export jobs id and conclusion
-        run: |
-          echo 'JOB_ID_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].id }}' >> $GITHUB_ENV
-          echo 'JOB_ID_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].id }}' >> $GITHUB_ENV
-          echo 'JOB_ID_3=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[2].id }}' >> $GITHUB_ENV
-          echo 'JOB_CONCLUSION_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].conclusion }}' >> $GITHUB_ENV
-          echo 'JOB_CONCLUSION_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].conclusion }}' >> $GITHUB_ENV
+  #    - name: Inspect deployment manifest
+  #      run: |
+  #        cat cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
 
-      #Notify build result on Telegram
-      - name: Send telegram message to notify build result
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
+  #    - name: Commit deploy manifest on remote deployment repo
+  #      run: |
+  #        git config --local user.email "action@github.com"
+  #        git config --local user.name "GitHub Action"
+  #        git add .
+  #        git commit -s -m "ci: generate deployment overlay manifests" 
 
-            Commit Message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
+  #    - name: Push local changes to remote deployment repository
+  #      uses: github-actions-x/commit@v2.9
+  #      with:
+  #        push-branch: master
+  #        github-token: ${{ secrets.ACCESS_TOKEN }}
+  #        commit-message: "ci: generate deployment overlay manifests"
 
-            Commit Details: ${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.get_pr_number.outputs.pr_number }}/commits/$GITHUB_SHA
+  ## post-actions
+  #post-action-flow:
+  #  # Depends on previous workflows
+  #  needs: [multi-arch-build-flow, pre-deploy-flow]
+  #  if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+  #  # The type of runner that the job will run on
+  #  runs-on: ubuntu-latest
+  #  # Steps represent a sequence of tasks that will be executed as part of the job
+  #  steps:
+  #    - name: Get PR number
+  #      run: echo "::set-output name=pr_number::$(echo $GITHUB_REF | awk -F / '{print $3}')"
+  #      id: get_pr_number
 
-            Deployment Stage: ${{ env.ENV }}
+  #    - name: Get jobs id from the workflow run
+  #      uses: octokit/request-action@v2.x
+  #      id: get_jobs_id
+  #      with:
+  #        route: GET /repos/{owner}/{repo}/actions/runs/{id}/jobs
+  #        owner: ${{ github.repository_owner }}
+  #        repo: ${{ env.REPOSITORY }}
+  #        id: ${{ github.run_id }}
+  #      env:
+  #        GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-            Repository: ${{ github.repository }}
+  #    - name: Export jobs id and conclusion
+  #      run: |
+  #        echo 'JOB_ID_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].id }}' >> $GITHUB_ENV
+  #        echo 'JOB_ID_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].id }}' >> $GITHUB_ENV
+  #        echo 'JOB_ID_3=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[2].id }}' >> $GITHUB_ENV
+  #        echo 'JOB_CONCLUSION_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].conclusion }}' >> $GITHUB_ENV
+  #        echo 'JOB_CONCLUSION_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].conclusion }}' >> $GITHUB_ENV
 
-            Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+  #    #Notify build result on Telegram
+  #    - name: Send telegram message to notify build result
+  #      uses: appleboy/telegram-action@master
+  #      with:
+  #        to: ${{ secrets.TELEGRAM_TO }}
+  #        token: ${{ secrets.TELEGRAM_TOKEN }}
+  #        message: |
+  #          🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
 
-            Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+  #          Commit Message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
 
-            Build Summary:
+  #          Commit Details: ${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.get_pr_number.outputs.pr_number }}/commits/$GITHUB_SHA
 
-              * [${{ env.JOB_CONCLUSION_1 }}] multi-arch-build-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_1 }}?check_suite_focus=true
+  #          Deployment Stage: ${{ env.ENV }}
 
-              * [${{ env.JOB_CONCLUSION_2 }}] pre-deploy-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_2 }}?check_suite_focus=true
+  #          Repository: ${{ github.repository }}
 
-              * [success] post-action-flow: success - ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
+  #          Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+
+  #          Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+  #          Build Summary:
+
+  #            * [${{ env.JOB_CONCLUSION_1 }}] multi-arch-build-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_1 }}?check_suite_focus=true
+
+  #            * [${{ env.JOB_CONCLUSION_2 }}] pre-deploy-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_2 }}?check_suite_focus=true
+
+  #            * [success] post-action-flow: success - ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
