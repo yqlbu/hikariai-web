@@ -164,7 +164,7 @@ jobs:
         uses: sergeysova/jq-action@v2
         id: ids
         with:
-          cmd: 'echo {{ fromJson(steps.get_jobs_id.outputs.data) }} | jq .jobs[].id -r'
+          cmd: 'echo "{{ fromJson(steps.get_jobs_id.outputs.data) }}" | jq .jobs[].id -r'
 
       - name: Show jobs id
         run: 'echo "ids ${{ steps.ids.outputs.value }}"'
