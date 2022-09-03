@@ -56,7 +56,7 @@ jobs:
         uses: octokit/request-action@v2.x
         id: export_commit_message
         with:
-          route: GET /repos/{owner}/{repo}/commits/{sha}
+          route: GET /repos/{owner}/{repo}/git/commits/{sha}
           owner: ${{ github.repository_owner }}
           repo: ${{ env.REPOSITORY }}
           sha: ${{ steps.export_commit_sha.outputs.sha_long }}
@@ -66,8 +66,7 @@ jobs:
       - name: Verify outputs
         run: |
           echo '${{ steps.export_commit_sha.outputs.sha_short }}'
-          echo 'COMMIT_MSG=${{ fromJson(steps.export_commit_message.outputs.data).message }}' >> $GITHUB_ENV
-          echo $COMMIT_MSG
+          echo '${{ fromJson(steps.export_commit_message.outputs.data).message }}'
 
     # Workflow outputs
     outputs:
