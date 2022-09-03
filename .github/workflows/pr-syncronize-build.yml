@@ -105,46 +105,46 @@ jobs:
       git_commit_message: ${{ fromJson(steps.export_commit.outputs.data).message }}
 
   # pre-deploy-
-  # pre-deploy-flow:
-  #   # Depends on previous workflow
-  #   needs: multi-arch-build-flow
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
-  #   # Define job related environment variables
-  #   env:
-  #     DEPLOYMENT_REPOSITORY: vsphere-hub
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     - name: Checkout k8s deployment private repository
-  #       uses: actions/checkout@v3
-  #       with:
-  #         repository: ${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
-  #         token: ${{ secrets.ACCESS_TOKEN }}
+  pre-deploy-flow:
+    # Depends on previous workflow
+    needs: multi-arch-build-flow
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Define job related environment variables
+    env:
+      DEPLOYMENT_REPOSITORY: vsphere-hub
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout k8s deployment private repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
+          token: ${{ secrets.ACCESS_TOKEN }}
 
-  #     - name: Generate deploy manifest from Jinja template
-  #       uses: cuchi/jinja2-action@v1.1.0
-  #       with: 
-  #         template: cicd/${{ env.REPOSITORY }}/kustomize/tmpl/deployment.yaml.j2
-  #         output_file: cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
-  #         strict: true
-  #         variables: |
-  #           image_name=${{ env.REPOSITORY }}
-  #           image_deploy_tag=${{ env.ENV }}-${{ needs.multi-arch-build-flow.outputs.git_pr_sha_short }}
-  #     - name: Inspect deployment manifest
-  #       run: |
-  #         cat cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
-  #     - name: Commit deploy manifest on remote deployment repo
-  #       run: |
-  #         git config --local user.email "action@github.com"
-  #         git config --local user.name "GitHub Action"
-  #         git add .
-  #         git commit -s -m "ci: generate deployment overlay manifests" 
-  #     - name: Push local changes to remote deployment repository
-  #       uses: github-actions-x/commit@v2.9
-  #       with:
-  #         push-branch: master
-  #         github-token: ${{ secrets.ACCESS_TOKEN }}
-  #         commit-message: "ci: generate deployment overlay manifests"
+      - name: Generate deploy manifest from Jinja template
+        uses: cuchi/jinja2-action@v1.1.0
+        with: 
+          template: cicd/${{ env.REPOSITORY }}/kustomize/tmpl/deployment.yaml.j2
+          output_file: cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+          strict: true
+          variables: |
+            image_name=${{ env.REPOSITORY }}
+            image_deploy_tag=${{ env.ENV }}-${{ needs.multi-arch-build-flow.outputs.git_pr_sha_short }}
+      - name: Inspect deployment manifest
+        run: |
+          cat cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+      - name: Commit deploy manifest on remote deployment repo
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -s -m "ci: generate deployment overlay manifests" 
+      - name: Push local changes to remote deployment repository
+        uses: github-actions-x/commit@v2.9
+        with:
+          push-branch: master
+          github-token: ${{ secrets.ACCESS_TOKEN }}
+          commit-message: "ci: generate deployment overlay manifests"
 
   # post-actions
   post-action-flow:
