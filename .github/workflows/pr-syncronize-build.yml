@@ -66,7 +66,8 @@ jobs:
       - name: Verify outputs
         run: |
           echo '${{ steps.export_commit_sha.outputs.sha_short }}'
-          echo '${{ fromJson(steps.export_commit_message.outputs.data) }}'
+          echo 'COMMIT_MSG=${{ fromJson(steps.export_commit_message.outputs.data).message }}' >> $GITHUB_ENV
+          echo $COMMIT_MSG
 
     # Workflow outputs
     outputs:
@@ -78,6 +79,8 @@ jobs:
 
   # PR-based CI flow
   #multi-arch-build-flow:
+  #  # Depends on previous workflow
+  #  needs: [pre-deploy-flow]
   #  # The type of runner that the job will run on
   #  runs-on: ubuntu-latest
   #  # Define job related environment variables
@@ -129,8 +132,8 @@ jobs:
 
   ## pre-deploy-
   #pre-deploy-flow:
-  #  # Depends on previous workflow
-  #  needs: multi-arch-build-flow
+  #  # Depends on previous workflows
+  #  needs: [pre-deploy-flow, multi-arch-build-flow]
   #  # The type of runner that the job will run on
   #  runs-on: ubuntu-latest
   #  # Define job related environment variables
@@ -175,7 +178,7 @@ jobs:
   ## post-actions
   #post-action-flow:
   #  # Depends on previous workflows
-  #  needs: [multi-arch-build-flow, pre-deploy-flow]
+  #  needs: [pre-action-flow, multi-arch-build-flow, pre-deploy-flow]
   #  if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
   #  # The type of runner that the job will run on
   #  runs-on: ubuntu-latest
