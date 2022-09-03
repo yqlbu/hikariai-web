@@ -160,7 +160,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - run: "echo jobs: ${{ steps.get_jobs_id.outputs.data }}"
+      - run: "echo jobs: ${{ fronJson(steps.get_jobs_id.outputs.data) }}"
 
       # Notify build result on Telegram
       # - name: Send telegram message to notify build result
