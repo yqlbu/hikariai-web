@@ -27,6 +27,7 @@ on:
 # Workflow related global environment variables
 env:
   ENV: staging
+  REPOSITORY: hikariai-web
   REGISTRY: docker.io
   REGISTRY_USERNAME: hikariai
   IMAGE_TAG: staging
