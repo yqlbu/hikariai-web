@@ -209,7 +209,7 @@ jobs:
 
             Repository: ${{ github.repository }}
 
-            Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.-stage.git_sha_long }}
+            Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.pre-action-stage.git_sha_long }}
 
             Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
