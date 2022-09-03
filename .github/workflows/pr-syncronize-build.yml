@@ -35,7 +35,7 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # pre-actions
-  pre-action-flow:
+  pre-action-job:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -72,9 +72,9 @@ jobs:
       git_commit_message: ${{ fromJson(steps.export_commit_message.outputs.data).message }}
 
   # PR-based CI flow
-  multi-arch-build-flow:
+  multi-arch-build-stage:
     # Depends on previous workflow
-    needs: [pre-deploy-flow]
+    needs: [pre-action-job]
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Define job related environment variables
@@ -115,14 +115,14 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ needs.pre-action-flow.outputs.git_sha_short }}
+            ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ needs.pre-action-job.outputs.git_sha_short }}
           build-args: |
             ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
 
   # pre-deploy-
-  pre-deploy-flow:
+  pre-deploy-stage:
     # Depends on previous workflows
-    needs: [pre-deploy-flow, multi-arch-build-flow]
+    needs: [pre-deploy-stage, multi-arch-build-stage]
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Define job related environment variables
@@ -144,7 +144,7 @@ jobs:
           strict: true
           variables: |
             image_name=${{ env.REPOSITORY }}
-            image_deploy_tag=${{ env.ENV }}-${{ needs.pre-action-flow.outputs.git_sha_short }}
+            image_deploy_tag=${{ env.ENV }}-${{ needs.pre-action-job.outputs.git_sha_short }}
 
       - name: Inspect deployment manifest
         run: |
@@ -167,7 +167,7 @@ jobs:
   # post-actions
   post-action-flow:
     # Depends on previous workflows
-    needs: [pre-action-flow, multi-arch-build-flow, pre-deploy-flow]
+    needs: [pre-action-job, multi-arch-build-stage, pre-deploy-stage]
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -201,22 +201,22 @@ jobs:
           message: |
             🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
 
-            Commit Message: "${{ needs.pre-action-flow.outputs.git_commit_message }}"
+            Commit Message: "${{ needs.pre-action-job.outputs.git_commit_message }}"
 
-            Commit Details: ${{ needs.pre-action-flow.outputs.git_pr_url }}/commits/${{ steps.pre-action-flow.git_sha_long }}
+            Commit Details: ${{ needs.pre-action-job.outputs.git_pr_url }}/commits/${{ steps.pre-action-job.git_sha_long }}
 
             Deployment Stage: ${{ env.ENV }}
 
             Repository: ${{ github.repository }}
 
-            Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.pre-action-flow.git_sha_long }}
+            Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.pre-action-job.git_sha_long }}
 
             Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Build Summary:
 
-              * [${{ env.JOB_CONCLUSION_1 }}] multi-arch-build-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_1 }}?check_suite_focus=true
+              * [${{ env.JOB_CONCLUSION_1 }}] multi-arch-build-stage: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_1 }}?check_suite_focus=true
 
-              * [${{ env.JOB_CONCLUSION_2 }}] pre-deploy-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_2 }}?check_suite_focus=true
+              * [${{ env.JOB_CONCLUSION_2 }}] pre-deploy-stage: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_2 }}?check_suite_focus=true
 
               * [success] post-action-flow: success - ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
