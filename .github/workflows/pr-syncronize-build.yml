@@ -58,9 +58,13 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
+      - name: Get git sha long
+        id: export_sha_long
+        run: echo "::set-output name=sha_long::$(git log -1 --pretty=format:"%H")"
+
       - name: Get git sha short
-        id: export_sha
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        id: export_sha_short
+        run: echo "::set-output name=sha_short::$(git rev-parse --short ${{ steps.export_sha_long.outputs.sha_long }})"
 
       - name: Get last git commit
         uses: octokit/request-action@v2.x
@@ -69,7 +73,7 @@ jobs:
           route: GET /repos/{owner}/{repo}/commits/{sha}
           owner: ${{ github.repository_owner }}
           repo: $GITHUB_SHA
-          sha: ${{ steps.export_sha.outputs.sha_short }}
+          sha: ${{ steps.export_sha_long.outputs.sha_long }}
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
@@ -95,13 +99,13 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ steps.export_sha.outputs.sha_short }}
+            ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ steps.export_sha_short.outputs.sha_short }}
           build-args: |
             ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
 
     # Workflow outputs
     outputs:
-      git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
+      git_pr_sha_short: ${{ steps.export_sha_short.outputs.sha_short }}
       git_commit_message: ${{ fromJson(steps.export_commit.outputs.data).message }}
 
   # pre-deploy-
@@ -192,7 +196,7 @@ jobs:
 
             Commit Message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
 
-            Commit Details: ${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.get_pr_number.outputs.pr_number }}/commits/${{ github.sha }}
+            Commit Details: ${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.get_pr_number.outputs.pr_number }}/commits/$GITHUB_SHA
 
             Deployment Stage: ${{ env.ENV }}
 
