@@ -65,8 +65,8 @@ jobs:
 
       - name: Verify outputs
         run: |
-          echo ${{ steps.export_commit_sha.outputs.sha_short }}
-          echo ${{ fromJson(steps.export_commit_message.outputs.data).message }}
+          echo '${{ steps.export_commit_sha.outputs.sha_short }}'
+          echo '${{ fromJson(steps.export_commit_message.outputs.data).message }}'
 
     # Workflow outputs
     outputs:
