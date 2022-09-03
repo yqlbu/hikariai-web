@@ -149,7 +149,7 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: List jobs the workflow run
+      - name: Get jobs id from the workflow run
         uses: octokit/request-action@v2.x
         id: get_jobs_id
         with:
@@ -160,7 +160,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - run: "echo jobs: ${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0] }}"
+      - name: Extract jobs id
+        uses: sergeysova/jq-action@v2
+        id: ids
+        with:
+          cmd: 'jq .jobs[].id {{ fromJson(steps.get_jobs_id.outputs.data) }} -r'
+
+      - name: Show jobs id
+        run: 'echo "version ${{ steps.ids.outputs.value }}"'
 
       # Notify build result on Telegram
       # - name: Send telegram message to notify build result
