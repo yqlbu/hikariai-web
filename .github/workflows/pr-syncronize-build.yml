@@ -62,9 +62,16 @@ jobs:
         id: export_sha
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
-      - name: Get last git commit message
-        id: export_commit_message
-        run: echo "::set-output name=commit_message::$(git log -1 --pretty=format:'%s')"
+      - name: Get last git commit
+        uses: octokit/request-action@v2.x
+        id: export_commit
+        with:
+          route: GET /repos/{owner}/{repo}/commits/{ref}
+          owner: ${{ github.repository_owner }}
+          repo: ${{ env.REPOSITORY }}
+          ref: ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       # Login to GitHub Container Registry
       - name: Login to Docker Hub
@@ -87,10 +94,11 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ steps.export_sha.outputs.sha_short }}
           build-args: |
             ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
+
     # Workflow outputs
     outputs:
       git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
-      git_commit_message: ${{ steps.export_commit_message.outputs.commit_message }}
+      git_commit_message: ${{ fromJson(steps.export_commit.outputs.data).message }}
 
   # pre-deploy-
   pre-deploy-flow:
