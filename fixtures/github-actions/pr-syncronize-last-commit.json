@@ -1,0 +1,34 @@
+{
+  "sha": "57c04293a582017410097fbb31fe75838465abd5",
+  "node_id": "C_kwDOGLtqwtoAKDU3YzA0MjkzYTU4MjAxNzQxMDA5N2ZiYjMxZmU3NTgzODQ2NWFiZDU",
+  "url": "https://api.github.com/repos/yqlbu/hikariai-web/git/commits/57c04293a582017410097fbb31fe75838465abd5",
+  "html_url": "https://github.com/yqlbu/hikariai-web/commit/57c04293a582017410097fbb31fe75838465abd5",
+  "author": {
+    "name": "yqlbu",
+    "email": "yqlbu@bu.edu",
+    "date": "2022-09-03T03:32:42Z"
+  },
+  "committer": {
+    "name": "yqlbu",
+    "email": "yqlbu@bu.edu",
+    "date": "2022-09-03T03:32:42Z"
+  },
+  "tree": {
+    "sha": "ac6fa2c58c6967e16142217f9ed3090a698173e7",
+    "url": "https://api.github.com/repos/yqlbu/hikariai-web/git/trees/ac6fa2c58c6967e16142217f9ed3090a698173e7"
+  },
+  "message": "feat: added fetch-latest-commit-message step",
+  "parents": [
+    {
+      "sha": "59e9904c046513f485eeab8134fafa0a7f6e4545",
+      "url": "https://api.github.com/repos/yqlbu/hikariai-web/git/commits/59e9904c046513f485eeab8134fafa0a7f6e4545",
+      "html_url": "https://github.com/yqlbu/hikariai-web/commit/59e9904c046513f485eeab8134fafa0a7f6e4545"
+    }
+  ],
+  "verification": {
+    "verified": true,
+    "reason": "valid",
+    "signature": "-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCAAdFiEEsI/iZE+fxFCvQl/1uU85S3KIQBcFAmMSytoACgkQuU85S3KI\nQBcAXRAAmNeJ2uYuBmmQBbKkzo+bP2KRd0cqkPowV6+fBAitTWBC4+M5T/23Lf57\nSTJ9bI/f4C/v8GrOx4bXDFLrbNnjHTxf0OSdkILMq5EeHnIy5XL4JUvM4K9/W7P4\n5KAvXa45reXI3fPn2eiujdp2NiYuZqdD5tJ41FrvrQJ9cOBhrzCXQt3LkRgJPtTf\naIngUg4quvAz772E/8TIrgR4/m6Xyn3h8JC+w3eyeVDWaENtup99F5oFL8vE1FMH\n2MESKJlD0sJxi4gRqfBMACBFU4YLO7KiJozYc6fzPiUH9SFfxbD2Rl2pEvrITwRg\nCcoTiQ7Puzre4KlmcS/R5YIhmZpcY4AOOcycOGq/rmuZbe1O7SRqXABbGbp2MoRS\nFZVb71HLkkKmnNCmf3yIJBFxAhQOG9gH2lwvTxP16/1Cv91eyJxWarTmMXygbmjT\nqkZmNdFS56gxTlcGPR8JK1N2QKEDqn3fZ/v4L4SkTTsMbNcWM865CzwtB3IEw11E\nvIEOh6BKPuCBSpPeXOPd4m72NYbpdpmbWQRoB17S4ms/CoGScdtjphQ2cNRrH0P/\nl2wNBAAShuVbyGBNriDbj/YFQYhX/QymharJDZBvM4MGXyhlI9q9S8el8d+ipzdz\nSJhoqBxodwdRfzRcVLaS+OUXaPi8TpR3WLo2IuYuEKf2eReOT/k=\n=AdBc\n-----END PGP SIGNATURE-----",
+    "payload": "tree ac6fa2c58c6967e16142217f9ed3090a698173e7\nparent 59e9904c046513f485eeab8134fafa0a7f6e4545\nauthor yqlbu <yqlbu@bu.edu> 1662175962 +0800\ncommitter yqlbu <yqlbu@bu.edu> 1662175962 +0800\n\nfeat: added fetch-latest-commit-message step\n"
+  }
+}
