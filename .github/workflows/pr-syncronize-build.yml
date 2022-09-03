@@ -154,20 +154,14 @@ jobs:
         id: get_jobs_id
         with:
           route: GET /repos/{owner}/{repo}/actions/runs/{id}/jobs
-          owner: yqlbu
+          owner: ${{ github.repository_owner }}
           repo: ${{ needs.multi-arch-build-flow.outputs.git_repository }}
           id: ${{ github.run_id }}
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Extract jobs id
-        uses: sergeysova/jq-action@v2
-        id: ids
-        with:
-          cmd: "echo '{{ fromJson(steps.get_jobs_id.outputs.data) }}' | jq .jobs[].id -r"
-
       - name: Show jobs id
-        run: "echo '${{ steps.ids.outputs.value }}'"
+        run: "echo '${{ fromJSON(steps.get_jobs_id.outputs.data) }}'"
 
       # Notify build result on Telegram
       # - name: Send telegram message to notify build result
