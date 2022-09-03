@@ -38,19 +38,13 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Get PR context
-        id: export_pr_context
-        run: |
-          echo "::set-output name=pr_number::${{ github.event.pull_request.number }}"
-          echo "::set-output name=pr_url::${{ github.event.pull_request.html_url }}"
-
-      - name: Get last git sha
+      - name: Get HEAD git sha
         id: export_commit_sha
         run: |
-          echo "::set-output name=sha_long::${{ github.event.pull_request.head.sha }}"
-          echo "::set-output name=sha_short::$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-6)"
+          echo "::set-output name=sha_long::${{ github.event.push.head }}"
+          echo "::set-output name=sha_short::$(echo ${{ github.event.push.head }} | cut -c1-6)"
 
-      - name: Get last git commit
+      - name: Get HEAD git commit
         uses: octokit/request-action@v2.x
         id: export_commit_message
         with:
@@ -63,8 +57,6 @@ jobs:
 
     # Workflow outputs
     outputs:
-      git_pr_number: ${{ steps.export_pr_context.outputs.pr_number }}
-      git_pr_url: ${{ steps.export_pr_context.outputs.pr_url }}
       git_sha_long: ${{ steps.export_commit_sha.outputs.sha_long }}
       git_sha_short: ${{ steps.export_commit_sha.outputs.sha_short }}
       git_commit_message: ${{ fromJson(steps.export_commit_message.outputs.data).message }}
@@ -208,9 +200,7 @@ jobs:
 
             Commit Message: "${{ needs.pre-action-stage.outputs.git_commit_message }}"
 
-            Commit Details: ${{ needs.pre-action-stage.outputs.git_pr_url }}/commits/${{ needs.pre-action-stage.outputs.git_sha_long }}
-
-            PR Details: ${{ needs.pre-action-stage.outputs.git_pr_url }}
+            Commit Details: ${{ github.server_url }}/${{ github.repository }}/commit/${{ needs.pre-action-stage.outputs.git_sha_long }}
 
             Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
