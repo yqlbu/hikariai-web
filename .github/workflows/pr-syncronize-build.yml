@@ -155,7 +155,7 @@ jobs:
         with:
           route: GET /repos/{owner}/{repo}/actions/runs/{id}/jobs
           owner: yqlbu
-          repo: ${{ github.repository }}
+          repo: ${{ needs.multi-arch-build-flow.outputs.git_repository }}
           id: ${{ github.run_id }}
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
