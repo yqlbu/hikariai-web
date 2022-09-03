@@ -122,7 +122,7 @@ jobs:
   # pre-deploy-
   pre-deploy-stage:
     # Depends on previous workflows
-    needs: [pre-deploy-stage, multi-arch-build-stage]
+    needs: [pre-action-stage, multi-arch-build-stage]
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Define job related environment variables
