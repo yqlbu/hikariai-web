@@ -161,7 +161,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Show jobs id
-        run: "echo '${{ fromJSON(steps.get_jobs_id.outputs.data) }}'"
+        run: |
+          "echo ${{ fromJson(steps.get_jobs_id.outputs.data)[0].id }}"
 
       # Notify build result on Telegram
       # - name: Send telegram message to notify build result
