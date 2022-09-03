@@ -108,7 +108,8 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ needs.pre-action-stage.outputs.git_sha_short }}
             ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-latest
           build-args: |
-            ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
+            ENV=${{ env.ENV }}
+            DOMAIN_NAME=${{ env.DOMAIN }}
 
   # pre-deploy-
   pre-deploy-stage:
