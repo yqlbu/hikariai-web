@@ -38,6 +38,8 @@ env:
 jobs:
   # s
   pre-action-stage:
+    # ONLY trigger when PR is merged to the default branch or release branches
+    if: github.event.pull_request.merged == true
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -75,6 +77,8 @@ jobs:
 
   # PR-based CI flow
   multi-arch-build-stage:
+    # ONLY trigger when PR is merged to the default branch or release branches
+    if: github.event.pull_request.merged == true
     # Depends on previous workflow
     needs: [pre-action-stage]
     # The type of runner that the job will run on
@@ -124,6 +128,8 @@ jobs:
 
   # pre-deploy-
   pre-deploy-stage:
+    # ONLY trigger when PR is merged to the default branch or release branches
+    if: github.event.pull_request.merged == true
     # Depends on previous workflows
     needs: [pre-action-stage, multi-arch-build-stage]
     # The type of runner that the job will run on
@@ -169,6 +175,8 @@ jobs:
 
   # post-actions
   post-action-flow:
+    # ONLY trigger when PR is merged to the default branch or release branches
+    if: github.event.pull_request.merged == true
     # Depends on previous workflows
     needs: [pre-action-stage, multi-arch-build-stage, pre-deploy-stage]
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
