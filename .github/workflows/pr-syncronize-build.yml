@@ -68,8 +68,8 @@ jobs:
         with:
           route: GET /repos/{owner}/{repo}/commits/{sha}
           owner: ${{ github.repository_owner }}
-          repo: ${{ env.REPOSITORY }}
-          sha: ${{ github.sha }}
+          repo: $GITHUB_SHA
+          sha: ${{ steps.export_sha.outputs.sha_short }}
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
