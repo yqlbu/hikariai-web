@@ -203,7 +203,7 @@ jobs:
 
             Commit Message: "${{ needs.pre-action-stage.outputs.git_commit_message }}"
 
-            Commit Details: ${{ needs.pre-action-stage.outputs.git_pr_url }}/commits/${{ steps.pre-action-stage.outputs.git_sha_long }}
+            Commit Details: ${{ needs.pre-action-stage.outputs.git_pr_url }}/commits/${{ needs.pre-action-stage.outputs.git_sha_long }}
 
             Deployment Stage: ${{ env.ENV }}
 
