@@ -165,7 +165,7 @@ jobs:
           commit-message: "ci: generate deployment overlay manifests"
 
   # post-actions
-  post-action-flow:
+  post-action-stage:
     # Depends on previous workflows
     needs: [pre-action-stage, multi-arch-build-stage, pre-deploy-stage]
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
@@ -211,6 +211,8 @@ jobs:
 
             Commit Details: ${{ needs.pre-action-stage.outputs.git_pr_url }}/commits/${{ needs.pre-action-stage.outputs.git_sha_long }}
 
+            PR Details: ${{ needs.pre-action-stage.outputs.git_pr_url }}
+
             Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Build Summary:
@@ -221,4 +223,4 @@ jobs:
 
               * [${{ env.JOB_CONCLUSION_3 }}] pre-deploy-stage: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
 
-              * [success] post-action-flow: success - ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
+              * [success] post-action-stage: success - ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
