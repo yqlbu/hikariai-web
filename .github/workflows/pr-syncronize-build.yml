@@ -40,30 +40,41 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # - name: Get github event context
-      #   id: export_event_context
-      #   run: echo "::set-output name=event_context::$(git log -1 --pretty=format:"%H")"
-
       - name: Get PR context
         id: export_pr_context
         run: |
           echo "::set-output name=pr_number::${{ github.event.pull_request.number }}"
           echo "::set-output name=pr_url::${{ github.event.pull_request.url }}"
 
-      - name: Get git sha long
-        id: export_sha_long
-        run: echo "::set-output name=sha_long::${{ github.event.pull_request.head.sha }}"
+      - name: Get last git sha
+        id: export_commit_sha
+        run: |
+          echo "::set-output name=sha_long::${{ github.event.pull_request.head.sha }}"
+          echo "::set-output name=sha_short::$(echo {{ github.event.pull_request.head.sha }}::5)"
 
-      - name: Get git sha short
-        id: export_sha_short
-        run: echo "::set-output name=sha_short::$(echo {{ github.event.pull_request.head.sha }}::5)"
+      - name: Get last git commit
+        uses: octokit/request-action@v2.x
+        id: export_commit_message
+        with:
+          route: GET /repos/{owner}/{repo}/commits/{sha}
+          owner: ${{ github.repository_owner }}
+          repo: ${{ env.REPOSITORY }}
+          sha: ${{ steps.export_sha_long.outputs.sha_long }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Verify outputs
+        run: |
+          echo ${{ steps.export_commit_sha.outputs.sha_short }}
+          echo ${{ fromJson(steps.export_commit_message.outputs.data).message }}
 
     # Workflow outputs
     outputs:
       git_pr_number: ${{ steps.export_pr_context.outputs.pr_number }}
       git_pr_url: ${{ steps.export_pr_context.outputs.pr_url }}
-      git_sha_long: ${{ steps.export_sha_long.outputs.sha_long }}
-      git_sha_short: ${{ steps.export_sha_short.outputs.sha_short }}
+      git_sha_long: ${{ steps.export_commit_sha.outputs.sha_long }}
+      git_sha_short: ${{ steps.export_commit_sha.outputs.sha_short }}
+      git_commit_message: ${{ fromJson(steps.export_commit_message.outputs.data).message }}
 
   # PR-based CI flow
   #multi-arch-build-flow:
@@ -88,29 +99,6 @@ jobs:
   #    - name: Set up Docker Buildx
   #      id: buildx
   #      uses: docker/setup-buildx-action@v1
-
-  #    - name: Get git sha long
-  #      id: export_sha_long
-  #      run: echo "::set-output name=sha_long::$(git log -1 --pretty=format:"%H")"
-
-  #    - name: Get git sha short
-  #      id: export_sha_short
-  #      run: echo "::set-output name=sha_short::$(git rev-parse --short ${{ steps.export_sha_long.outputs.sha_long }})"
-
-  #    - name: Get last git commit
-  #      uses: octokit/request-action@v2.x
-  #      id: export_commit
-  #      with:
-  #        route: GET /repos/{owner}/{repo}/commits/{sha}
-  #        owner: ${{ github.repository_owner }}
-  #        repo: ${{ env.REPOSITORY }}
-  #        sha: ${{ steps.export_sha_long.outputs.sha_long }}
-  #      env:
-  #        GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-  #    - name: Verify outputs
-  #      run: |
-  #        echo ${{ fromJson(steps.export_commit.outputs.data).message }}
 
   #    # Login to GitHub Container Registry
   #    - name: Login to Docker Hub
