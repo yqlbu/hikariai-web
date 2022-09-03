@@ -62,8 +62,8 @@ jobs:
     outputs:
       git_pr_number: ${{ steps.export_pr_context.outputs.pr_number }}
       git_pr_url: ${{ steps.export_pr_context.outputs.pr_url }}
-      git_commit_message: ${{ steps.export_sha_long.outputs.sha_long }}
-      git_commit_message: ${{ steps.export_sha_short.outputs.sha_short }}
+      git_sha_long: ${{ steps.export_sha_long.outputs.sha_long }}
+      git_sha_short: ${{ steps.export_sha_short.outputs.sha_short }}
 
   # PR-based CI flow
   #multi-arch-build-flow:
