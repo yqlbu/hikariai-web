@@ -75,7 +75,7 @@ jobs:
 
       - name: Verify outputs
         run: |
-          echo '{{ fromJson(steps.export_commit.outputs.data).message }}'
+          echo "{{ fromJson(steps.export_commit.outputs.data).message }}"
 
       # Login to GitHub Container Registry
       - name: Login to Docker Hub
@@ -159,9 +159,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Get PR number
-        run: echo ::set-env name=pr_number::$(echo "$GITHUB_REF" | awk -F / '{print $3}')
+        run: echo "::set-output name=pr_number::$(echo $GITHUB_REF | awk -F / '{print $3}')"
         id: get_pr_number
-        shell: bash
 
       - name: Get jobs id from the workflow run
         uses: octokit/request-action@v2.x
