@@ -182,7 +182,7 @@ jobs:
           echo 'JOB_CONCLUSION_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].conclusion }}' >> $GITHUB_ENV
           echo 'JOB_CONCLUSION_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].conclusion }}' >> $GITHUB_ENV
 
-      Notify build result on Telegram
+      #Notify build result on Telegram
       - name: Send telegram message to notify build result
         uses: appleboy/telegram-action@master
         with:
