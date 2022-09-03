@@ -151,15 +151,16 @@ jobs:
     steps:
       - name: List jobs the workflow run
         uses: octokit/request-action@v2.x
-        id: get_job_ids
+        id: get_jobs_id
         with:
-          route: GET /repos/{owner}/{repo}/actions/runs/${{ github.run_id }}/jobs
+          route: GET /repos/{owner}/{repo}/actions/runs/{id}/jobs
           owner: yqlbu
           repo: ${{ github.repository }}
+          id: ${{ github.run_id }}
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - run: "echo jobs: ${{ steps.get_job_ids.outputs.data }}"
+      - run: "echo jobs: ${{ steps.get_jobs_id.outputs.data }}"
 
       # Notify build result on Telegram
       # - name: Send telegram message to notify build result
