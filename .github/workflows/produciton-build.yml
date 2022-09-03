@@ -41,8 +41,8 @@ jobs:
       - name: Get HEAD git sha
         id: export_commit_sha
         run: |
-          echo "::set-output name=sha_long::${{ github.event.push.head }}"
-          echo "::set-output name=sha_short::$(echo ${{ github.event.push.head }} | cut -c1-6)"
+          echo "::set-output name=sha_long::${{ github.sha }}"
+          echo "::set-output name=sha_short::$(echo ${{ github.sha }} | cut -c1-6)"
 
       - name: Get HEAD git commit
         uses: octokit/request-action@v2.x
