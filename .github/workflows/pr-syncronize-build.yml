@@ -160,34 +160,38 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Show jobs id
+      - name: Export jobs id and conclusion
         run: |
-          echo "${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].id }}"
+          echo 'BUILD_ID_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].id }}' >> $GITHUB_ENV
+          echo 'BUILD_ID_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].id }}' >> $GITHUB_ENV
+          echo 'BUILD_ID_3=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[2].id }}' >> $GITHUB_ENV
+          echo 'BUILD_CONCLUSION_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].conclusion }}' >> $GITHUB_ENV
+          echo 'BUILD_CONCLUSION_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].conclusion }}' >> $GITHUB_ENV
 
       # Notify build result on Telegram
-      # - name: Send telegram message to notify build result
-      #   uses: appleboy/telegram-action@master
-      #   with:
-      #     to: ${{ secrets.TELEGRAM_TO }}
-      #     token: ${{ secrets.TELEGRAM_TOKEN }}
-      #     message: |
-      #       🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
+      - name: Send telegram message to notify build result
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
 
-      #       Commit Message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
+            Commit Message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
 
-      #       Deployment Stage: ${{ needs.multi-arch-build-flow.outputs.env }}
+            Deployment Stage: ${{ needs.multi-arch-build-flow.outputs.env }}
 
-      #       Repository: ${{ github.repository }}
+            Repository: ${{ github.repository }}
 
-      #       Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+            Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
 
-      #       Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      #       Build Summary:
+            Build Summary:
 
-      #         - multi-arch-build-flow: ${{ needs.multi-arch-build-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.multi-arch-build-flow.outputs.run_id }}?check_suite_focus=true
+              - multi-arch-build-flow: ${{ env.BUILD_CONCLUSION_1 }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ env.BUILD_ID_1 }}?check_suite_focus=true
 
-      #         - pre-deploy-flow: ${{ needs.pre-deploy-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ needs.pre-deploy-flow.outputs.run_id }}?check_suite_focus=true
+              - pre-deploy-flow: ${{ env.BUILD_CONCLUSION_2 }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ env.BUILD_ID_2 }}?check_suite_focus=true
 
-      #         - post-action-flow: ${{ needs.post-actions-flow.result }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ steps.export_run_id.outputs.run_id }}?check_suite_focus=true
+              - post-action-flow: success - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ env.BUILD_ID_3 }}?check_suite_focus=true
 
