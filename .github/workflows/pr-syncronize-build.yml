@@ -201,15 +201,13 @@ jobs:
           message: |
             🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
 
-            Commit Message: "${{ needs.pre-action-stage.outputs.git_commit_message }}"
-
-            Commit Details: ${{ needs.pre-action-stage.outputs.git_pr_url }}/commits/${{ needs.pre-action-stage.outputs.git_sha_long }}
-
             Deployment Stage: ${{ env.ENV }}
 
             Repository: ${{ github.repository }}
 
-            Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.pre-action-stage.git_sha_long }}
+            Commit Message: "${{ needs.pre-action-stage.outputs.git_commit_message }}"
+
+            Commit Details: ${{ needs.pre-action-stage.outputs.git_pr_url }}/commits/${{ needs.pre-action-stage.outputs.git_sha_long }}
 
             Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
