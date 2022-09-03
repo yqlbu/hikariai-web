@@ -11,14 +11,10 @@
 # This is a open-source software, liscensed under the MIT License.
 # See /License for more information.
 
-name: PR Production Build
+name: Production Build
 
 # Controls when the action will run.
 on:
-  # Trigger when PR matches certain events
-  pull_request:
-    types:
-      - closed
   push:
     branches:
       - 'master'
@@ -38,8 +34,6 @@ env:
 jobs:
   # s
   pre-action-stage:
-    # ONLY trigger when PR is merged to the default branch or release branches
-    if: github.event.pull_request.merged == true
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -77,8 +71,6 @@ jobs:
 
   # PR-based CI flow
   multi-arch-build-stage:
-    # ONLY trigger when PR is merged to the default branch or release branches
-    if: github.event.pull_request.merged == true
     # Depends on previous workflow
     needs: [pre-action-stage]
     # The type of runner that the job will run on
@@ -128,8 +120,6 @@ jobs:
 
   # pre-deploy-
   pre-deploy-stage:
-    # ONLY trigger when PR is merged to the default branch or release branches
-    if: github.event.pull_request.merged == true
     # Depends on previous workflows
     needs: [pre-action-stage, multi-arch-build-stage]
     # The type of runner that the job will run on
@@ -175,8 +165,7 @@ jobs:
 
   # post-actions
   post-action-stage:
-    # ONLY trigger when PR is merged to the default branch or release branches
-    if: ${{ github.event.pull_request.merged == true }} && ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
     # Depends on previous workflows
     needs: [pre-action-stage, multi-arch-build-stage, pre-deploy-stage]
     # The type of runner that the job will run on
