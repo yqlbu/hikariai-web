@@ -162,11 +162,11 @@ jobs:
 
       - name: Export jobs id and conclusion
         run: |
-          echo 'BUILD_ID_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].id }}' >> $GITHUB_ENV
-          echo 'BUILD_ID_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].id }}' >> $GITHUB_ENV
-          echo 'BUILD_ID_3=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[2].id }}' >> $GITHUB_ENV
-          echo 'BUILD_CONCLUSION_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].conclusion }}' >> $GITHUB_ENV
-          echo 'BUILD_CONCLUSION_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].conclusion }}' >> $GITHUB_ENV
+          echo 'JOB_ID_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].id }}' >> $GITHUB_ENV
+          echo 'JOB_ID_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].id }}' >> $GITHUB_ENV
+          echo 'JOB_ID_3=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[2].id }}' >> $GITHUB_ENV
+          echo 'JOB_CONCLUSION_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].conclusion }}' >> $GITHUB_ENV
+          echo 'JOB_CONCLUSION_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].conclusion }}' >> $GITHUB_ENV
 
       # Notify build result on Telegram
       - name: Send telegram message to notify build result
@@ -189,9 +189,9 @@ jobs:
 
             Build Summary:
 
-              - multi-arch-build-flow: ${{ env.BUILD_CONCLUSION_1 }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ env.BUILD_ID_1 }}?check_suite_focus=true
+              * [${{ env.JOB_CONCLUSION_1 }}] multi-arch-build-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_1 }}?check_suite_focus=true
 
-              - pre-deploy-flow: ${{ env.BUILD_CONCLUSION_2 }} - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ env.BUILD_ID_2 }}?check_suite_focus=true
+              * [${{ env.JOB_CONCLUSION_2 }}] pre-deploy-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_2 }}?check_suite_focus=true
 
-              - post-action-flow: success - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ env.BUILD_ID_3 }}?check_suite_focus=true
+              * [success] post-action-flow: success - ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
 
