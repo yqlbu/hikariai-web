@@ -58,7 +58,7 @@ jobs:
 
       - name: Get git sha short
         id: export_sha_short
-        run: echo "::set-output name=sha_short::${{ github.event.pull_request.head.sha:0:10 }}"
+        run: echo "::set-output name=sha_short::${{ github.event.pull_request.head.sha::5 }}"
 
   # PR-based CI flow
   #multi-arch-build-flow:
