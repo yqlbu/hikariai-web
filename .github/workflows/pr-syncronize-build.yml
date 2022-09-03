@@ -75,7 +75,7 @@ jobs:
 
       - name: Verify outputs
         run: |
-          echo "{{ fromJson(steps.export_commit.outputs.data).message }}"
+          echo ${{ fromJson(steps.export_commit.outputs.data).message }}
 
       # Login to GitHub Container Registry
       - name: Login to Docker Hub
