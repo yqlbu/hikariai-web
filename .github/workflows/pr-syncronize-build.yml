@@ -37,7 +37,7 @@ jobs:
   multi-arch-build-flow:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # Define project-related environment variables
+    # Define job related environment variables
     env:
       DOMAIN: staging.hikariai.net
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -70,127 +70,118 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
       # Build and Push the images
-      #       - name: Build and Push Latest Image
-      #         uses: docker/build-push-action@v2
-      #         with:
-      #           builder: ${{ steps.buildx.outputs.name }}
-      #           context: .
-      #           file: ./ci/Dockerfile
-      #           platforms: linux/amd64,linux/arm64
-      #           push: true
-      #           tags: |
-      #             ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ steps.export_sha.outputs.sha_short }}
-      #           build-args: |
-      #             ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
-      # 
-      #     # Workflow outputs
-      #     outputs:
-      #       env: ${{ env.ENV }}
-      #       git_repository: ${{ env.REPOSITORY }}
-      #       git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
-      #       git_commit_message: ${{ github.event.commits[0].message }}
-      # 
-      #   # pre-deploy-
-      #   pre-deploy-flow:
-      #     # Depends on previous workflow
-      #     needs: multi-arch-build-flow
-      #     # The type of runner that the job will run on
-      #     runs-on: ubuntu-latest
-      #     # Steps represent a sequence of tasks that will be executed as part of the job
-      #     steps:
-      #       - name: Set environment variables
-      #         run: |
-      #           # repository related
-      #           echo "ENV=${{ needs.multi-arch-build-flow.outputs.env }}" >> $GITHUB_ENV
-      #           echo "REPOSITORY=${{ needs.multi-arch-build-flow.outputs.git_repository }}" >> $GITHUB_ENV
-      #           echo "DEPLOYMENT_REPOSITORY=vsphere-hub" >> $GITHUB_ENV
-      # 
-      #       - name: Checkout k8s deployment private repository
-      #         uses: actions/checkout@v3
-      #         with:
-      #           repository: ${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
-      #           token: ${{ secrets.ACCESS_TOKEN }}
-      # 
-      #       - name: Generate deploy manifest from Jinja template
-      #         uses: cuchi/jinja2-action@v1.1.0
-      #         with: 
-      #           template: cicd/${{ env.REPOSITORY }}/kustomize/tmpl/deployment.yaml.j2
-      #           output_file: cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
-      #           strict: true
-      #           variables: |
-      #             image_name=${{ env.REPOSITORY }}
-      #             image_deploy_tag=${{ env.ENV }}-${{ needs.multi-arch-build-flow.outputs.git_pr_sha_short }}
-      # 
-      #       - name: Inspect deployment manifest
-      #         run: |
-      #           cat cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
-      # 
-      #       - name: Commit deploy manifest on remote deployment repo
-      #         run: |
-      #           git config --local user.email "action@github.com"
-      #           git config --local user.name "GitHub Action"
-      #           git add .
-      #           git commit -s -m "ci: generate deployment overlay manifests" 
-      # 
-      #       - name: Push local changes to remote deployment repository
-      #         uses: github-actions-x/commit@v2.9
-      #         with:
-      #           push-branch: master
-      #           github-token: ${{ secrets.ACCESS_TOKEN }}
-      #           commit-message: "ci: generate deployment overlay manifests"
-      # 
-      #   # post-actions
-      #   post-action-flow:
-      #     # Depends on previous workflows
-      #     needs: [multi-arch-build-flow, pre-deploy-flow]
-      #     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
-      #     # The type of runner that the job will run on
-      #     runs-on: ubuntu-latest
-      #     # Steps represent a sequence of tasks that will be executed as part of the job
-      #     steps:
-      #       - name: Get jobs id from the workflow run
-      #         uses: octokit/request-action@v2.x
-      #         id: get_jobs_id
-      #         with:
-      #           route: GET /repos/{owner}/{repo}/actions/runs/{id}/jobs
-      #           owner: ${{ github.repository_owner }}
-      #           repo: ${{ needs.multi-arch-build-flow.outputs.git_repository }}
-      #           id: ${{ github.run_id }}
-      #         env:
-      #           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      # 
-      #       - name: Export jobs id and conclusion
-      #         run: |
-      #           echo 'JOB_ID_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].id }}' >> $GITHUB_ENV
-      #           echo 'JOB_ID_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].id }}' >> $GITHUB_ENV
-      #           echo 'JOB_ID_3=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[2].id }}' >> $GITHUB_ENV
-      #           echo 'JOB_CONCLUSION_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].conclusion }}' >> $GITHUB_ENV
-      #           echo 'JOB_CONCLUSION_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].conclusion }}' >> $GITHUB_ENV
-      # 
-      #       # Notify build result on Telegram
-      #       # - name: Send telegram message to notify build result
-      #       #   uses: appleboy/telegram-action@master
-      #       #   with:
-      #       #     to: ${{ secrets.TELEGRAM_TO }}
-      #       #     token: ${{ secrets.TELEGRAM_TOKEN }}
-      #       #     message: |
-      #       #       🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
-      # 
-      #       #       Commit Message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
-      # 
-      #       #       Deployment Stage: ${{ needs.multi-arch-build-flow.outputs.env }}
-      # 
-      #       #       Repository: ${{ github.repository }}
-      # 
-      #       #       Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
-      # 
-      #       #       Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-      # 
-      #       #       Build Summary:
-      # 
-      #       #         * [${{ env.JOB_CONCLUSION_1 }}] multi-arch-build-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_1 }}?check_suite_focus=true
-      # 
-      #       #         * [${{ env.JOB_CONCLUSION_2 }}] pre-deploy-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_2 }}?check_suite_focus=true
-      # 
-      #       #         * [success] post-action-flow: success - ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
-      # 
+      - name: Build and Push Latest Image
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./ci/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}-${{ steps.export_sha.outputs.sha_short }}
+          build-args: |
+            ENV=${{ env.ENV }},DOMAIN_NAME=${{ env.DOMAIN }}
+    # Workflow outputs
+    outputs:
+      # env: ${{ env.ENV }}
+      # git_repository: ${{ env.REPOSITORY }}
+      git_pr_sha_short: ${{ steps.export_sha.outputs.sha_short }}
+      git_commit_message: ${{ github.event.commits[0].message }}
+
+  # pre-deploy-
+  pre-deploy-flow:
+    # Depends on previous workflow
+    needs: multi-arch-build-flow
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Define job related environment variables
+    env:
+      DEPLOYMENT_REPOSITORY: vsphere-hub
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout k8s deployment private repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository_owner }}/${{ env.DEPLOYMENT_REPOSITORY }}
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Generate deploy manifest from Jinja template
+        uses: cuchi/jinja2-action@v1.1.0
+        with: 
+          template: cicd/${{ env.REPOSITORY }}/kustomize/tmpl/deployment.yaml.j2
+          output_file: cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+          strict: true
+          variables: |
+            image_name=${{ env.REPOSITORY }}
+            image_deploy_tag=${{ env.ENV }}-${{ needs.multi-arch-build-flow.outputs.git_pr_sha_short }}
+      - name: Inspect deployment manifest
+        run: |
+          cat cicd/${{ env.REPOSITORY }}/kustomize/overlays/${{ env.ENV }}/deployment.yaml
+      - name: Commit deploy manifest on remote deployment repo
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -s -m "ci: generate deployment overlay manifests" 
+      - name: Push local changes to remote deployment repository
+        uses: github-actions-x/commit@v2.9
+        with:
+          push-branch: master
+          github-token: ${{ secrets.ACCESS_TOKEN }}
+          commit-message: "ci: generate deployment overlay manifests"
+
+  # post-actions
+  post-action-flow:
+    # Depends on previous workflows
+    needs: [multi-arch-build-flow, pre-deploy-flow]
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Get jobs id from the workflow run
+        uses: octokit/request-action@v2.x
+        id: get_jobs_id
+        with:
+          route: GET /repos/{owner}/{repo}/actions/runs/{id}/jobs
+          owner: ${{ github.repository_owner }}
+          repo: ${{ env.REPOSITORY }}
+          id: ${{ github.run_id }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Export jobs id and conclusion
+        run: |
+          echo 'JOB_ID_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].id }}' >> $GITHUB_ENV
+          echo 'JOB_ID_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].id }}' >> $GITHUB_ENV
+          echo 'JOB_ID_3=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[2].id }}' >> $GITHUB_ENV
+          echo 'JOB_CONCLUSION_1=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[0].conclusion }}' >> $GITHUB_ENV
+          echo 'JOB_CONCLUSION_2=${{ fromJson(steps.get_jobs_id.outputs.data).jobs[1].conclusion }}' >> $GITHUB_ENV
+
+      # Notify build result on Telegram
+      - name: Send telegram message to notify build result
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🕹 A new github-action build was trigged by: ${{ github.repository_owner }} (https://github.com/${{ github.repository_owner }})
+
+            Commit Message: ${{ needs.multi-arch-build-flow.outputs.git_commit_message }}
+
+            Deployment Stage: ${{ env.ENV }}
+
+            Repository: ${{ github.repository }}
+
+            Changes: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+
+            Build Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Build Summary:
+
+              * [${{ env.JOB_CONCLUSION_1 }}] multi-arch-build-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_1 }}?check_suite_focus=true
+
+              * [${{ env.JOB_CONCLUSION_2 }}] pre-deploy-flow: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_2 }}?check_suite_focus=true
+
+              * [success] post-action-flow: success - ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
