@@ -412,27 +412,35 @@ If you make any changes in the `config.yml` file, please restart the daemon serv
 
 ### Redis (Recommended)
 
+Create dirs for redis
+
+```bash
+mkdir -p /etc/redis
+mkdir -p /etc/redis/redis-conf
+mkdir -p /etc/redis/redis-data
+```
+
 Redis can be deployed using [Docker-Compose](https://docs.docker.com/compose/)
 
 ```yaml
-# docker-compose.yml
+# /etc/redis/docker-compose.yml
 ---
 version: "3.4"
 services:
   redis:
     container_name: redis
     image: "redis:alpine"
-    command: redis-server
     ports:
       - "6379:6379"
     volumes:
-      - /etc/redis/redis-data:/var/lib/redis
-      - /etc/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - /etc/redis/redis-data:/data
+      - /etc/redis/redis-conf:/etc/redis
     environment:
       - REDIS_REPLICATION_MODE=master
     networks:
       node_net:
         ipv4_address: 172.28.1.4
+    command: redis-server /etc/redis/redis.conf
     restart: unless-stopped
 
   watchtower:
@@ -452,15 +460,52 @@ networks:
         - subnet: 172.28.0.0/16
 ```
 
+Copy the following content to `/etc/redis/redis-conf/redis.conf`
+
+```yaml
+# /etc/redis/redis-conf/redis.conf
+
+# admin
+# =====
+# requirepass ""
+
+# server
+# ======
+bind 0.0.0.0
+
+# rdb
+# ===
+
+# Enable snapshot backups when performing 1 write command in 900 seconds.
+save 900 1
+# Enable snapshot backup when performing 10 write commands in 300 seconds.
+save 300 10
+# Enable snapshot backups when performing 10,000 write commands within 60 seconds.
+save 60 10000
+# Turn on data compression
+rdbcompression yes
+# Specify local database file name
+dbfilename dump.rdb
+
+# aof
+# ===
+
+# Redis is closed by default, turning on the NO to Yes
+appendonly yes
+# Specify the local database file name, the default is appendonly.aof
+appendfilename "appendonly.aof"
+# Specify update log conditions
+appendfsync everysec
+```
+
 Spin up the redis server
 
 ```bash
+#
 # spin up the container instance
 docker-compose up -d
-# get into the redis instance
-docker exec -it redis sh
 # intereact with redis
-redis-cli
+docker exec -it redis redis-cli
 ```
 
 Some useful Redis commands
