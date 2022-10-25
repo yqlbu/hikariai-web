@@ -212,4 +212,4 @@ jobs:
 
               * [${{ env.JOB_CONCLUSION_3 }}] pre-deploy-stage: ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
 
-              * [success] post-action-stage: success - ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_3 }}?check_suite_focus=true
+              * [success] post-action-stage: success - ${{ github.server_url }}/${{ github.repository }}/runs/${{ env.JOB_ID_4 }}?check_suite_focus=true
