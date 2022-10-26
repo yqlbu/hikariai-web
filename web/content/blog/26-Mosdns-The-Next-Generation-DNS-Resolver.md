@@ -423,7 +423,7 @@ mkdir -p /etc/redis/redis-data
 Redis can be deployed using [Docker-Compose](https://docs.docker.com/compose/)
 
 ```yaml
-# /etc/redis/docker-compose.yml
+cat > /etc/redis/docker-compose.yml <<EOF
 ---
 version: "3.4"
 services:
@@ -458,12 +458,13 @@ networks:
       driver: default
       config:
         - subnet: 172.28.0.0/16
+EOF
 ```
 
 Copy the following content to `/etc/redis/redis-conf/redis.conf`
 
 ```yaml
-# /etc/redis/redis-conf/redis.conf
+cat > /etc/redis/redis-conf/redis.conf <<EOF
 
 # admin
 # =====
@@ -484,6 +485,8 @@ save 300 10
 save 60 10000
 # Turn on data compression
 rdbcompression yes
+# Turn on checksum check
+rdbchecksum yes
 # Specify local database file name
 dbfilename dump.rdb
 
@@ -496,6 +499,7 @@ appendonly yes
 appendfilename "appendonly.aof"
 # Specify update log conditions
 appendfsync everysec
+EOF
 ```
 
 Spin up the redis server
