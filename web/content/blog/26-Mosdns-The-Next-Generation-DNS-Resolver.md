@@ -465,7 +465,6 @@ Copy the following content to `/etc/redis/redis-conf/redis.conf`
 
 ```yaml
 cat > /etc/redis/redis-conf/redis.conf <<EOF
-
 # admin
 # =====
 # requirepass ""
@@ -505,7 +504,6 @@ EOF
 Spin up the redis server
 
 ```bash
-#
 # spin up the container instance
 docker-compose up -d
 # intereact with redis
