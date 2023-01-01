@@ -129,6 +129,6 @@ I passed my CKA with a score of `95`, and I passed my CKAD with a score of `97`.
 
 ## Conclusion
 
-I worked hard to crack both certifications in the first attempt, and I’m happy I was able to complete this personal challenge. I hope that this article can be useful for someone else aiming at passing the CKA and the CKAD, feel free to connect with me and drop me a PM for any questions. To challenge myself again, passing the CKS has become one of my objectives in 2023. Let see how it goes.
+I worked hard to crack both certifications on the first attempt, and I’m happy I was able to complete this personal challenge. I hope that this article can be useful for someone else who also aims at passing the CKA and the CKAD, feel free to connect with me and drop me a PM for any questions. To challenge myself again, passing the CKS has become one of my objectives in 2023. Let see how it goes.
 
 ---
