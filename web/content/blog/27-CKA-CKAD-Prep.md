@@ -25,7 +25,7 @@ Since I had a lot of doubts during my journey, I’d like to share my experience
 
 After a bit of hunting for discounts, I’ve decided to buy the [Kubernetes Certified Administrator (CKA) with Tests](https://www.udemy.com/course/certified-kubernetes-administrator-with-practice-tests/) and the [Kubernetes Certified Application Developer (CKAD) with Tests](https://www.udemy.com/course/certified-kubernetes-application-developer/) from [Mumshad Mannambeth](https://www.udemy.com/user/mumshad-mannambeth/) and [KodeKloud](https://kodekloud.com/) on [Udemy](https://www.udemy.com/).
 
-The course is very well-structured, with practice labs on some real Kubernetes clusters on KodeKloud (they give you free access to those labs on their learning platform), and I went through the course from the beginning to the end doing all the labs while progressing, which is the best way to fix in your mind what you are learning.
+The course are very well-structured, with practice labs on some real Kubernetes clusters on KodeKloud (they give you free access to those labs on their learning platform), and I went through the course from the beginning to the end doing all the labs while progressing, which is the best way to fix in your mind what you are learning.
 
 ---
 
