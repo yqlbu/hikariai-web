@@ -62,7 +62,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-    # Workflow outputs
+    # Map job outputs
     outputs:
       git_pr_number: ${{ steps.export_pr_context.outputs.pr_number }}
       git_pr_url: ${{ steps.export_pr_context.outputs.pr_url }}
