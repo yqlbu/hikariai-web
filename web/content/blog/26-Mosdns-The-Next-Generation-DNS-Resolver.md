@@ -350,7 +350,8 @@ sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 Restart DNSStubListener:
 
 ```bash
-systemctl reload-or-restart systemd-resolved
+systemctl daemon-reload
+systemctl restart systemd-resolved
 ```
 
 Verify port open status:
