@@ -52,15 +52,11 @@
       <div class="row justify-content-center">
         <div class="col-lg-5 col-md-6 text-center text-md-left">
           <ul class="post-meta-tags list-unstyled list-inline">
-            {{
-              range.Params.tags
-            }}
+            {{ range.Params.tags }}
             <li class="list-inline-item">
               <a href="{{`tags` | absURL}}/{{.| urlize}}">{{.}}</a>
             </li>
-            {{
-              end
-            }}
+            {{ end }}
           </ul>
         </div>
         <div class="col-lg-5 col-md-6 text-center text-md-right mt-4 mt-md-0">
