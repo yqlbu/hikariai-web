@@ -88,17 +88,13 @@
               </h4>
               <p class="font-primary">{{ .Summary | truncate 250 }}</p>
               <ul class="social-links list-unstyled list-inline ml-0 ml-sm-n2">
-                {{
-                  range.Params.social
-                }}
+                {{ range.Params.social }}
                 <li class="list-inline-item">
                   <a href="{{.link | safeURL}}">
                     <i class="lab {{.icon}}"></i>
                   </a>
                 </li>
-                {{
-                  end
-                }}
+                {{ end }}
               </ul>
             </div>
             {{ end }}
