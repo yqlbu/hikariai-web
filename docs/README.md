@@ -356,6 +356,17 @@ Use `Hugo` built in `Http Server` to serve contents
 hugo server -D --bind <server ip address> --baseURL http://<server ip address>
 ```
 
+### Build static resources
+
+```bash
+# local
+hugo -D --gc --baseURL="http://localhost:8080/"
+npx http-server ./public/
+
+# production
+hugo -D --gc --baseURL="https://hikariai.net/"
+```
+
 ### Comment
 
 References:
