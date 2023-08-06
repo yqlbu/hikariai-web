@@ -29,11 +29,6 @@ WORKDIR /app
 COPY web/ ./
 COPY ci/bootstrap.sh ./
 
-RUN echo "ENV=$ENV" > env
-RUN echo "DOMAIN_NAME=$DOMAIN_NAME" >> env
-
-RUN chmod +x ./bootstrap.sh && sh bootstrap.sh
-
 RUN hugo
 
 # --- Deployment Stage --- #
