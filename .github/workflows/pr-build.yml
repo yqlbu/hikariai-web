@@ -11,27 +11,29 @@
 # This is a open-source software, liscensed under the MIT License.
 # See /License for more information.
 
-name: Production Build
+name: PR Development Build
 
 # Controls when the action will run.
 on:
-  push:
-    branches:
-      - 'master'
-      - 'release/**'
+  # Trigger when PR matches certain events
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
     paths:
       - 'web/**'
-      - '.github/workflows/deploy.yml'
+      - '.github/workflows/pr-build.yml'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # Workflow related global environment variables
 env:
-  ENV: prod
+  ENV: staging
   REPOSITORY: hikariai-web
   REGISTRY: docker.io
   REGISTRY_USERNAME: hikariai
-  IMAGE_TAG: prod
+  IMAGE_TAG: staging
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -40,13 +42,19 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Get HEAD git sha
+      - name: Get PR context
+        id: export_pr_context
+        run: |
+          echo "pr_number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          echo "pr_url=${{ github.event.pull_request.html_url }}" >> $GITHUB_OUTPUT
+
+      - name: Get last git sha
         id: export_commit_sha
         run: |
-          echo "sha_long=${{ github.sha }}" >> $GITHUB_OUTPUT
-          echo "sha_short=$(echo ${{ github.sha }} | cut -c1-6)" >> $GITHUB_OUTPUT
+          echo "sha_long=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+          echo "sha_short=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-6)" >> $GITHUB_OUTPUT
 
-      - name: Get HEAD git commit
+      - name: Get last git commit
         uses: octokit/request-action@v2.x
         id: export_commit_message
         with:
@@ -57,8 +65,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-    # Workflow outputs
+    # Map job outputs
     outputs:
+      git_pr_number: ${{ steps.export_pr_context.outputs.pr_number }}
+      git_pr_url: ${{ steps.export_pr_context.outputs.pr_url }}
       git_sha_long: ${{ steps.export_commit_sha.outputs.sha_long }}
       git_sha_short: ${{ steps.export_commit_sha.outputs.sha_short }}
       git_commit_message: ${{ fromJson(steps.export_commit_message.outputs.data).message }}
@@ -71,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     # Define job related environment variables
     env:
-      DOMAIN: www.hikariai.net
+      DOMAIN: staging.hikariai.net
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -103,7 +113,7 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: Dockerfile
+          file: ./ci/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
@@ -112,3 +122,4 @@ jobs:
           build-args: |
             ENV=${{ env.ENV }}
             DOMAIN_NAME=${{ env.DOMAIN }}
+
