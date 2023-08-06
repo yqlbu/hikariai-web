@@ -28,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Deploy to Vercel Action (dae-bot)
+      - name: Deploy to Vercel
         uses: BetaHuhn/deploy-to-vercel-action@v1
         with:
           PRODUCTION: true
