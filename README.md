@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/github/license/yqlbu/hikariai-web?color=critical" alt="License"/>
     <a href="https://hits.seeyoufarm.com">
       <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fyqlbu%2Fhikariai-web&count_bg=%23D055FF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
-    <img src="https://custom-icon-badges.herokuapp.com/badge/kubernetes-v1.23.6-navy.svg?logo=kubernetes&logoColor=white" alt="Docker">
+    <img src="https://custom-icon-badges.herokuapp.com/badge/kubernetes-v1.27-navy.svg?logo=kubernetes&logoColor=white" alt="Docker">
     <img src="https://custom-icon-badges.herokuapp.com/badge/docker-v20.10-blue.svg?logo=docker&logoColor=white" alt="Docker">
     <img src="https://img.shields.io/github/last-commit/yqlbu/hikariai-web" alt="lastcommit"/>
 
