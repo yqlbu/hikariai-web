@@ -1,6 +1,6 @@
 <h1 align="center"> ☁️ Hikariai Sites</h1>
 <p align="center">
-    <em>My main websites built with Hugo, containerized as a microservice</em>
+    <em>My main websites built with Hugo, hosted on Kubernetes</em>
 </p>
 
 <p align="center">
