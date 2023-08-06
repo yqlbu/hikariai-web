@@ -18,6 +18,9 @@ on:
     branches:
       - 'master'
       - 'release/**'
+    paths:
+      - 'web/**'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 jobs:
