@@ -1,3 +1,4 @@
 web/public
 web/resources
 web/.hugo_build.lock
+.vercel
