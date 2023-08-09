@@ -105,7 +105,7 @@ color_primary="#5E498C"
   contact_form_action="#" # contact form works with https://formspree.io
   search=true
   mainSections=["blog"]
-  copyright="Copy Right ©2019-2022  🤍 Kevin Yu - powered by Hugo, hosted on Kubernetes"
+  copyright="Copy Right ©2019-2023  🤍 Kevin Yu - powered by Hugo, hosted on Kubernetes"
   customCSS=["css/custom.css", "css/syntax.css"]
 
 # Preloader
@@ -260,10 +260,6 @@ url="https://discord.gg/hyNwvjtBJ7"
 [[params.social]]
 icon="lab la-telegram" # https://icons8.com/line-awesome
 url="https://t.me/hikariai_channel"
-
-[[params.social]]
-icon="lab la-linkedin-in" # https://icons8.com/line-awesome
-url="https://www.linkedin.com/in/chinglong-kevin-yu"
 
 [[params.social]]
 icon="las la-rss" # https://icons8.com/line-awesome
