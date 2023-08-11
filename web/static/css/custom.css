@@ -7,13 +7,12 @@
 }
 
 /* Backtick Highlight */
-code {
+p > code {
   padding: .2em .4em;
   font-size: 85%;
   background: #f2f2f2;
   color: #595959;
   font-weight: 500;
-  white-space: break-spaces;
   border-radius: 6px;
 }
 
