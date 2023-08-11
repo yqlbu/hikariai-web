@@ -88,10 +88,10 @@ h5="18px"
 h6="16px"
 white="#ffffff"
 black="#000000"
-dark="#141A26"
+dark="#404040"
 gray="#747577"
-light="#FAFAFA"
-color_primary="#737373"
+light="#fafafa"
+color_primary="#595958"
 
 #################### default parameters ################################
 
