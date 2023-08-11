@@ -33,6 +33,7 @@ header {
   }
 
   .nav-item {
+    margin: 0 10px;
     &.active .nav-link {
       color: $color-primary !important;
     }
@@ -82,7 +83,6 @@ header {
       visibility: hidden;
       width: 220px;
       transition: 0.2s;
-      left: 50%;
       border-radius: 8px;
       transform: translate(-50%, 15px);
     }
@@ -97,12 +97,10 @@ header {
 
   .dropdown-menu {
     border: 0;
-    padding: 16px 25px;
   }
 
   .dropdown-item {
     font-size: 16px;
-    padding: 8px 0;
     font-weight: 700;
   }
 
@@ -138,7 +136,6 @@ header {
     .navbar-nav {
       max-width: 300px;
       text-align: center;
-      padding-top: 20px;
     }
 
     .dropdown-toggle {

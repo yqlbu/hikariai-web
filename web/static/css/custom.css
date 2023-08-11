@@ -2,28 +2,25 @@
 
 /* Selection Hightlight Color */
 *::selection {
-  background: #bfc6ff;
-  color: #483b59;
+  background: #a6a6a6;
+  color: #fdfdfd;
 }
 
 /* Backtick Highlight */
 code {
-  color: #8159d9;
+  padding: .2em .4em;
+  font-size: 85%;
+  background: #f2f2f2;
+  color: #595959;
   font-weight: 500;
-}
-
-/* Nav Bar */
-.nav-item {
-  margin-right: 30px;
-}
-.nav-item:first-child {
-  margin-left: 50px;
+  white-space: break-spaces;
+  border-radius: 6px;
 }
 
 /* Dropdown Menu */
-.dropdown-menu {
-  margin-left: 80px;
-}
+/* .dropdown-menu { */
+/*   margin-left: 20px; */
+/* } */
 
 /* Social Links */
 .social-links {
