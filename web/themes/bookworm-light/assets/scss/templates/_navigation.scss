@@ -113,7 +113,8 @@ header {
   .dropdown-item:focus,
   .dropdown-item:hover {
     color: $color-primary;
-    background-color: transparent;
+    background: #d9d9d9;
+    border-radius: 8px;
   }
 
   .navbar-light .navbar-toggler {
