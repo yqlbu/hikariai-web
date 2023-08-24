@@ -1,6 +1,6 @@
 ---
 title: "Kevin Yu"
-image: "images/author/kevin-yu.jpg"
+image: "images/author/avatar.png"
 email: "kevinyu211@yahoo.com"
 date: 2020-05-26T10:14:19+06:00
 draft: false
@@ -19,6 +19,6 @@ social:
     icon: "las la-rss"
 ---
 
-In the upcoming months and years, I want to help make learning Machine Learning and Cloud Technology topics easier by writing lots of articles showing of practice cases on Cloud and Edge devices.
+In the upcoming months and years, I want to help make learning Machine Learning and Cloud Computing topics easier by writing lots of articles showing of practice cases on Cloud and Edge devices.
 
 Furthermore, I’m planning on creating an AI and Cloud Technology community so that people can interact with each other and learn together.
