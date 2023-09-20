@@ -42,7 +42,7 @@ what_i_do:
       description: ""
 ---
 
-Hi all, I am kev. As a technology enthusiast, I love technology ranging from Cloud Computing, Artificial Intelligence, Federal Learning, DevSecOps, CICD, Networking, CloudNative, Containerization, Serverless Computing, and Robotics. I build resilient microservices and scalable infrastructure for enterprises on premise or on the cloud. Security is always my first priority concern when it comes to cloud adoption.
+As a technology enthusiast, I love technology ranging from Cloud Computing, Artificial Intelligence, Federal Learning, DevSecOps, CICD, Networking, CloudNative, Containerization, Serverless Computing, and Robotics. I build resilient microservices and scalable infrastructure for enterprises on premise or on the cloud. Security is always my first priority concern when it comes to cloud adoption.
 
 I am a Sr. SRE (Senior Site Reliablity Engineer), a Cloud Solution Architect, and a Cloud Native Advocate. Through my speaking, writing, and analysis, I help enterprises take advantage of emerging technologies. I am glad to be recognized as an Open-Source Developer, a Solution Architect, a DevOps Engineer, and a Cloud Native Computing Foundation ambassador. To keep myself relevant and current, I regularly pursue industry certifications. Currently, I was successfully certified as a CKA (Certified Kubernetes Administrator), a CKAD (Certified Kubernetes Application Developer), and a CKS (Certified Kubernetes Security Speclialist).
 
