@@ -103,12 +103,11 @@ By using packer we can define our golden VM image as code so that we can easily 
 Packer requires a user account to perform actions on the Proxmox API. The following commands will create a new user account `packer@pve` with restricted permissions.
 
 ```bash
-$ pveum useradd packer@pve
-$ pveum passwd packer@pve
-Enter new password: ****************
-Retype new password: ****************
-$ pveum roleadd Packer -privs "VM.Config.Disk VM.Config.CPU VM.Config.Memory Datastore.AllocateSpace Sys.Modify VM.Config.Options VM.Allocate VM.Audit VM.Console VM.Config.CDROM VM.Config.Network VM.PowerMgmt VM.Config.HWType VM.Monitor"
-$ pveum aclmod / -user packer@pve -role Packer
+pveum useradd packer@pve
+pveum passwd packer@pve
+# Enter new password: ****************
+# Retype new password: ****************
+pveum aclmod / -user packer@pve -role PVEAdmin
 ```
 
 ---
