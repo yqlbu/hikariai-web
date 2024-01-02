@@ -21,13 +21,6 @@ You may connect me via [link.hikariai.net](https://link.hikariai.net), which is 
 
 The site is containerized and automated based on principals followed by `DevOps` and `GitOps` practices with CICD tools such as [Tekton](https://tekton.dev/), [ArgoCD](https://argoproj.github.io/argo-cd/) that fit in the modern `cloud-native` fashion. In terms of deployment, it is orchestrated by `Kubernetes` with proper service discovery routing rules handled by [Istios](https://istio.io/). You may find the `Dockerfile` in the `/ci` directory of this repository.
 
-## Community
-
-- [Hikariai_AI Telegram Group](https://t.me/hikariai_channel)
-- [unRAID Telegram Group](https://t.me/unraid_zh)
-- [TechProber Telegram Group](https://t.me/joinchat/7AG3aEQ5I00wY2Q5)
-- [TechProber Discord Channel](https://discord.gg/se4RtrB473)
-
 ## Reference
 
 - [Hugo Offical Site](https://gohugo.io/)
